@@ -6,9 +6,6 @@
 knowledge base/
 ├── Innowise_trainee/
 │   ├── План обучения.md
-│   ├── Карточки/
-│   │   └── QA/
-│   │       └── 00 Testing Fundamentals.md
 │   ├── 1 Modul/
 │   │   ├── Eng/
 │   │   │   ├── QA manual eng.md
