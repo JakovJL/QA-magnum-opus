@@ -1,7 +1,5 @@
-# --- Obsidian: per-device state (causes sync conflicts) ---
-.obsidian/workspace.json
-.obsidian/workspace-mobile.json
-.obsidian/workspace*.json
+# --- Obsidian: do NOT sync app settings/plugins (manage per-device) ---
+.obsidian/
 .trash/
 
 # --- Build artifacts / dependencies ---
@@ -21,6 +19,3 @@ Desktop.ini
 
 # --- Secrets: never sync this notes file (contains API keys/tokens) ---
 Разное/Апи роутер.md
-
-# --- Obsidian Git: plugin stores auth token here, must never sync ---
-.obsidian/plugins/obsidian-git/data.json
