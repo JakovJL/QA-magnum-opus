@@ -7,6 +7,7 @@
 - [[#Collection Framework Overview]]
 - [[#List Set Queue and Map]]
 - [[#ArrayList vs LinkedList]]
+- [[#Key Methods Cheat Sheet]]
 - [[#Iteration and Common Operations]]
 - [[#Arrays and Collections in AQA]]
 - [[#Interview Questions]]
@@ -206,6 +207,108 @@ In real projects and tests, `ArrayList` is the default choice most of the time.
 
 ---
 
+## Key Methods Cheat Sheet
+
+These are the methods you actually use day to day. Memorize the common ones; look up the rest.
+
+### List and ArrayList
+
+| Method             | What it does                                        |
+| ------------------ | --------------------------------------------------- |
+| `add(e)`           | Add to the end                                      |
+| `add(i, e)`        | Insert at index `i`, shift the rest right           |
+| `get(i)`           | Read element at index `i`                           |
+| `set(i, e)`        | Replace element at index `i`, returns the old value |
+| `remove(int i)`    | Remove **by index**                                 |
+| `remove(Object o)` | Remove **by value** (first match)                   |
+| `removeIf(pred)`   | Remove all elements matching a condition            |
+| `indexOf(o)`       | First index of value, or `-1`                       |
+| `contains(o)`      | `true` if the value is present                      |
+| `size()`           | Number of elements                                  |
+| `isEmpty()`        | `true` if size is `0`                               |
+| `clear()`          | Remove everything                                   |
+
+```java
+List<String> users = new ArrayList<>(List.of("ann", "bob", "kate"));
+users.set(0, "alice");          // [alice, bob, kate]
+users.add(1, "dave");           // [alice, dave, bob, kate]
+users.removeIf(u -> u.length() > 3); // remove "alice", "dave", "kate"
+System.out.println(users.indexOf("bob")); // 0
+```
+
+### Set and HashSet
+
+| Method | What it does |
+|---|---|
+| `add(e)` | Add; returns `false` if already present |
+| `remove(o)` | Remove a value |
+| `contains(o)` | Membership check (very fast) |
+| `addAll(c)` | Union with another collection |
+| `retainAll(c)` | Keep only elements also in `c` (intersection) |
+| `removeAll(c)` | Remove all elements found in `c` (difference) |
+
+```java
+Set<String> a = new HashSet<>(List.of("chrome", "firefox", "edge"));
+Set<String> b = new HashSet<>(List.of("firefox", "safari"));
+a.retainAll(b);                 // intersection -> [firefox]
+System.out.println(a.add("firefox")); // false, already there
+```
+
+### Map and HashMap
+
+| Method | What it does |
+|---|---|
+| `put(k, v)` | Add or overwrite; returns the old value |
+| `get(k)` | Value for key, or `null` |
+| `getOrDefault(k, def)` | Value, or `def` if key missing |
+| `putIfAbsent(k, v)` | Set only if key not present |
+| `containsKey(k)` / `containsValue(v)` | Membership checks |
+| `remove(k)` | Remove an entry by key |
+| `keySet()` / `values()` / `entrySet()` | Views for iteration |
+| `computeIfAbsent(k, fn)` | Build and store a value lazily if key missing |
+| `merge(k, v, fn)` | Combine new and existing value (great for counting) |
+
+```java
+Map<String, Integer> count = new HashMap<>();
+for (String word : List.of("a", "b", "a")) {
+    count.merge(word, 1, Integer::sum); // {a=2, b=1}
+}
+System.out.println(count.getOrDefault("x", 0)); // 0
+
+Map<String, List<String>> byType = new HashMap<>();
+byType.computeIfAbsent("ui", k -> new ArrayList<>()).add("loginTest");
+```
+
+### Queue
+
+| Method | What it does |
+|---|---|
+| `offer(e)` / `add(e)` | Add to the tail |
+| `poll()` | Remove and return the head, or `null` if empty |
+| `peek()` | Look at the head without removing, or `null` |
+
+```java
+Queue<String> tasks = new LinkedList<>();
+tasks.offer("login");
+tasks.offer("checkout");
+System.out.println(tasks.peek()); // login (not removed)
+System.out.println(tasks.poll()); // login (removed)
+```
+
+### Arrays and Collections Utilities
+
+| Call | What it does |
+|---|---|
+| `Arrays.sort(arr)` | Sort an array in place |
+| `Arrays.toString(arr)` | Readable string of an array |
+| `Arrays.asList(...)` | Fixed-size list backed by the array |
+| `Collections.sort(list)` | Sort a list in place |
+| `Collections.reverse(list)` | Reverse order |
+| `Collections.max(list)` / `min(list)` | Largest / smallest element |
+| `Collections.frequency(list, o)` | How many times `o` appears |
+
+---
+
 ## Iteration and Common Operations
 
 You often need to loop through arrays and collections.
@@ -234,13 +337,27 @@ for (String city : cities) {
 
 ### Common Operations
 
+A more realistic example: collect test results, then process them.
+
 ```java
-List<String> items = new ArrayList<>();
-items.add("A");
-items.add("B");
-items.remove("A");
-System.out.println(items.contains("B")); // true
-System.out.println(items.size());        // 1
+List<String> results = new ArrayList<>(List.of("pass", "fail", "pass", "skip", "fail"));
+
+// Replace by index
+results.set(0, "PASS");
+
+// Remove by condition (safe, no ConcurrentModificationException)
+results.removeIf(r -> r.equals("skip"));
+
+// Search
+System.out.println(results.indexOf("fail")); // 1
+System.out.println(results.contains("PASS")); // true
+
+// Count failures with a Map
+Map<String, Integer> stats = new HashMap<>();
+for (String r : results) {
+    stats.merge(r, 1, Integer::sum);
+}
+System.out.println(stats); // {PASS=1, fail=2, pass=1}
 ```
 
 ### Arrays Utility Class
@@ -356,3 +473,40 @@ One removes by position, the other removes by value. With `List<Integer>`, this 
 
 **5. Why can `Arrays.asList()` be dangerous?**  
 It returns a fixed-size list backed by the array. You can change elements, but you cannot add or remove them, or you will get `UnsupportedOperationException`.
+
+---
+
+### Advanced Questions
+
+**1. How does `HashMap` work internally?**  
+It stores entries in an array of **buckets**. The key's `hashCode()` is spread and mapped to a bucket index. Multiple keys in the same bucket form a chain (a linked list). Since Java 8, if one bucket grows past `8` entries (and the table is large enough), that chain is converted into a balanced tree, improving worst-case lookup from `O(n)` to `O(log n)`.
+
+**2. What are the load factor and capacity in `HashMap`?**  
+Capacity is the number of buckets (default `16`). The load factor (default `0.75`) is the fill threshold: when `size > capacity * loadFactor`, the map **resizes** (doubles capacity) and rehashes all entries. Setting a sensible initial capacity avoids repeated resizing for large maps.
+
+**3. Why must `equals()` and `hashCode()` agree?**  
+Hash-based collections find the bucket via `hashCode()`, then compare with `equals()`. If two "equal" objects return different hash codes, they land in different buckets and the set/map treats them as distinct — you get duplicates or failed lookups. The contract: equal objects must have equal hash codes.
+
+**4. What is a fail-fast iterator, and how does `ConcurrentModificationException` happen?**  
+Most collections (`ArrayList`, `HashMap`) keep a `modCount`. Their iterators snapshot it and check it on each `next()`. If the collection is structurally modified during iteration (e.g. `list.remove()` inside a for-each), `modCount` no longer matches and the iterator throws `ConcurrentModificationException`. Use `Iterator.remove()` or `removeIf()` instead. This is "best-effort" detection, not a guarantee.
+
+**5. Fail-fast vs fail-safe iterators?**  
+Fail-fast (standard collections) throw on concurrent modification. Fail-safe iterators (e.g. `CopyOnWriteArrayList`, `ConcurrentHashMap`) iterate over a snapshot or tolerate changes, so they never throw — but may not reflect the latest state.
+
+**6. `ConcurrentHashMap` vs `Collections.synchronizedMap()`?**  
+`synchronizedMap` wraps every method in a single lock — only one thread at a time, and compound operations still need external synchronization. `ConcurrentHashMap` locks only segments/bins, allowing concurrent reads and writes with much better throughput. It also does not allow `null` keys or values.
+
+**7. What is the difference between `Arrays.asList()`, `List.of()`, and `new ArrayList<>()`?**  
+`new ArrayList<>()` is fully mutable. `Arrays.asList()` is fixed-size (set allowed, add/remove not) and backed by the array. `List.of()` is fully **immutable** — any modification throws `UnsupportedOperationException`, and it rejects `null` elements.
+
+**8. Why prefer `ArrayList` over `LinkedList` even for inserts?**  
+`LinkedList` has `O(1)` insertion only if you already hold the node. Inserting at an index still costs `O(n)` to walk to it, plus per-node object overhead and poor CPU-cache locality. In practice `ArrayList` usually wins even for middle inserts at realistic sizes.
+
+**9. How does `HashSet` store elements?**  
+It is backed by a `HashMap`: each element is a key, and a single shared dummy object is the value. So `HashSet`'s behavior (hashing, load factor, no order) follows directly from `HashMap`.
+
+**10. What happens to a `HashMap` if a key's hash code changes after insertion (mutable key)?**  
+The entry stays in its original bucket, but lookups compute the new hash and search a different bucket — so you can no longer find the entry. Never use mutable objects as keys; prefer immutable keys like `String` or `Integer`.
+
+**11. `HashMap` vs `TreeMap` vs `LinkedHashMap`?**  
+`HashMap` — no order, `O(1)` average ops. `LinkedHashMap` — keeps insertion (or access) order via a linked list, `O(1)` average. `TreeMap` — keeps keys sorted, `O(log n)` ops, backed by a red-black tree.
