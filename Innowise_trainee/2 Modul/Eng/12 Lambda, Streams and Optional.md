@@ -55,9 +55,21 @@ Examples:
 
 ```java
 List<String> names = List.of("Ann", "Bob", "Kate");
-names.forEach(name -> System.out.println(name));
+names.forEach(name -> System.out.println(name)); // prints each name on its own line
 
-Comparator<String> byLength = (a, b) -> a.length() - b.length();
+Comparator<String> byLength = (a, b) -> a.length() - b.length(); // sort rule: shorter string first
+```
+
+Lambdas come in a few shapes, depending on the number of parameters and the body:
+
+```java
+Runnable greet = () -> System.out.println("Hello");        // no parameters; greet.run() prints Hello
+Consumer<String> print = name -> System.out.println(name); // one parameter; print.accept("Ann")
+BinaryOperator<Integer> add = (a, b) -> a + b;             // two parameters; add.apply(2, 3) -> 5
+Function<Integer, String> grade = score -> {               // body with several statements needs { } and return
+    if (score >= 60) return "pass";
+    return "fail";
+};
 ```
 
 ### Why Lambda Is Useful
@@ -118,10 +130,10 @@ System.out.println(sum.calculate(2, 3)); // 5
 Examples:
 
 ```java
-Predicate<String> isEmpty = text -> text.isEmpty();
-Function<String, Integer> length = text -> text.length();
-Consumer<String> printer = text -> System.out.println(text);
-Supplier<Double> random = () -> Math.random();
+Predicate<String> isEmpty = text -> text.isEmpty();          // isEmpty.test("") -> true
+Function<String, Integer> length = text -> text.length();    // length.apply("abc") -> 3
+Consumer<String> printer = text -> System.out.println(text); // printer.accept("hi") prints hi
+Supplier<Double> random = () -> Math.random();               // random.get() -> a new random number
 ```
 
 > [!info] `@FunctionalInterface`
@@ -146,10 +158,19 @@ names.forEach(name -> System.out.println(name));
 ### Common Forms
 
 ```java
-ClassName::staticMethod
-objectRef::instanceMethod
-ClassName::instanceMethod
-ClassName::new
+ClassName::staticMethod    // static method of a class:      x -> ClassName.staticMethod(x)
+objectRef::instanceMethod  // method of one specific object: x -> objectRef.method(x)
+ClassName::instanceMethod  // method called on the element:  s -> s.method()
+ClassName::new             // constructor as a factory:      () -> new ClassName()
+```
+
+One concrete example per form:
+
+```java
+Function<String, Integer> parse = Integer::parseInt;   // x -> Integer.parseInt(x)
+Consumer<String> print = System.out::println;          // x -> System.out.println(x)
+Function<String, String> upper = String::toUpperCase;  // s -> s.toUpperCase()
+Supplier<ArrayList<String>> make = ArrayList::new;     // () -> new ArrayList<>()
 ```
 
 Examples:
@@ -157,10 +178,10 @@ Examples:
 ```java
 List<String> names = List.of("ann", "bob");
 names.stream()
-     .map(String::toUpperCase)
-     .forEach(System.out::println);
+     .map(String::toUpperCase)      // "ann" -> "ANN", "bob" -> "BOB"
+     .forEach(System.out::println); // prints ANN, then BOB
 
-Supplier<List<String>> listFactory = ArrayList::new;
+Supplier<List<String>> listFactory = ArrayList::new; // listFactory.get() creates a new empty list
 ```
 
 Method references improve readability when the operation is already clear from the method name.
@@ -175,9 +196,9 @@ A **stream** is not a data structure. It is a pipeline for processing data from 
 List<String> names = List.of("Ann", "Bob", "Kate", "Alex");
 
 List<String> result = names.stream()
-    .filter(name -> name.length() > 3)
-    .map(String::toUpperCase)
-    .toList();
+    .filter(name -> name.length() > 3) // keep names longer than 3 -> [Kate, Alex]
+    .map(String::toUpperCase)          // upper-case each one -> [KATE, ALEX]
+    .toList();                         // collect into a List
 
 System.out.println(result); // [KATE, ALEX]
 ```
@@ -191,7 +212,7 @@ A stream pipeline usually has three parts:
 3. terminal operation
 
 ```java
-names.stream()                 // source
+names.stream()                    // source
      .filter(n -> n.length() > 3) // intermediate
      .map(String::toUpperCase)    // intermediate
      .toList();                   // terminal
@@ -216,21 +237,22 @@ These return another stream and build the pipeline.
 
 Common examples:
 
-- `filter()`
-- `map()`
-- `sorted()`
-- `distinct()`
-- `limit()`
-- `skip()`
+- `filter(predicate)` — keeps only elements that match the condition
+- `map(function)` — transforms each element into another value
+- `sorted()` — sorts elements (natural order, or by a `Comparator`)
+- `distinct()` — removes duplicate elements
+- `limit(n)` — keeps only the first `n` elements
+- `skip(n)` — skips the first `n` elements
 
 ```java
 List<Integer> numbers = List.of(1, 2, 2, 3, 4, 5);
 
 List<Integer> result = numbers.stream()
-    .filter(n -> n > 2)
-    .distinct()
-    .sorted()
-    .toList();
+    .filter(n -> n > 2) // keep > 2 -> [3, 4, 5]
+    .distinct()         // remove duplicates -> [3, 4, 5]
+    .sorted()           // sort ascending -> [3, 4, 5]
+    .toList();          // collect into a List
+// result = [3, 4, 5]
 ```
 
 ### Terminal Operations
@@ -239,22 +261,22 @@ These finish the pipeline and produce a result.
 
 Common examples:
 
-- `toList()`
-- `collect()`
-- `forEach()`
-- `count()`
-- `findFirst()`
-- `anyMatch()`
-- `allMatch()`
-- `reduce()`
+- `toList()` — collects the stream into a List
+- `collect(...)` — flexible collecting (to List/Set/Map, joining into a String...)
+- `forEach(action)` — runs an action for each element (side effect)
+- `count()` — returns the number of elements (`long`)
+- `findFirst()` — returns the first element as an `Optional`
+- `anyMatch(predicate)` — `true` if at least one element matches
+- `allMatch(predicate)` — `true` if every element matches
+- `reduce(...)` — combines all elements into a single value (sum, max, concatenation...)
 
 ```java
 long count = numbers.stream()
-    .filter(n -> n % 2 == 0)
-    .count();
+    .filter(n -> n % 2 == 0) // keep even numbers -> [2, 2, 4]
+    .count();                // how many are left -> 3
 
 boolean hasAdmin = List.of("user", "admin", "guest").stream()
-    .anyMatch(role -> role.equals("admin"));
+    .anyMatch(role -> role.equals("admin")); // is "admin" present? -> true
 ```
 
 ### `map()` vs `filter()`
@@ -278,9 +300,9 @@ boolean hasAdmin = List.of("user", "admin", "guest").stream()
 `Optional<T>` is a container that may contain a value or may be empty. It is used to represent "value may be missing" more explicitly than raw `null`.
 
 ```java
-Optional<String> name = Optional.of("Alice");
-Optional<String> empty = Optional.empty();
-Optional<String> maybe = Optional.ofNullable(getName());
+Optional<String> name = Optional.of("Alice");            // holds a value; null here would throw
+Optional<String> empty = Optional.empty();               // explicitly empty, no value
+Optional<String> maybe = Optional.ofNullable(getName()); // empty if getName() returns null
 ```
 
 ### Common Methods
@@ -288,20 +310,20 @@ Optional<String> maybe = Optional.ofNullable(getName());
 ```java
 Optional<String> maybeName = Optional.ofNullable("Ann");
 
-maybeName.ifPresent(System.out::println);
-System.out.println(maybeName.orElse("Unknown"));
-System.out.println(maybeName.orElseGet(() -> "Generated"));
+maybeName.ifPresent(System.out::println);                   // runs only if value present -> prints Ann
+System.out.println(maybeName.orElse("Unknown"));            // the value, or "Unknown" if empty -> Ann
+System.out.println(maybeName.orElseGet(() -> "Generated")); // like orElse, but computed only if empty
 ```
 
 Useful methods:
 
-- `isPresent()`
-- `ifPresent()`
-- `orElse()`
-- `orElseGet()`
-- `orElseThrow()`
-- `map()`
-- `filter()`
+- `isPresent()` — `true` if a value is present
+- `ifPresent(action)` — runs the action only if a value is present
+- `orElse(other)` — returns the value, or `other` if empty
+- `orElseGet(supplier)` — like `orElse`, but the fallback is computed only when empty
+- `orElseThrow(...)` — returns the value, or throws if empty
+- `map(function)` — transforms the value if present
+- `filter(predicate)` — keeps the value only if it matches
 
 ### Why It Is Useful
 
@@ -313,7 +335,7 @@ Useful methods:
 
 ```java
 Optional<String> name = Optional.of("Bob");
-System.out.println(name.get()); // works, but risky style
+System.out.println(name.get()); // works, but risky style (throws if empty)
 ```
 
 Calling `get()` directly is often a bad idea because it throws `NoSuchElementException` if the value is absent.
@@ -333,19 +355,19 @@ These tools are very useful in test automation.
 List<WebElement> rows = driver.findElements(By.cssSelector(".row"));
 
 List<String> visibleTexts = rows.stream()
-    .map(WebElement::getText)
-    .filter(text -> !text.isBlank())
-    .toList();
+    .map(WebElement::getText)        // each row -> its text
+    .filter(text -> !text.isBlank()) // drop empty / blank texts
+    .toList();                       // collect remaining texts into a List
 ```
 
 ```java
 boolean hasError = visibleTexts.stream()
-    .anyMatch(text -> text.contains("Error"));
+    .anyMatch(text -> text.contains("Error")); // true if any text contains "Error"
 ```
 
 ```java
-Optional<String> token = Optional.ofNullable(System.getenv("API_TOKEN"));
-String actualToken = token.orElseThrow(() -> new IllegalStateException("API token is missing"));
+Optional<String> token = Optional.ofNullable(System.getenv("API_TOKEN"));         // empty if env var not set
+String actualToken = token.orElseThrow(() -> new IllegalStateException("API token is missing")); // value, or throw if empty
 ```
 
 ### Where You Use Them
