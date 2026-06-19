@@ -168,10 +168,22 @@ Annotations themselves can have annotations.
 
 Common meta-annotations:
 
-- `@Target`
-- `@Retention`
-- `@Documented`
-- `@Inherited`
+| Meta-annotation | Controls |
+|---|---|
+| `@Target` | Where the annotation may be placed (method, field, type, ...) |
+| `@Retention` | How long it is kept (SOURCE / CLASS / RUNTIME) |
+| `@Documented` | Whether it appears in generated Javadoc |
+| `@Inherited` | Whether subclasses inherit the annotation |
+
+The `@Target` value comes from `ElementType`:
+
+| `ElementType` | Annotation can go on |
+|---|---|
+| `TYPE` | class, interface, enum |
+| `METHOD` | methods |
+| `FIELD` | fields |
+| `PARAMETER` | method parameters |
+| `CONSTRUCTOR` | constructors |
 
 Example:
 
@@ -241,11 +253,11 @@ class User {
     private String name = "Alice";
 }
 
-Field field = User.class.getDeclaredField("name");
-field.setAccessible(true);
+Field field = User.class.getDeclaredField("name"); // grab the private field by name
+field.setAccessible(true);                          // bypass the private-access check
 
 User user = new User();
-System.out.println(field.get(user)); // Alice
+System.out.println(field.get(user)); // Alice — read the field's value from the object
 ```
 
 ### Methods
@@ -257,8 +269,8 @@ class User {
     }
 }
 
-Method method = User.class.getDeclaredMethod("sayHello");
-method.invoke(new User());
+Method method = User.class.getDeclaredMethod("sayHello"); // find the method by name
+method.invoke(new User());                                // call it on a new instance -> "Hello"
 ```
 
 ### Constructors
@@ -270,9 +282,44 @@ class User {
     }
 }
 
-Constructor<User> constructor = User.class.getConstructor(String.class);
-User user = constructor.newInstance("Bob");
+Constructor<User> constructor = User.class.getConstructor(String.class); // find the (String) constructor
+User user = constructor.newInstance("Bob");                              // create the object -> prints "Bob"
 ```
+
+### Reading Annotations
+
+The real power for AQA is combining a **custom annotation** with reflection:
+the framework scans methods, finds the ones marked with your annotation, and
+reads its values. This is exactly how a test runner discovers tests.
+
+```java
+@Retention(RetentionPolicy.RUNTIME)   // must be RUNTIME, or reflection cannot see it
+@Target(ElementType.METHOD)
+@interface TestInfo {
+    String author();
+    int priority() default 1;
+}
+
+class LoginTests {
+    @TestInfo(author = "Ann", priority = 2)
+    public void checkoutTest() {}
+}
+
+Method m = LoginTests.class.getDeclaredMethod("checkoutTest");
+
+// 1. Check whether the annotation is present on the method
+if (m.isAnnotationPresent(TestInfo.class)) {
+    // 2. Read the annotation instance and use its values
+    TestInfo info = m.getAnnotation(TestInfo.class);
+    System.out.println(info.author());   // Ann
+    System.out.println(info.priority()); // 2
+}
+```
+
+> [!tip] Test Discovery Pattern
+> Loop over `clazz.getDeclaredMethods()`, keep only the methods where
+> `isAnnotationPresent(...)` is `true`, and `invoke()` them. That is a tiny
+> test runner — the same idea JUnit uses for `@Test`.
 
 ### Common Reflection Methods
 
@@ -285,6 +332,10 @@ User user = constructor.newInstance("Bob");
 | `getDeclaredMethod(name, types...)` | one method by name |
 | `newInstance()` | create object dynamically |
 | `invoke()` | call method dynamically |
+| `isAnnotationPresent(A.class)` | `true` if annotation `A` is on the element |
+| `getAnnotation(A.class)` | the annotation instance (to read its values), or `null` |
+| `getDeclaredAnnotation(A.class)` | same, but ignores inherited annotations |
+| `getAnnotations()` | all annotations present on the element |
 
 > [!caution] Reflection Has Cost
 > Reflection is slower than direct code, bypasses some compile-time checks, and can reduce readability. Use it when necessary, not by default.

@@ -7,8 +7,10 @@
 - [[#Immutability]]
 - [[#StringBuilder and StringBuffer]]
 - [[#Useful String Methods]]
+- [[#Key Methods Cheat Sheet]]
 - [[#String Formatting]]
 - [[#Basic Regular Expressions]]
+- [[#Interview Questions]]
 
 **Related notes:** [[AQA Java eng]]
 
@@ -192,6 +194,120 @@ String joined = String.join(" | ", names);  // "Alice | Bob | Charlie"
 
 > [!caution] split() Takes a Regex
 > `"file.txt".split(".")` returns an empty array because `.` in regex means "any character". Escape it: `split("\\.")`.
+
+---
+
+## Key Methods Cheat Sheet
+
+These are the String methods you reach for constantly in test automation —
+validating text, extracting data, comparing results. Memorize the common ones;
+look up the rest.
+
+### Length and Characters
+
+| Method | What it does |
+|---|---|
+| `length()` | Number of characters |
+| `isEmpty()` | `true` if length is `0` |
+| `isBlank()` | `true` if empty or only whitespace (Java 11+) |
+| `charAt(i)` | Character at index `i` |
+| `toCharArray()` | Convert to a `char[]` |
+| `chars()` | `IntStream` of character codes (for Stream pipelines) |
+
+```java
+String s = "Test";
+s.length();                  // 4
+s.charAt(0);                 // 'T'
+"  ".isBlank();              // true  — only whitespace
+char[] cs = s.toCharArray(); // ['T','e','s','t']
+long caps = "AbCd".chars().filter(Character::isUpperCase).count(); // 2
+```
+
+### Searching
+
+| Method | What it does |
+|---|---|
+| `indexOf(str)` | First index of `str`, or `-1` |
+| `indexOf(str, from)` | First index at or after `from` |
+| `lastIndexOf(str)` | Last index of `str`, or `-1` |
+| `contains(text)` | `true` if `text` occurs anywhere |
+| `startsWith(prefix)` | `true` if it starts with `prefix` |
+| `endsWith(suffix)` | `true` if it ends with `suffix` |
+| `matches(regex)` | `true` if the **whole** string matches `regex` |
+
+```java
+String log = "ERROR: ERROR: timeout";
+log.indexOf("ERROR");        // 0
+log.indexOf("ERROR", 1);     // 7   — search starts at index 1
+log.lastIndexOf("ERROR");    // 7
+log.startsWith("ERROR");     // true
+```
+
+### Comparing
+
+| Method | What it does |
+|---|---|
+| `equals(o)` | Content equality (case-sensitive) |
+| `equalsIgnoreCase(s)` | Content equality, ignoring case |
+| `compareTo(s)` | `<0`, `0`, or `>0` — lexicographic order |
+| `compareToIgnoreCase(s)` | Same, ignoring case |
+
+```java
+"chrome".equals("Chrome");            // false
+"chrome".equalsIgnoreCase("Chrome");  // true
+"apple".compareTo("banana");          // negative — "apple" sorts first
+"a".compareTo("a");                   // 0  — equal
+```
+
+> [!caution] compareTo Is for Sorting, Not Equality
+> `compareTo` returns an `int`, not a boolean. Use it inside comparators
+> (`list.sort(...)`); use `equals` to check whether two strings are the same.
+
+### Extracting and Transforming
+
+| Method | What it does |
+|---|---|
+| `substring(begin)` | From `begin` to the end |
+| `substring(begin, end)` | From `begin` to `end-1` (end exclusive) |
+| `toLowerCase()` / `toUpperCase()` | Change case |
+| `trim()` | Remove ASCII leading/trailing whitespace |
+| `strip()` | Remove Unicode whitespace (Java 11+) |
+| `replace(old, new)` | Replace every literal `old` with `new` |
+| `replaceAll(regex, rep)` | Replace every regex match |
+| `replaceFirst(regex, rep)` | Replace only the first regex match |
+| `concat(s)` | Append `s` (same as `+`) |
+| `repeat(n)` | Repeat the string `n` times (Java 11+) |
+
+```java
+String id = "BUG-00042";
+id.substring(4);             // "00042"
+id.substring(0, 3);          // "BUG"
+id.replace("-", "_");        // "BUG_00042"
+id.replaceFirst("\\d", "X"); // "BUG-X0042"  — first digit only
+"=".repeat(10);              // "=========="  (10 chars)
+```
+
+### Splitting, Joining and Converting
+
+| Method | What it does |
+|---|---|
+| `split(regex)` | Split into a `String[]` by a regex |
+| `split(regex, limit)` | Split into at most `limit` parts |
+| `String.join(sep, parts)` | Join parts with a separator (**static**) |
+| `String.valueOf(x)` | Turn any value into a String (**static**) |
+| `String.format(fmt, ...)` | Build a string from a template (**static**) |
+
+```java
+String row = "alice,bob,kate";
+String[] users = row.split(",");          // ["alice","bob","kate"]
+String back = String.join(" | ", users);  // "alice | bob | kate"
+String n = String.valueOf(42);            // "42"   — int -> String
+```
+
+> [!tip] Static vs Instance Methods
+> `join`, `valueOf` and `format` are **static** — call them on the `String`
+> class (`String.join(...)`), not on a string variable. Everything else in
+> these tables is an instance method you call on a string value.
 
 ---
 

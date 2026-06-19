@@ -94,9 +94,33 @@ Together they identify the artifact uniquely.
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter</artifactId>
         <version>5.10.2</version>
-        <scope>test</scope>
+        <scope>test</scope> <!-- only on the test classpath, not in the final build -->
     </dependency>
 </dependencies>
+```
+
+### Properties and Plugins
+
+`<properties>` keep versions and settings in one place. Plugins do the real
+work of a phase — for example **Surefire** runs the unit tests.
+
+```xml
+<properties>
+    <!-- compile for Java 17 and read source files as UTF-8 -->
+    <maven.compiler.release>17</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+</properties>
+
+<build>
+    <plugins>
+        <plugin>
+            <!-- Surefire runs JUnit tests during the test phase -->
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.2.5</version>
+        </plugin>
+    </plugins>
+</build>
 ```
 
 ### Common Maven Commands
@@ -121,14 +145,15 @@ mvn package
 
 ```groovy
 plugins {
-    id 'java'
+    id 'java'                 // adds Java compile/test tasks
 }
 
 repositories {
-    mavenCentral()
+    mavenCentral()            // where dependencies are downloaded from
 }
 
 dependencies {
+    // testImplementation = the Gradle equivalent of Maven's <scope>test</scope>
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
 }
 ```
@@ -177,6 +202,15 @@ Examples in AQA:
 - Lombok
 
 The build tool downloads them from repositories such as Maven Central.
+
+In Maven, every dependency has a **scope** that controls where it is available:
+
+| Scope | Available in | Typical use |
+|---|---|---|
+| `compile` (default) | everywhere | main libraries the code needs |
+| `test` | test code only | JUnit, Selenium, test helpers |
+| `provided` | compile, not packaged | servlet API supplied by the server |
+| `runtime` | running, not compiling | JDBC drivers |
 
 ### Plugins
 

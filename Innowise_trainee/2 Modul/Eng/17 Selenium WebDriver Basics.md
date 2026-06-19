@@ -7,8 +7,10 @@
 - [[#Browser Setup and Navigation]]
 - [[#Locators]]
 - [[#Working with Web Elements]]
+- [[#Advanced Interactions]]
 - [[#Basic Wait Idea]]
 - [[#Common Selenium Errors]]
+- [[#Page Object Model]]
 - [[#Selenium Basics in AQA]]
 - [[#Interview Questions]]
 
@@ -207,7 +209,93 @@ For classic HTML `<select>`, Selenium provides `Select`.
 
 ```java
 Select country = new Select(driver.findElement(By.id("country")));
-country.selectByVisibleText("Poland");
+
+country.selectByVisibleText("Poland"); // pick by visible text
+country.selectByValue("pl");           // pick by the option's value attribute
+country.selectByIndex(0);              // pick by position (first option)
+
+WebElement chosen = country.getFirstSelectedOption(); // currently selected option
+List<WebElement> all = country.getOptions();          // every option in the list
+```
+
+> [!warning] Select Works Only on `<select>`
+> The `Select` class works only with native HTML `<select>` tags. Custom
+> dropdowns built from `<div>`/`<ul>` need normal `click()` interactions instead.
+
+---
+
+## Advanced Interactions
+
+Beyond click and type, real pages need richer actions: hovering, dragging,
+handling popups, switching frames and windows, taking screenshots.
+
+### Actions (Mouse and Keyboard)
+
+The `Actions` class builds a chain of mouse/keyboard steps. Call `perform()`
+at the end to run them.
+
+```java
+Actions actions = new Actions(driver);
+
+WebElement menu = driver.findElement(By.id("menu"));
+actions.moveToElement(menu).perform();   // hover to reveal a submenu
+
+WebElement row = driver.findElement(By.id("row"));
+actions.doubleClick(row).perform();      // double-click
+actions.contextClick(row).perform();     // right-click (context menu)
+
+WebElement source = driver.findElement(By.id("drag"));
+WebElement target = driver.findElement(By.id("drop"));
+actions.dragAndDrop(source, target).perform(); // drag one element onto another
+```
+
+### Alerts (JavaScript Popups)
+
+A browser alert is not a normal element — you switch to it first.
+
+```java
+Alert alert = driver.switchTo().alert();
+
+System.out.println(alert.getText()); // read the message
+alert.sendKeys("some text");         // type (only for prompt dialogs)
+alert.accept();                      // press OK
+// alert.dismiss();                  // press Cancel
+```
+
+### Frames and Iframes
+
+Elements inside an `<iframe>` are invisible until you switch into the frame.
+
+```java
+driver.switchTo().frame("frameName"); // switch by name or id
+// ... interact with elements inside the frame ...
+driver.switchTo().defaultContent();   // switch back to the main page
+```
+
+### Windows and Tabs
+
+When a click opens a new tab or window, switch by its handle.
+
+```java
+String original = driver.getWindowHandle();        // remember the current window
+
+for (String handle : driver.getWindowHandles()) {  // all open windows
+    if (!handle.equals(original)) {
+        driver.switchTo().window(handle);          // switch to the new one
+    }
+}
+
+driver.close();                      // close the new window
+driver.switchTo().window(original);  // switch back to the first one
+```
+
+### Screenshots
+
+Very common in AQA — capture the screen when a test fails.
+
+```java
+File shot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+Files.copy(shot.toPath(), Path.of("target/screenshots/login-fail.png"));
 ```
 
 ---
@@ -246,6 +334,18 @@ WebElement button = wait.until(
 button.click();
 ```
 
+### Common Expected Conditions
+
+| Condition | Waits until |
+|---|---|
+| `presenceOfElementLocated(by)` | the element exists in the DOM |
+| `visibilityOfElementLocated(by)` | the element exists **and** is visible |
+| `elementToBeClickable(by)` | the element is visible and enabled |
+| `invisibilityOfElementLocated(by)` | the element is gone or hidden |
+| `textToBePresentInElementLocated(by, text)` | the element contains the text |
+| `titleContains(text)` | the page title contains the text |
+| `alertIsPresent()` | a JavaScript alert appears |
+
 > [!info] Beginner Rule
 > For serious automation, explicit waits are usually better than relying only on implicit wait or `Thread.sleep()`.
 
@@ -281,6 +381,55 @@ The browser session is already closed, but code still tries to use the driver.
 
 > [!caution] Avoid `Thread.sleep()`
 > Hard sleeps make tests slower and less stable. Prefer waits based on real conditions.
+
+---
+
+## Page Object Model
+
+The **Page Object Model (POM)** is the most common way to organize Selenium
+code. Each page becomes a class that holds its locators and actions. Tests then
+call clear methods instead of repeating `findElement(...)` everywhere.
+
+```java
+// LoginPage.java — locators and actions for one page, no test logic inside
+public class LoginPage {
+
+    private final WebDriver driver;
+
+    private final By usernameField = By.id("login");
+    private final By passwordField = By.id("password");
+    private final By submitButton  = By.cssSelector("button.submit");
+
+    public LoginPage(WebDriver driver) {
+        this.driver = driver;
+    }
+
+    // a business action, named in the user's language
+    public void login(String user, String password) {
+        driver.findElement(usernameField).sendKeys(user);
+        driver.findElement(passwordField).sendKeys(password);
+        driver.findElement(submitButton).click();
+    }
+}
+```
+
+The test stays short and readable — page details are hidden behind `login(...)`:
+
+```java
+@Test
+void userCanLogIn() {
+    driver.get("https://example.com/login");
+
+    LoginPage loginPage = new LoginPage(driver);
+    loginPage.login("admin", "secret");
+
+    assertTrue(driver.findElement(By.id("dashboard")).isDisplayed());
+}
+```
+
+> [!tip] Why POM Helps
+> If a locator changes, you fix it in **one** page class, not in every test.
+> Tests describe *what* the user does; page objects describe *how* it is done.
 
 ---
 

@@ -141,13 +141,30 @@ Assertions are methods that verify expected results.
 ```java
 import static org.junit.jupiter.api.Assertions.*;
 
-assertEquals(5, result);
-assertNotEquals(4, result);
-assertTrue(value > 0);
-assertFalse(list.isEmpty());
-assertNull(user.getMiddleName());
-assertNotNull(user);
+assertEquals(5, result);          // equal values
+assertNotEquals(4, result);       // different values
+assertTrue(value > 0);            // condition is true
+assertFalse(list.isEmpty());      // condition is false
+assertNull(user.getMiddleName()); // value is null
+assertNotNull(user);              // value is not null
+assertArrayEquals(new int[]{1, 2}, result);     // arrays match element by element
+assertIterableEquals(List.of("a", "b"), names); // iterables match in order
 ```
+
+### Assertions Reference
+
+| Assertion | Passes when |
+|---|---|
+| `assertEquals(exp, act)` | values are equal |
+| `assertNotEquals(exp, act)` | values are different |
+| `assertTrue(cond)` / `assertFalse(cond)` | condition is true / false |
+| `assertNull(x)` / `assertNotNull(x)` | value is / is not `null` |
+| `assertArrayEquals(exp, act)` | arrays match element by element |
+| `assertIterableEquals(exp, act)` | iterables match in order |
+| `assertThrows(Ex.class, exec)` | the code throws that exception |
+| `assertDoesNotThrow(exec)` | the code runs without throwing |
+| `assertAll(...)` | all grouped assertions pass |
+| `assertTimeout(dur, exec)` | the code finishes within the time |
 
 ### Assert Exception
 
@@ -286,6 +303,26 @@ void shouldAddNumbers(int a, int b, int expected) {
 }
 ```
 
+Example with `@MethodSource` — when test data needs real objects, not just
+plain text, a method supplies the arguments:
+
+```java
+@ParameterizedTest
+@MethodSource("emailProvider")
+void shouldValidateEmails(String email, boolean expected) {
+    assertEquals(expected, Validator.isValidEmail(email));
+}
+
+// the source method returns a stream of argument sets
+static Stream<Arguments> emailProvider() {
+    return Stream.of(
+        Arguments.of("user@test.com", true),
+        Arguments.of("bad-email", false),
+        Arguments.of("", false)
+    );
+}
+```
+
 Parameterized tests reduce duplication when one behavior should be checked with many data sets.
 
 ---
@@ -331,6 +368,25 @@ JUnit 5 is often the main foundation of a Java automation framework.
 - group assertions
 - run smoke and regression tests
 - combine with Selenium or REST Assured
+
+### Grouping and Tagging
+
+Two annotations help organize larger suites:
+
+```java
+@Tag("smoke")   // run subsets by tag, e.g. mvn test -Dgroups=smoke
+@Test
+void criticalLoginWorks() {}
+
+@Nested         // group related tests in a readable inner class
+class WhenUserIsLoggedOut {
+    @Test
+    void redirectsToLogin() {}
+}
+```
+
+- `@Tag` labels a test so CI can run only `smoke` or only `regression`.
+- `@Nested` groups related scenarios into readable inner classes.
 
 ### Selenium Example
 
