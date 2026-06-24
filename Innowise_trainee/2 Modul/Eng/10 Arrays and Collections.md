@@ -46,8 +46,8 @@
 	- [[#Iterator and ListIterator]]
 - [[#Arrays and Collections in AQA]]
 - [[#Interview Questions]]
-	- [[#Top 30]]
-	- [[#Tricky Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
 	- [[#Advanced Questions]]
 	- [[#Code Questions]]
 - [[#Practical Tasks]]
@@ -1093,7 +1093,7 @@ Set<String> uniqueUserIds = new HashSet<>();
 
 ## Interview Questions
 
-### Top 30
+### Beginner Questions
 
 **1. What is the difference between an array and a collection?**
 An array has fixed size and can store primitives or objects. A collection is flexible in size and provides ready-made methods such as `add()`, `remove()`, and `contains()`. Collections store objects, not primitives.
@@ -1187,7 +1187,7 @@ Use `List.of(...)`, `Set.of(...)`, or `Map.of(...)` (Java 9+, fully immutable), 
 
 ---
 
-### Tricky Questions
+### Intermediate Questions
 
 **1. Is `Map` a subtype of `Collection`?**
 No. `Map` belongs to the Java Collections Framework, but it does not implement `Collection`.
@@ -1203,6 +1203,51 @@ One removes by position, the other removes by value. With `List<Integer>`, this 
 
 **5. Why can `Arrays.asList()` be dangerous?**
 It returns a fixed-size list backed by the array. You can change elements with `set()`, but you cannot add or remove, or you get `UnsupportedOperationException`.
+
+**6. What is the difference between `peek()` and `poll()` on a `Queue`?**
+`peek()` returns the head without removing it; `poll()` removes and returns the head. Both return `null` if the queue is empty.
+
+**7. What does `retainAll()` do?**
+It keeps only the elements that are also present in the given collection — i.e. it computes an intersection, in place.
+
+**8. Can you sort a `HashMap` directly?**
+No — `HashMap` is unordered. To work with sorted data, use a `TreeMap` (sorted keys) or copy the `entrySet()` into a `List` and sort it.
+
+**9. Why does `TreeSet` not allow `null`?**
+Because it orders elements with `compareTo()` or a `Comparator`, and comparing `null` throws a `NullPointerException`.
+
+**10. If you wrap a list with `Collections.unmodifiableList()`, can the original list still change?**
+Yes. The wrapper is only a read-only view — the underlying list is still mutable, and any change to it is visible through the wrapper.
+
+**11. What is the difference between `offer()` and `add()` on a `Queue`?**
+`offer()` returns `false` when the element cannot be added; `add()` throws an exception in the same case.
+
+**12. When would you choose `LinkedHashSet` over `HashSet`?**
+When you need uniqueness **and** a predictable iteration order — `LinkedHashSet` keeps the insertion order, while `HashSet` does not guarantee any order.
+
+**13. Does `PriorityQueue` iterate in sorted order?**
+No. Only the head is guaranteed to be the smallest element; the rest are not fully ordered during iteration.
+
+**14. What does `computeIfAbsent()` do?**
+It returns the value for a key if it exists; otherwise it computes a value with the given function, stores it, and returns it.
+
+**15. What is the difference between `iterator()` and `listIterator()`?**
+`iterator()` is forward-only and works on any `Collection`; `listIterator()` works only on a `List`, moves in both directions, and supports `add()`/`set()`.
+
+**16. What is the difference between an ordered and a sorted collection?**
+Ordered means elements come out in a predictable sequence (e.g. insertion order); sorted means they are arranged by their value using `Comparable`/`Comparator`.
+
+**17. What is the difference between `contains()` and `containsAll()`?**
+`contains(o)` checks for a single element; `containsAll(c)` checks whether every element of collection `c` is present.
+
+**18. Can a `HashMap` hold multiple `null` values?**
+Yes — any number of values can be `null`, but there can be at most one `null` key.
+
+**19. What is the difference between `put()` and `putIfAbsent()`?**
+`put()` always overwrites the value; `putIfAbsent()` sets the value only if the key is not already present.
+
+**20. Why doesn't `TreeMap` need `hashCode()` and `equals()` for ordering?**
+Because it orders and identifies keys using `compareTo()` (or a `Comparator`), not the hashing contract.
 
 ---
 

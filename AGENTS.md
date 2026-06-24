@@ -1,4 +1,4 @@
-# CLAUDE.md — Instructions for working with this Obsidian vault
+# AGENTS.md — Instructions for working with this Obsidian vault
 
 ## Vault Structure
 
@@ -215,7 +215,7 @@ Many notes end with an "Interview Questions" or self-check section. Every questi
 - List in the TOC every `###` that names a concept, type, or comparison (e.g. `ArrayList`, `Ordered vs Sorted`). Omit `###` that are just structural parts of an entry (`Key Rules`, `Advantages`, `Example`).
 
 ### 6. Vault Structure Update
-- After creating a **new** note (both Eng and Rus versions), update the `Vault Structure` section in this `CLAUDE.md` file.
+- After creating a **new** note (both Eng and Rus versions), update the `Vault Structure` section in this `AGENTS.md` file.
 - Ensure the file tree stays visually consistent.
 
 ### 7. Module Index (MOC)
