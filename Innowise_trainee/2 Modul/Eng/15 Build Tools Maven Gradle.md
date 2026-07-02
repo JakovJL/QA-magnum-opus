@@ -4,6 +4,7 @@
 
 - [[#Why Build Tools Matter]]
 - [[#What Maven and Gradle Solve]]
+- [[#Package and Dependency Management]]
 - [[#Maven Basics]]
 - [[#Gradle Basics]]
 - [[#Dependencies Plugins and Lifecycle]]
@@ -60,6 +61,26 @@ In simple words, a build tool answers: "How do I build, test, and run this proje
 | plugin | extra tool that build system can run |
 | repository | place where dependencies are downloaded from |
 | build lifecycle | ordered steps of build process |
+
+---
+
+## Package and Dependency Management
+
+A **package manager** downloads libraries, resolves their versions, and makes the same dependencies available for the whole team.
+
+In Java AQA projects, Maven and Gradle act as both build tools and dependency managers.
+
+They help with:
+
+- downloading Selenium, JUnit, REST Assured, and Allure
+- keeping dependency versions in one place
+- separating test dependencies from production dependencies
+- making local and CI runs repeatable
+
+**Example:** if the project uses JUnit 5, the dependency is declared in `pom.xml` or `build.gradle`. Every developer and CI runner gets the same library from the repository.
+
+> [!tip] Package manager idea
+> Do not store external `.jar` files manually in the project. Declare dependencies in Maven or Gradle so the build is repeatable.
 
 ---
 

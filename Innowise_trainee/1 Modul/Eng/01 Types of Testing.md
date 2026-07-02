@@ -23,8 +23,10 @@
 	- [[#Purpose]]
 	- [[#Types]]
 - [[#Interview Questions]]
-	- [[#Top 15]]
-	- [[#Tricky Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
+	- [[#Advanced Questions]]
+	- [[#Code Questions]]
 
 **Related notes:** [[QA manual eng]]
 
@@ -317,7 +319,7 @@ A process in which specialized tools and scripts automatically execute test scen
 
 ## Interview Questions
 
-### Top 15
+### Beginner Questions
 
 **1. What is the difference between functional and non-functional testing?**
 Functional testing checks *what* the system does — whether features work according to requirements. Non-functional testing checks *how well* the system does it — performance, security, usability, reliability, and other quality characteristics.
@@ -366,7 +368,7 @@ Advantages: faster execution, consistent repeatability, no human error, scales w
 
 ---
 
-### Tricky Questions
+### Intermediate Questions
 
 **1. After a developer fixes a bug, the QA runs retesting and it passes. Is the job done?**
 No. Retesting only confirms the specific defect is fixed. Regression testing still needs to be run to make sure the fix didn't break something else in the system. Both are required — they answer different questions.
@@ -382,3 +384,36 @@ False. By definition, the black-box tester has no visibility into the source cod
 
 **5. Unit testing is the responsibility of the QA team. True or false?**
 Primarily false. Unit testing is mainly performed by developers, who write unit tests alongside the code itself. However, automation engineers sometimes write or maintain unit tests as well. The key distinction: unit tests require knowledge of the internal code structure, which is typically in the developer's domain.
+
+### Advanced Questions
+
+**1. Why can the same test be both functional and regression testing?**
+Functional describes what the test checks: behavior against requirements. Regression describes why it is run: to ensure changes did not break existing behavior.
+
+**2. When is manual testing better than automation?**
+Manual testing is better for exploratory, usability, visual, and new unstable features where human judgment is important.
+
+**3. Why are UI end-to-end tests usually fewer than API or unit tests?**
+UI E2E tests are slower, more expensive, and more fragile. They should cover the most important user journeys, not every small rule.
+
+**4. Why is UAT not the same as system testing?**
+System testing verifies the complete system against requirements. UAT checks whether the product meets user or business expectations.
+
+### Code Questions
+
+**1. Classify this test by goal and execution approach.**
+
+```text
+After a login fix, an automated test checks that existing valid login still works.
+```
+
+It is functional because it checks login behavior, regression because it protects existing functionality after a change, and automated because it runs by tool.
+
+**2. Which testing type is missing?**
+
+```text
+The cart works correctly in all functional tests.
+Under 2,000 users, checkout response time becomes 12 seconds.
+```
+
+Performance testing is missing. Functional tests passed, but non-functional behavior under load is unacceptable.

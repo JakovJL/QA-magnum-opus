@@ -4,10 +4,12 @@
 
 - [[#Зачем нужен Selenium WebDriver]]
 - [[#Архитектура WebDriver]]
+- [[#Selenium API]]
 - [[#Настройка проекта]]
-- [[#Основные команды]]
+- [[#Инициализация браузера и навигация]]
 - [[#Локаторы элементов]]
 - [[#Работа с элементами]]
+- [[#Ожидания Waiters]]
 - [[#Типичные ошибки]]
 - [[#Selenium в AQA]]
 - [[#Вопросы для собеседования]]
@@ -45,6 +47,25 @@ WebDriver работает по модели клиент-сервер:
 
 ---
 
+## Selenium API
+
+Selenium API — это набор classes и methods для управления browser.
+
+Самые важные части:
+
+| Часть API | Назначение |
+|---|---|
+| `WebDriver` | управляет browser session и navigation |
+| `WebElement` | представляет один element на странице |
+| `By` | описывает, как найти element |
+| `Actions` | выполняет сложные mouse и keyboard actions |
+| `WebDriverWait` | ждёт, пока condition станет true |
+| `ExpectedConditions` | готовые wait conditions |
+
+**Цель:** понимать, какой object отвечает за какое действие в browser.
+
+---
+
 ## Настройка проекта
 
 Минимальные зависимости для Maven:
@@ -75,7 +96,7 @@ public class FirstTest {
 
 ---
 
-## Основные команды
+## Инициализация браузера и навигация
 
 | Команда | Описание |
 |---|---|
@@ -127,6 +148,31 @@ input.sendKeys("testuser"); // ввод текста
 String text = element.getText(); // получение текста
 boolean displayed = element.isDisplayed(); // проверка видимости
 ```
+
+---
+
+## Ожидания Waiters
+
+Многие страницы загружают данные асинхронно. Если Selenium ищет element слишком рано, test падает.
+
+Основные виды ожиданий:
+
+| Вид | Описание |
+|---|---|
+| Implicit wait | общий timeout для поиска elements |
+| Explicit wait | ожидание конкретного condition |
+| Fluent wait | explicit wait с настройкой polling и ignored exceptions |
+
+Пример explicit wait:
+
+```java
+WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+WebElement button = wait.until(ExpectedConditions.elementToBeClickable(By.id("save")));
+button.click();
+```
+
+> [!caution] Не смешивай waits без причины
+> Обычно explicit waits проще контролировать и debug, чем fixed sleeps или неявные ожидания везде.
 
 ---
 

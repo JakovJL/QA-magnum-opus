@@ -6,6 +6,7 @@
 - [[#What to Automate and What Not]]
 - [[#The Automation Pyramid]]
 - [[#How to Start Automation]]
+- [[#Automation Tools and Frameworks]]
 - [[#Reporting]]
 - [[#CI/CD and Automation]]
 - [[#Common Mistakes]]
@@ -106,6 +107,24 @@ A practical order for setting up automation on a project:
 
 > [!info] Hands-on with Java
 > Module 2 builds a real automation framework step by step — see [[AQA Java eng]] for JUnit 5 and Selenium WebDriver.
+
+---
+
+## Automation Tools and Frameworks
+
+Automation tools are chosen by test layer and project stack.
+
+| Area | Typical tools |
+|---|---|
+| Unit tests | JUnit, TestNG |
+| UI web tests | Selenium, Playwright, Cypress |
+| API tests | REST Assured, Postman/Newman, Karate |
+| Mobile tests | Appium, Espresso, XCUITest |
+| Reports | Allure, JUnit XML, CI dashboards |
+
+An **automation framework** is the project structure around these tools: test runner, configuration, page objects or API clients, test data, logs, and reports.
+
+→ see [[Automation Framework Architecture]] for framework structure in Module 2.
 
 ---
 

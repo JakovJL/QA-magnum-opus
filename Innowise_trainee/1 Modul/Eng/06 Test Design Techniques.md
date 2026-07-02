@@ -14,8 +14,10 @@
 	- [[#Checklist-Based Testing]]
 - [[#White-Box Techniques]]
 - [[#Interview Questions]]
-	- [[#Top 10]]
-	- [[#Tricky Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
+	- [[#Advanced Questions]]
+	- [[#Code Questions]]
 
 **Related notes:** [[QA manual eng]]
 
@@ -312,7 +314,7 @@ if (age >= 18 && hasID) {
 
 ## Interview Questions
 
-### Top 10
+### Beginner Questions
 
 **1. What are test design techniques and why do we need them?**
 Test design techniques are structured methods for creating test cases from requirements. We need them because testing everything is impossible — techniques help select the most effective test cases to maximize coverage with limited time and resources.
@@ -346,7 +348,7 @@ Full: 3^5 = 243 test cases. To reduce: use Equivalence Partitioning for each fie
 
 ---
 
-### Tricky Questions
+### Intermediate Questions
 
 **1. EP says one value per partition is enough. Is that really true?**
 In theory, yes — all values in a partition should behave identically. In practice, implementations have hidden sub-partitions. EP is a starting point, not a guarantee. Combine it with BVA (for edges) and Error Guessing (for special values within partitions) to strengthen coverage.
@@ -359,3 +361,36 @@ Usually not — 64 test cases for one feature is expensive. In practice, you col
 
 **4. Pairwise testing catches 70–85% of defects. What about the other 15–30%?**
 Those are caused by 3+ factor interactions. For critical systems (medical, financial), pairwise may not be enough — you might need 3-wise or even full combination testing for the highest-risk areas. For most applications, pairwise plus targeted boundary and error guessing tests are sufficient.
+
+### Advanced Questions
+
+**1. Why should EP and BVA often be used together?**
+EP reduces input sets into meaningful groups, while BVA focuses on edges where defects often happen. Together they give stronger coverage than either technique alone.
+
+**2. When is a Decision Table better than BVA?**
+A Decision Table is better when behavior depends on combinations of conditions, not just numeric boundaries.
+
+**3. Why is State Transition Testing useful for workflows?**
+It checks valid and invalid movement between states, such as order status, account status, or bug lifecycle status.
+
+**4. What is the main limitation of Error Guessing?**
+It depends heavily on tester experience and past defect knowledge, so it should support structured techniques, not replace them.
+
+### Code Questions
+
+**1. Choose test values using BVA.**
+
+```text
+Age field accepts values from 18 to 65 inclusive.
+```
+
+Good boundary values are 17, 18, 19 and 64, 65, 66.
+
+**2. Which technique fits this rule?**
+
+```text
+If user is premium and cart total is over $100, delivery is free.
+Otherwise delivery is paid.
+```
+
+Decision Table Testing fits best because the result depends on a combination of conditions.

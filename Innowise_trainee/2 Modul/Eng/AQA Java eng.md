@@ -20,6 +20,12 @@
 16. [[15 Build Tools Maven Gradle]]
 17. [[16 Unit Testing with JUnit 5]]
 18. [[17 Selenium WebDriver Basics]]
+19. [[18 Git and Version Control]]
+20. [[19 CI-CD with GitHub Actions]]
+21. [[20 Automation Framework Architecture]]
+22. [[21 Logging Reporting and Metrics]]
+23. [[22 Docker and Test Environments]]
+24. [[23 Software Engineering Practices for AQA]]
 
 ## Practice
 
@@ -27,15 +33,7 @@
 
 ## Coming Up
 
-19. Selenium: Waits and Advanced Interactions
-20. Page Object Model
-20. Page Object Model
-21. Automation Framework Structure
-22. Design Patterns for AQA (Factory, Builder, Strategy)
-23. Git Basics
-24. SQL + JDBC
-25. REST API Testing (REST Assured)
-26. CI/CD with GitHub Actions
-27. Allure Reporting
+25. Design Patterns for AQA (Factory, Builder, Strategy)
+26. SQL + JDBC
+27. REST API Testing (REST Assured)
 28. Test Data Management
-29. Docker for Test Environments

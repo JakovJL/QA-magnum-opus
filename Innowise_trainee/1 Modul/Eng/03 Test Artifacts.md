@@ -15,8 +15,10 @@
 - [[#Completion Artifacts]]
 	- [[#Test Summary Report]]
 - [[#Interview Questions]]
-	- [[#Top 10]]
-	- [[#Tricky Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
+	- [[#Advanced Questions]]
+	- [[#Code Questions]]
 
 **Related notes:** [[QA manual eng]]
 
@@ -224,7 +226,7 @@ Documents created after testing is finished to summarize what was done and what 
 
 ## Interview Questions
 
-### Top 10
+### Beginner Questions
 
 **1. What is a test artifact? Name the main ones.**
 A test artifact is any document produced during the testing process. Main artifacts: Test Strategy, Test Plan, Test Case, Checklist, RTM, Bug Report, Test Log, Test Summary Report.
@@ -258,7 +260,7 @@ Typically the QA Lead or Test Manager. In smaller teams, a senior QA engineer ma
 
 ---
 
-### Tricky Questions
+### Intermediate Questions
 
 **1. Can you do testing without writing test cases?**
 Yes — using checklists, exploratory testing, or experience-based techniques. In fast-moving Agile teams this is common. However, without test cases there is no documented proof of testing, no easy way to reproduce found defects, and no stable base for regression. It is a trade-off between speed and formality.
@@ -271,3 +273,36 @@ The RTM must be updated. Old test cases that covered the changed requirement nee
 
 **4. What is the difference between a Test Summary Report and a Test Report?**
 In practice these terms are often used interchangeably. Strictly, a Test Report can be any report about testing (a daily status report, a defect density report), while a Test Summary Report specifically summarizes the entire testing cycle and is the final document before a release decision. Always clarify which is meant in your project context.
+
+### Advanced Questions
+
+**1. Why can a Test Strategy be stable while a Test Plan changes often?**
+A Test Strategy defines the general approach across projects or releases. A Test Plan is specific to one project, version, scope, schedule, and risks.
+
+**2. What makes an RTM useful for change impact analysis?**
+It links requirements to test cases. When a requirement changes, QA can quickly find which tests must be updated or rerun.
+
+**3. Why is a checklist sometimes better than detailed test cases?**
+It is faster and more flexible for experienced testers, exploratory testing, or fast-changing features, but it gives less detailed proof of execution.
+
+**4. Why should a Test Summary Report include known risks?**
+Stakeholders need to know what was not tested, what defects remain, and what risks are accepted before release.
+
+### Code Questions
+
+**1. Which artifact is needed here?**
+
+```text
+Requirement REQ-12 changed.
+QA needs to find all test cases affected by this requirement.
+```
+
+The RTM is needed because it maps requirements to test cases.
+
+**2. Which artifact is this?**
+
+```text
+Fields: steps to reproduce, expected result, actual result, severity, priority, environment, attachments.
+```
+
+This is a Bug Report because it documents a discovered defect in enough detail to reproduce and fix it.

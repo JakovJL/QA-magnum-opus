@@ -27,8 +27,10 @@
 	- [[#Test Reporting]]
 	- [[#Test Closure]]
 - [[#Interview Questions]]
-	- [[#Top 10]]
-	- [[#Tricky Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
+	- [[#Advanced Questions]]
+	- [[#Code Questions]]
 
 **Related notes:** [[QA manual eng]]
 
@@ -443,7 +445,7 @@ Waterfall for core system, Agile for UI components.
 
 ## Interview Questions
 
-### Top 10
+### Beginner Questions
 
 **1. What is SDLC and what are its main phases?**
 SDLC (Software Development Life Cycle) is a framework that defines the structured steps involved in building software. Its main phases are Planning, Analysis, Design, Implementation, Testing, Deployment, and Maintenance.
@@ -477,7 +479,7 @@ SRS stands for Software Requirements Specification — a document that describes
 
 ---
 
-### Tricky Questions
+### Intermediate Questions
 
 **1. STLC starts only after development (implementation) is complete. True or false?**
 False. STLC begins in parallel with SDLC, starting from the Requirements Analysis phase. Testers review requirements, create test plans, and develop test cases long before any code is written. Waiting until development is finished to begin testing is a costly anti-pattern that delays defect discovery.
@@ -490,3 +492,37 @@ It can proceed, but with significantly higher risk. Without an SRS, testers must
 
 **4. If a product passes Test Closure sign-off, does that mean it has no remaining defects?**
 No. Sign-off means the product meets the *agreed acceptance criteria* — not that it is defect-free. There may be known low-priority defects that were accepted, and there may be unknown defects that testing did not reach. Sign-off is a business decision based on risk tolerance, not a guarantee of perfection.
+
+### Advanced Questions
+
+**1. Why should STLC start during requirements analysis?**
+Early testing activities help find unclear, missing, or untestable requirements before development makes them expensive to fix.
+
+**2. Why does the V-Model connect test levels with development stages?**
+It shows that each development artifact has a related testing activity, so validation planning starts early and is not delayed until coding ends.
+
+**3. Why can Agile still have STLC?**
+Agile changes the rhythm, not the need for testing activities. Requirements analysis, planning, design, execution, reporting, and closure still happen, often inside each sprint.
+
+**4. Why is Test Closure a process activity, not just a meeting?**
+It includes checking exit criteria, summarizing results, documenting open risks, lessons learned, and preparing final reports.
+
+### Code Questions
+
+**1. Identify the STLC phase.**
+
+```text
+QA reviews user stories, finds missing acceptance criteria, and asks questions before development starts.
+```
+
+This is Requirements Analysis in STLC.
+
+**2. Which SDLC model fits best?**
+
+```text
+The team delivers small increments every two weeks.
+Requirements can be refined between iterations.
+QA tests each increment during the same cycle.
+```
+
+This fits Agile or an iterative model, because work is delivered and tested in repeated increments.

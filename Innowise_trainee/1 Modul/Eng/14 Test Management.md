@@ -8,11 +8,14 @@
 - [[#Test Estimation]]
 - [[#Test Monitoring and Controlling]]
 - [[#Issues Management]]
+	- [[#Jira Redmine and TFS]]
 - [[#Reporting]]
 - [[#Test Management Tools]]
 - [[#Interview Questions]]
-	- [[#Top 10]]
-	- [[#Tricky Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
+	- [[#Advanced Questions]]
+	- [[#Code Questions]]
 
 **Related notes:** [[QA manual eng]]
 
@@ -166,6 +169,18 @@ Escalation path: QA Lead → Test Manager → Project Manager → Stakeholders.
 
 Common tools for logging and tracking issues: **Jira**, **Azure DevOps**, **YouTrack**, **Bugzilla**, **GitHub Issues**.
 
+### Jira Redmine and TFS
+
+These tools are often named in QA interviews because they connect testing work with project tasks.
+
+| Tool | Typical use |
+|---|---|
+| Jira | tasks, bugs, sprints, workflows, dashboards |
+| Redmine | issues, project tracking, simple workflows |
+| TFS / Azure DevOps | work items, boards, repositories, pipelines |
+
+For QA, the key skill is not memorizing buttons. It is understanding how to create a clear bug, choose the right status, link it to a requirement or task, and keep the workflow updated.
+
 ---
 
 ## Reporting
@@ -222,7 +237,7 @@ Tools used to organize test cases, plan test runs, and track execution results.
 
 ## Interview Questions
 
-### Top 10
+### Beginner Questions
 
 **1. What are the main responsibilities of a test manager?**
 Defining the test approach and strategy, creating the test plan, estimating effort and resources, assigning tasks, tracking progress, managing risks, reporting status to stakeholders, and producing the test summary report at closure.
@@ -256,7 +271,7 @@ Test initiation, test planning, test design, test execution, test monitoring and
 
 ---
 
-### Tricky Questions
+### Intermediate Questions
 
 **1. The deadline is fixed and you cannot finish all planned testing. What do you do?**
 Prioritize by risk — test the most critical and most-used features first. Communicate clearly which areas were not covered and the associated risk, so stakeholders can make an informed go/no-go decision. Do not silently drop scope.
@@ -272,3 +287,37 @@ The estimate likely ignored non-execution work — environment setup, defect rep
 
 **5. Two reports go to developers and to executives. Should they be the same?**
 No. Tailor the report to the audience. Developers need defect detail per component; executives need a high-level pass/fail summary, risk status, and a go/no-go recommendation. Same data, different level of detail.
+
+### Advanced Questions
+
+**1. Why is test monitoring different from test controlling?**
+Monitoring observes actual progress and status. Controlling takes corrective action when reality differs from the plan.
+
+**2. Why should estimates include non-execution work?**
+Testing also includes planning, design, environment setup, defect reporting, retesting, meetings, and blockers. Ignoring these makes estimates unrealistic.
+
+**3. Why is risk-based prioritization important when time is short?**
+It helps the team test the most critical and most likely failure areas first, instead of spending equal time on low-risk features.
+
+**4. Why are issue tracking tools important for QA management?**
+They keep defects, tasks, statuses, owners, and history visible, which supports communication and decision-making.
+
+### Code Questions
+
+**1. Which metric is shown here?**
+
+```text
+Executed tests: 80
+Total planned tests: 100
+```
+
+This is test execution progress: 80 / 100 = 80%.
+
+**2. What should the test manager do?**
+
+```text
+Exit criteria require no open P1/P2 defects.
+One P2 defect is still open before release.
+```
+
+The test manager should report that exit criteria are not met, explain the risk, and ask stakeholders to decide whether to fix, defer, or accept the risk.

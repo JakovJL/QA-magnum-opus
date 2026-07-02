@@ -12,8 +12,10 @@
 - [[#Defect Life Cycle]]
 - [[#Common Mistakes]]
 - [[#Interview Questions]]
-	- [[#Top 10]]
-	- [[#Tricky Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
+	- [[#Advanced Questions]]
+	- [[#Code Questions]]
 
 **Related notes:** [[QA manual eng]]
 
@@ -193,7 +195,7 @@ The defect life cycle describes all the states a bug passes through from discove
 
 ## Interview Questions
 
-### Top 10
+### Beginner Questions
 
 **1. What is a bug report and what fields does it contain?**
 A bug report is a document describing a defect in enough detail for a developer to reproduce and fix it. Key fields: ID, title, environment, steps to reproduce, expected result, actual result, severity, priority, status, attachments, assignee, reporter.
@@ -227,7 +229,7 @@ Try to reproduce it in different environments, browsers, accounts, and with diff
 
 ---
 
-### Tricky Questions
+### Intermediate Questions
 
 **1. A developer says your bug is "not a bug, it works as designed." What do you do?**
 Check the requirements. If the requirements support the developer's claim, accept the decision and close the report. If the requirements contradict their claim, escalate with evidence — quote the relevant requirement. If there are no requirements, escalate to the product owner to make a product decision. Never argue about opinions — argue about documented requirements.
@@ -240,3 +242,35 @@ Verify again carefully — make sure you are testing the correct build. If the b
 
 **4. Is it possible for a bug to go from Closed directly to Reopened?**
 Yes, if the same bug reappears in a later build after having been genuinely fixed — for example, due to a regression introduced by another change. In this case, reopen the original bug report rather than creating a new one, and note in the comments which build broke it again.
+
+### Advanced Questions
+
+**1. Why is reproducibility important in a bug report?**
+Developers need reliable steps to see the same problem. Without reproducibility, fixing and verifying the defect becomes much harder.
+
+**2. Why are severity and priority separate fields?**
+Severity describes technical or user impact. Priority describes business urgency and release planning.
+
+**3. When should a bug be marked Duplicate instead of Closed?**
+When the same defect is already reported elsewhere. The duplicate should link to the original issue so history stays traceable.
+
+**4. Why should QA retest a fixed bug before closing it?**
+The fix may be incomplete or may work only in some conditions. QA verifies the fix in the correct build and environment before closure.
+
+### Code Questions
+
+**1. What is wrong with this bug title?**
+
+```text
+Button does not work.
+```
+
+It is too vague. A better title names the feature and problem, for example: "Login button does not submit valid credentials on Chrome".
+
+**2. Choose severity and priority.**
+
+```text
+The company logo is slightly misaligned on the About page.
+```
+
+Severity is usually Minor or Trivial because the impact is visual and low. Priority is usually Low unless the page is critical for a release demo.

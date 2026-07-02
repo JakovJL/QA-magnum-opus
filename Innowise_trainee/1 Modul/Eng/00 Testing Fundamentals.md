@@ -10,8 +10,10 @@
 	- [[#Validating Functionality and Performance]]
 - [[#Key Principles of Effective Testing]]
 - [[#Interview Questions]]
-	- [[#Top 10]]
-	- [[#Tricky Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
+	- [[#Advanced Questions]]
+	- [[#Code Questions]]
 
 **Related notes:** [[QA manual eng]]
 
@@ -145,7 +147,7 @@ The goal of testing for compliance with requirements and specifications is to co
 
 ## Interview Questions
 
-### Top 10
+### Beginner Questions
 
 **1. What is QA, QC, and how do they differ from software testing?**
 QA is a broad set of planned processes and standards that govern how a product is built — its goal is to **prevent** defects. QC is a set of activities focused on inspecting the actual product to **find** defects before it reaches users. Testing is a specific technical activity within QC — it executes the software and compares actual results to expected ones. Relationship: QA ⊇ QC ⊇ Testing. QA is proactive and process-oriented; QC and testing are reactive and product-oriented.
@@ -179,7 +181,7 @@ Stakeholders — clients, managers, investors — need assurance that the produc
 
 ---
 
-### Tricky Questions
+### Intermediate Questions
 
 **1. If QA processes are thorough enough, the product will have no bugs. True or false?**
 False. QA reduces the probability of defects by improving processes, but it cannot guarantee a zero-defect product. No software of meaningful complexity is entirely bug-free. QA minimizes risk; it does not eliminate it.
@@ -192,3 +194,39 @@ The misunderstanding is an **Error** (human mistake). The incorrect code that re
 
 **4. The same test suite has been running for 6 months without finding any new bugs. Does this mean the software is now stable and well-tested?**
 Not necessarily. This is a textbook example of the Pesticide Paradox. The tests have likely been exhausted — they can only find defects in the areas they already cover. New features, changed requirements, or untested code paths may contain defects the existing suite will never reach. The correct response is to expand and refresh the test cases.
+
+### Advanced Questions
+
+**1. Why is "testing shows the presence of defects, not their absence" important for release decisions?**
+It reminds the team that a green test run does not prove the product is defect-free. Release decisions should consider risk, coverage, known defects, and business priorities.
+
+**2. How can QA prevent defects before testing starts?**
+QA can review requirements, improve processes, define clear acceptance criteria, and help the team find ambiguity early. This is QA work, not only QC.
+
+**3. Why can exhaustive testing be impossible even for a small feature?**
+Inputs, environments, user paths, data combinations, and integrations can create too many possible cases. Testing must be risk-based and prioritized.
+
+**4. What is the risk of confusing Error, Defect, and Failure?**
+The team may discuss the wrong problem. An Error is a human mistake, a Defect is the flaw in the artifact, and a Failure is visible incorrect behavior during execution.
+
+### Code Questions
+
+**1. Classify the situation: Error, Defect, or Failure.**
+
+```text
+Requirement: discount is 10%.
+Developer writes code with 15%.
+User sees the wrong final price in production.
+```
+
+The misunderstood or wrong implementation decision is an Error, the `15%` logic in code is a Defect, and the wrong price seen by the user is a Failure.
+
+**2. What testing principle is shown here?**
+
+```text
+The same regression suite runs every release.
+For several releases it finds no new defects.
+New bugs are later found in untested workflows.
+```
+
+This shows the Pesticide Paradox. The test suite must be reviewed and expanded because old tests stop finding new classes of defects.

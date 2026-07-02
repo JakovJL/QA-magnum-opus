@@ -12,8 +12,10 @@
 - [[#Requirements Documentation]]
 - [[#Requirements Testing]]
 - [[#Interview Questions]]
-	- [[#Top 10]]
-	- [[#Tricky Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
+	- [[#Advanced Questions]]
+	- [[#Code Questions]]
 
 **Related notes:** [[QA manual eng]]
 
@@ -226,7 +228,7 @@ Each requirement must have at least one corresponding test case.
 
 ## Interview Questions
 
-### Top 10
+### Beginner Questions
 
 **1. What is a requirement in QA context?**
 A requirement is a documented description of a function or condition that the software must meet.
@@ -260,7 +262,7 @@ Each requirement must have at least one corresponding test case. This ensures te
 
 ---
 
-### Tricky Questions
+### Intermediate Questions
 
 **1. Requirements cannot be changed after approval. True or false?**
 False. Requirements can change, but changes must be documented and evaluated.
@@ -273,3 +275,35 @@ False. Both types are important. Non-functional requirements (security, performa
 
 **4. Good requirements = good tests. True or false?**
 Not always. Good requirements are necessary but not sufficient. Tests also depend on tester's skills.
+
+### Advanced Questions
+
+**1. Why is testability a key quality of a requirement?**
+If a requirement cannot be tested, QA cannot clearly prove whether the product satisfies it.
+
+**2. Why are ambiguous words dangerous in requirements?**
+Words like "fast", "user-friendly", or "soon" can be interpreted differently by stakeholders, developers, and testers.
+
+**3. How does requirements review reduce project cost?**
+Finding defects in requirements is cheaper than finding them after design, coding, or release.
+
+**4. Why should test cases trace back to requirements?**
+Traceability shows what is covered, what is missing, and what must be updated when requirements change.
+
+### Code Questions
+
+**1. What is wrong with this requirement?**
+
+```text
+The page should load quickly.
+```
+
+It is not measurable. A better requirement gives a clear target, for example: "The page should load within 2 seconds for 95% of requests."
+
+**2. Which requirement type is this?**
+
+```text
+The system must lock the account after 5 failed login attempts.
+```
+
+It is a functional requirement because it describes specific system behavior.

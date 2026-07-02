@@ -9,6 +9,13 @@ knowledge base/
 │   ├── Карточки/
 │   │   └── QA/
 │   │       └── 00 Testing Fundamentals.md
+│   ├── Interview Practice/
+│   │   ├── Eng/
+│   │   │   ├── 01 Full QA AQA Interview - Junior Core.md
+│   │   │   └── 02 Full QA AQA Interview - Practical Scenarios.md
+│   │   └── Rus/
+│   │       ├── 01 Полное QA AQA интервью - Junior Core.md
+│   │       └── 02 Полное QA AQA интервью - Практические сценарии.md
 │   ├── 1 Modul/
 │   │   ├── Eng/
 │   │   │   ├── QA manual eng.md
@@ -71,6 +78,12 @@ knowledge base/
 │       │   ├── 15 Build Tools Maven Gradle.md
 │       │   ├── 16 Unit Testing with JUnit 5.md
 │       │   ├── 17 Selenium WebDriver Basics.md
+│       │   ├── 18 Git and Version Control.md
+│       │   ├── 19 CI-CD with GitHub Actions.md
+│       │   ├── 20 Automation Framework Architecture.md
+│       │   ├── 21 Logging Reporting and Metrics.md
+│       │   ├── 22 Docker and Test Environments.md
+│       │   ├── 23 Software Engineering Practices for AQA.md
 │       │   └── Practice - QA Issue Tracker.md
 │       └── Rus/
 │           ├── AQA Java rus.md
@@ -92,6 +105,12 @@ knowledge base/
 │           ├── 15 Сборочные инструменты Maven Gradle.md
 │           ├── 16 Модульное тестирование с JUnit 5.md
 │           ├── 17 Основы Selenium WebDriver.md
+│           ├── 18 Git и контроль версий.md
+│           ├── 19 CI-CD с GitHub Actions.md
+│           ├── 20 Архитектура фреймворка автотестов.md
+│           ├── 21 Логирование отчёты и метрики.md
+│           ├── 22 Docker и тестовые окружения.md
+│           ├── 23 Инженерные практики для AQA.md
 │           └── Практика - QA Issue Tracker.md
 ├── Examples/
 │   ├── Example Test Plan.md

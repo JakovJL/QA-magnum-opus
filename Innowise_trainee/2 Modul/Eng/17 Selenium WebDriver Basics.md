@@ -4,11 +4,12 @@
 
 - [[#Why Selenium Matters]]
 - [[#What WebDriver Is]]
-- [[#Browser Setup and Navigation]]
+- [[#Selenium API Overview]]
+- [[#Browser Initialization and Navigation]]
 - [[#Locators]]
 - [[#Working with Web Elements]]
 - [[#Advanced Interactions]]
-- [[#Basic Wait Idea]]
+- [[#Waiters and Synchronization]]
 - [[#Common Selenium Errors]]
 - [[#Page Object Model]]
 - [[#Selenium Basics in AQA]]
@@ -73,7 +74,26 @@ Here:
 
 ---
 
-## Browser Setup and Navigation
+## Selenium API Overview
+
+Selenium API is the set of classes and methods used to control the browser.
+
+The most important parts are:
+
+| API part | Purpose |
+|---|---|
+| `WebDriver` | controls browser session and navigation |
+| `WebElement` | represents one element on the page |
+| `By` | describes how to find an element |
+| `Actions` | performs advanced mouse and keyboard actions |
+| `WebDriverWait` | waits until a condition becomes true |
+| `ExpectedConditions` | common ready-made wait conditions |
+
+**Goal:** know which object is responsible for which browser action.
+
+---
+
+## Browser Initialization and Navigation
 
 ### Open Browser
 
@@ -300,7 +320,7 @@ Files.copy(shot.toPath(), Path.of("target/screenshots/login-fail.png"));
 
 ---
 
-## Basic Wait Idea
+## Waiters and Synchronization
 
 Web pages are dynamic. An element may not be ready immediately after page load or after a click.
 
