@@ -3,6 +3,7 @@
 .trash/
 
 # --- Build artifacts / dependencies ---
+.qa_deck_build/
 .qa_deck_build/node_modules/
 .qa_deck_build/render*/
 .qa_deck_build/assets/
