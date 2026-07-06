@@ -22,8 +22,10 @@
 - [[#Browser and DevTools]]
 - [[#Storage]]
 - [[#Interview Questions]]
-	- [[#Top 10]]
-	- [[#Tricky Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
+	- [[#Advanced Questions]]
+	- [[#Code Questions]]
 
 **Related notes:** [[QA manual eng]]
 
@@ -89,6 +91,20 @@ The TCP/IP model is the practical model used on the internet. It combines some O
 - URL
 - Headers (Content-Type, Authorization, etc.)
 - Body (for POST/PUT)
+
+**HTTP methods and their intent:**
+
+| Method | Intent | Safe | Idempotent | Has body? |
+|---|---|---|---|---|
+| GET | Read / retrieve data | Yes | Yes | No |
+| POST | Create a new resource | No | No | Yes |
+| PUT | Replace a resource (full) | No | Yes | Yes |
+| PATCH | Partially update a resource | No | No | Yes |
+| DELETE | Remove a resource | No | Yes | No |
+
+- **Safe** means the request only reads data and does not change server state (GET is safe).
+- **Idempotent** means repeating the same request has the same effect as doing it once (GET, PUT, DELETE). POST is *not* idempotent — submitting the same POST twice may create two resources.
+- A key practical difference: **GET** passes parameters in the URL query string and should not change state, while **POST** sends data in the request body to create or modify something. GET can be cached and bookmarked; POST cannot.
 
 **HTTP response structure:**
 - Status code (200 OK, 404 Not Found, 500 Internal Server Error)
@@ -378,7 +394,21 @@ A **cookie** is a small piece of data the server sends to the browser, which the
 
 ## Interview Questions
 
-### Top 10
+### Beginner Questions
+
+**1. What is DNS and what does it do?**
+DNS (Domain Name System) translates human-readable domain names into IP addresses. For example, it resolves `google.com` to an IP so the browser can connect to the server.
+
+**2. What is the DOM?**
+The DOM (Document Object Model) is the browser's in-memory tree representation of the page. JavaScript reads and modifies the DOM to update the page without reloading. Automated tests interact with DOM elements.
+
+**3. What does TLS provide?**
+Encryption (data cannot be read in transit), authentication (the server proves its identity with a certificate), and integrity (data cannot be altered without detection).
+
+**4. What do the HTTP status code groups mean?**
+2xx — success (200 OK, 201 Created), 3xx — redirection (301, 302), 4xx — client error (400, 401, 403, 404), 5xx — server error (500, 503). The first digit tells you the category at a glance.
+
+### Intermediate Questions
 
 **1. What is the difference between the OSI model and the TCP/IP model?**
 OSI is a 7-layer conceptual model used for teaching and describing how networks work in theory. TCP/IP is a practical 4-layer model that describes how the internet actually works. QA uses OSI for conceptual discussions and TCP/IP for diagnosing real network issues.
@@ -386,33 +416,19 @@ OSI is a 7-layer conceptual model used for teaching and describing how networks 
 **2. What is the difference between HTTP and HTTPS?**
 HTTP transfers data in plain text on port 80. HTTPS is HTTP plus TLS encryption on port 443, and it requires a certificate. HTTPS protects data in transit from being read or altered.
 
-**3. What do the HTTP status code groups mean?**
-2xx — success (200 OK, 201 Created), 3xx — redirection (301, 302), 4xx — client error (400, 401, 403, 404), 5xx — server error (500, 503). The first digit tells you the category at a glance.
-
-**4. What does TLS provide?**
-Encryption (data cannot be read in transit), authentication (the server proves its identity with a certificate), and integrity (data cannot be altered without detection).
-
-**5. What is DNS and what does it do?**
-DNS (Domain Name System) translates human-readable domain names into IP addresses. For example, it resolves `google.com` to an IP so the browser can connect to the server.
-
-**6. What is the difference between a URI, a URL, and a URN?**
+**3. What is the difference between a URI, a URL, and a URN?**
 URI is the general identifier. URL is a URI that says where a resource is and how to access it (`https://example.com/page`). URN is a URI that gives a resource a permanent name regardless of location.
 
-**7. What is the difference between cache and cookie?**
+**4. What is the difference between cache and cookie?**
 Cache stores copies of resources (HTML, CSS, images) to speed up page loads and is not sent to the server. A cookie stores small data values to maintain state and is sent to the server with every request automatically.
 
-**8. What is the difference between GET and POST?**
+**5. What is the difference between GET and POST?**
 GET requests data and passes parameters in the URL; it should not change server state. POST sends data in the request body to create or change something on the server. GET is cacheable and idempotent; POST is not.
 
-**9. What is the DOM?**
-The DOM (Document Object Model) is the browser's in-memory tree representation of the page. JavaScript reads and modifies the DOM to update the page without reloading. Automated tests interact with DOM elements.
-
-**10. Which DevTools tab is most useful for QA, and why?**
+**6. Which DevTools tab is most useful for QA, and why?**
 The Network tab — it shows every HTTP request and response with URL, method, status code, headers, payload, and timing. It lets a QA verify API calls, find failed requests, and inspect response data during manual testing.
 
----
-
-### Tricky Questions
+### Advanced Questions
 
 **1. A page looks fully loaded but some data is missing. How do you investigate?**
 The data is likely loaded by an Ajax request that failed or is still pending. Open DevTools → Network, filter XHR/Fetch, and check the request's status and response. The DOM may also differ from the page source because JS changed it after load.
@@ -420,11 +436,48 @@ The data is likely loaded by an Ajax request that failed or is still pending. Op
 **2. The site uses HTTPS, so the data is fully secure. True or false?**
 False. HTTPS only encrypts data in transit. It does not protect against weak passwords, broken access control, XSS, or data leaked in responses. Transport security is one layer, not the whole picture.
 
-**3. You changed the page but the browser still shows the old version. Why?**
-The browser is serving a cached copy. Force a hard reload (Ctrl+Shift+R) or clear the cache in DevTools. Cache-Control headers decide how long resources are cached.
-
-**4. What is the difference between an HttpOnly cookie and a normal one, and why does it matter for security?**
+**3. What is the difference between an HttpOnly cookie and a normal one, and why does it matter for security?**
 An HttpOnly cookie cannot be read by JavaScript, which protects it from being stolen via XSS. Session cookies are usually marked HttpOnly. A QA should verify sensitive cookies have HttpOnly and Secure set.
 
-**5. Why might a WebSocket connection be used instead of regular HTTP requests?**
+**4. Why might a WebSocket connection be used instead of regular HTTP requests?**
 WebSocket keeps a single persistent, bi-directional connection open, so the server can push data to the client in real time with low overhead. It suits chats, live scores, and dashboards, where repeated HTTP requests would be slow and wasteful.
+
+### Code Questions
+
+**1.** You deployed a fix to the production site, but the browser still shows the old (buggy) page.
+
+```text
+- Bug:   login button misaligned (CSS fix deployed)
+- After deploy: QA still sees the old layout
+- Other testers see the fix correctly
+```
+
+**Question:** What is the most likely cause, and what do you do to verify the new version?
+
+**Answer:** The browser is serving a **cached copy** of the CSS/HTML. Force a hard reload (Ctrl+Shift+R) or clear the cache in DevTools → Application/Network. Cache-Control headers (e.g. `max-age`) decide how long resources are cached, so the new version will only appear once the cache is bypassed or expires.
+
+---
+
+**2.** A web page loads with no visible errors, but a user list section is empty.
+
+```text
+- Page renders, no JS errors in Console
+- User list area: empty
+- DevTools → Network → XHR/Fetch: GET /api/users → 500 Internal Server Error
+```
+
+**Question:** Using DevTools, how do you confirm the root cause, and which status-code group tells you where the fault lies?
+
+**Answer:** Open **DevTools → Network**, filter by **XHR/Fetch**, and find the Ajax request that loads the users. Its status is **500**, which is in the **5xx (server error)** group — meaning the failure is on the server side, not in the browser. Inspect the Response body for the server's error message. The page looked loaded because the surrounding HTML rendered, while the data fetched asynchronously failed.
+
+---
+
+**3.** You are reviewing the security of session cookies set by the application.
+
+```text
+Set-Cookie: sessionId=abc123; Path=/; Secure
+```
+
+**Question:** This cookie is sent only over HTTPS, which is good. What attribute is missing, and why does it matter?
+
+**Answer:** The cookie is missing the **HttpOnly** attribute. Without it, JavaScript can read the cookie, which makes it stealable via an **XSS** attack. Session cookies should be marked both `Secure` (HTTPS only) **and** `HttpOnly` (no JS access). A QA should verify sensitive cookies carry both attributes.

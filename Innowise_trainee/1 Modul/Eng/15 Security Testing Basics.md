@@ -13,8 +13,10 @@
 	- [[#Security Misconfiguration]]
 - [[#Keycloak]]
 - [[#Interview Questions]]
-	- [[#Top 10]]
-	- [[#Tricky Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
+	- [[#Advanced Questions]]
+	- [[#Code Questions]]
 
 **Related notes:** [[QA manual eng]]
 
@@ -207,7 +209,7 @@ Default settings, verbose errors, or open services leave the system exposed.
 
 ## Interview Questions
 
-### Top 10
+### Beginner Questions
 
 **1. What is security testing?**
 Security testing checks whether an application protects its data and functionality from threats. Its goal is to find vulnerabilities (weaknesses that can be exploited) before an attacker does.
@@ -221,27 +223,31 @@ Authentication proves who you are (login, password, token). Authorization decide
 **4. What is OWASP?**
 OWASP (Open Worldwide Application Security Project) is a community that publishes security resources, including the OWASP Top 10 — a list of the most common and critical web application vulnerabilities.
 
-**5. What is SQL Injection and how do you test for it?**
-SQL Injection is when untrusted input is inserted into a database query as part of the command, letting an attacker change its logic. You test by entering special characters (`'`, `--`, `' OR '1'='1`) and watching for database errors or bypassed logic.
-
-**6. What is Cross-Site Scripting (XSS)?**
-XSS is when an app renders user input as code in another user's browser, so the attacker's script runs in the victim's session. You test by entering HTML/JS payloads like `<script>alert('XSS')</script>` and confirming they display as plain text, never execute.
-
-**7. What is broken access control?**
-When users can reach data or actions forbidden for their role — for example a regular user opening an admin URL, or changing an id in the URL to see another user's data (IDOR). Authorization must be enforced on the server, not just hidden in the UI.
-
-**8. What is the difference between a vulnerability, a threat, and an exploit?**
-A vulnerability is a weakness. A threat is a possible danger that could use it. An exploit is the actual attack that takes advantage of the vulnerability.
-
-**9. What is Keycloak?**
+**5. What is Keycloak?**
 Keycloak is an open-source Identity and Access Management (IAM) system. Applications delegate login, user management, and roles to it, gaining Single Sign-On (SSO) and standard protocols like OAuth 2.0, OIDC, and SAML.
 
-**10. What can a manual QA check for security without being a penetration tester?**
+---
+
+### Intermediate Questions
+
+**1. What is the difference between a vulnerability, a threat, and an exploit?**
+A vulnerability is a weakness. A threat is a possible danger that could use it. An exploit is the actual attack that takes advantage of the vulnerability.
+
+**2. What is SQL Injection and how do you test for it?**
+SQL Injection is when untrusted input is inserted into a database query as part of the command, letting an attacker change its logic. You test by entering special characters (`'`, `--`, `' OR '1'='1`) and watching for database errors or bypassed logic.
+
+**3. What is Cross-Site Scripting (XSS)?**
+XSS is when an app renders user input as code in another user's browser, so the attacker's script runs in the victim's session. You test by entering HTML/JS payloads like `<script>alert('XSS')</script>` and confirming they display as plain text, never execute.
+
+**4. What is broken access control?**
+When users can reach data or actions forbidden for their role — for example a regular user opening an admin URL, or changing an id in the URL to see another user's data (IDOR). Authorization must be enforced on the server, not just hidden in the UI.
+
+**5. What can a manual QA check for security without being a penetration tester?**
 HTTPS everywhere, input validation/escaping, account lockout and session handling, that direct URL/id access is blocked for other roles, no secrets in responses or logs, and that error pages do not reveal internal details.
 
 ---
 
-### Tricky Questions
+### Advanced Questions
 
 **1. A button is hidden for normal users, so the admin action is protected. True or false?**
 False. Hiding a button in the UI is not security. If the underlying request still works when sent directly, access control is broken. Authorization must be enforced server-side, and you should test at the request level, not only the UI.
@@ -257,3 +263,33 @@ Not necessarily. XSS has many vectors — attributes, event handlers, URLs, and 
 
 **5. A test environment uses default credentials (admin/admin). Is that only a test problem?**
 No. Default credentials and other misconfigurations often leak into production or staging that is reachable from outside. Security misconfiguration is itself an OWASP risk, so default credentials, verbose errors, and open services should be flagged wherever they appear.
+
+---
+
+### Code Questions
+
+**1. Scenario — a login form is suspected of SQL Injection. What input would you try, and what would confirm the vulnerability?**
+
+```text
+Input:  ' OR '1'='1
+```
+
+**Answer:** Enter special characters such as `'`, `--`, and `' OR '1'='1` in the input field. The payload `' OR '1'='1` makes the query condition always true. If the login is bypassed or a database error appears, the input is not validated and the queries are not parameterized — the vulnerability is confirmed.
+
+**2. Scenario — testing broken access control (IDOR). You are logged in as a regular user viewing your own order at `/orders/123`. What test would you run?**
+
+```text
+Change the URL:  /orders/123  ->  /orders/124
+```
+
+**Answer:** Open another user's order URL directly by changing the id. The server must return 403/404, not the data. If the data is shown, access control is broken and enforced only by hiding the UI, not on the server.
+
+**3. Scenario — you have a JWT access token from a Keycloak login. How do you test whether the server actually enforces its claims?**
+
+```text
+1. Decode the token (e.g. in a JWT decoder / DevTools) and read the roles and exp claim.
+2. Edit a role inside the token or remove it.
+3. Repeat a request with the modified token.
+```
+
+**Answer:** The server must reject the modified token, because editing it invalidates the signature. If the server still accepts it, it trusts an unverified token — a security flaw. Also test an expired token to confirm the `exp` claim is enforced.

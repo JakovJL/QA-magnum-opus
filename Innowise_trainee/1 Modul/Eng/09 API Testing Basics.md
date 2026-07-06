@@ -16,6 +16,10 @@
 - [[#Serialization and Deserialization]]
 - [[#GraphQL]]
 - [[#Interview Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
+	- [[#Advanced Questions]]
+	- [[#Code Questions]]
 
 **Related notes:** [[QA manual eng]]
 
@@ -97,6 +101,32 @@
   </soap:Body>
 </soap:Envelope>
 ```
+
+### WSDL — the SOAP Contract
+
+**WSDL** (Web Services Description Language) is an XML document that is the contract of a SOAP service. It describes the available operations (methods), the request and response schemas, the transport protocol, and the service endpoint URL. A tester uses the WSDL to know which requests are valid and what the response should look like — tools like SoapUI can import it and auto-generate ready requests.
+
+### SOAP Fault
+
+When a SOAP request fails, the error is returned inside the response body in a `<soap:Fault>` element (not only via the HTTP status). A fault contains:
+- **`faultcode`** — the error code (e.g. `soap:Client` for a bad request, `soap:Server` for a server error)
+- **`faultstring`** — a human-readable error message
+- **`faultactor`** — who caused the fault (optional)
+- **`detail`** — application-specific error details (optional)
+
+```xml
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <soap:Fault>
+      <faultcode>soap:Server</faultcode>
+      <faultstring>User not found</faultstring>
+    </soap:Fault>
+  </soap:Body>
+</soap:Envelope>
+```
+
+> [!info] SOAP Status Codes
+> A successful SOAP response usually returns **HTTP 200**, even though it carries XML in the body. A SOAP Fault is typically returned with **HTTP 500**.
 
 **When to use:** enterprise systems, banking, government services, legacy integrations.
 
@@ -353,6 +383,9 @@ The address of the resource.
 - `/users/42` — endpoint + ==path parameter== (resource id)
 - `?format=json` — ==query parameter==
 
+> [!info] URL vs URI vs URN
+> **URI** is the general identifier of a resource. **URL** is a URI that also says *where* the resource is and *how* to reach it (e.g. `https://site.com/users/42`). **URN** names a resource without its location (e.g. `urn:isbn:0451450523`). Every URL is a URI, but not every URI is a URL.
+
 ### Headers
 
 Key-value pairs with metadata about the request.
@@ -361,6 +394,12 @@ Key-value pairs with metadata about the request.
 - `Content-Type: application/json` — body format
 - `Authorization: Bearer <token>` — authentication
 - `Accept: application/json` — expected response format
+
+> [!tip] Useful Headers to Know
+> - **`Accept`** — content negotiation: the client tells the server which response format it wants (e.g. `Accept: application/json`). The server returns the best matching format.
+> - **`Cache-Control`** and **`ETag`** — HTTP caching. The server stores a response so the same request does not hit the server again. `Cache-Control` says how long to cache; `ETag` is a version tag — if the data did not change, the server answers **304 Not Modified**.
+> - **`Access-Control-Allow-Origin`** — CORS (Cross-Origin Resource Sharing). A browser rule that controls whether a page from one domain may call an API on another domain. The server allows it with this header.
+> - **`Strict-Transport-Security`** — HSTS. Tells the browser to always use HTTPS and never plain HTTP, protecting against downgrade attacks.
 
 ### Body
 
@@ -580,6 +619,19 @@ UDP does not check delivery — sends and forgets. Used in DNS, streaming, gamin
 | 5432 | PostgreSQL | Database |
 | 8080 | HTTP | Alternate / dev |
 
+### HTTP Versions
+
+- **HTTP/1.1** — text-based protocol. Mostly one request at a time per connection (head-of-line blocking). Default since 1997.
+- **HTTP/2** — binary frames instead of text. **Multiplexing**: many requests and responses share one TCP connection at the same time. Header compression (HPACK). Faster than HTTP/1.1. Used by gRPC.
+- **HTTP/3** — runs over **QUIC** (built on UDP) instead of TCP. It removes connection-level blocking and connects faster (fewer round-trips).
+
+> [!info] Why it matters for QA
+> gRPC requires HTTP/2 because of multiplexing and binary frames. A slow first request may be the TCP + TLS handshake, not the API itself.
+
+### Persistent Connection (Keep-Alive)
+
+By default, HTTP/1.1 reuses one TCP connection for several requests and responses instead of opening a new one each time. This is called a **persistent connection** (keep-alive). It removes the delay of repeated TCP handshakes, so pages with many resources load faster. In HTTP/2 this idea grows into multiplexing.
+
 ### For Testers
 
 - **Port not open** → connection refused. Check which port you are calling
@@ -796,7 +848,7 @@ mutation {
 
 ## Interview Questions
 
-### Fundamentals
+### Beginner Questions
 
 **1. What is API Testing?**
 API testing is a type of software testing that checks the API directly — its functionality, reliability, and security — at the business-logic layer, without a graphical interface. The tester sends requests to API endpoints and validates the responses: status code, body, headers, and response time.
@@ -838,105 +890,116 @@ For each request we validate the response and its behavior:
 - **Boundary & negative cases** — empty, too long, null, or wrong-type inputs are handled correctly.
 - **Idempotency & side effects** — repeated calls behave as expected and cause no unwanted data changes.
 
----
-
-### Top Questions
-
-**1. What is an API?**
+**6. What is an API?**
 An API is a set of rules that allows two applications to communicate. The client sends a request — the server returns a response.
 
-**2. What is the difference between REST, SOAP, and gRPC?**
+**7. What is the difference between REST, SOAP, and gRPC?**
 REST uses JSON over HTTP — simple, lightweight, and widely used for web/mobile, but it can over-fetch or under-fetch data. SOAP uses XML with a strict contract (WSDL) and strong security — slower and heavier, used in banking and enterprise. gRPC uses a binary format (Protocol Buffers) over HTTP/2 — very fast and strongly typed, used for microservices, but it is not human-readable.
 
-**3. What HTTP methods do you know? What does each do?**
+**8. What HTTP methods do you know? What does each do?**
 GET — read, POST — create, PUT — full update, PATCH — partial update, DELETE — delete.
 
-**4. What do status codes 200, 201, 400, 401, 403, 404, 500 mean?**
+**9. What do status codes 200, 201, 400, 401, 403, 404, 500 mean?**
 200 — OK, 201 — Created, 400 — Bad Request, 401 — Unauthorized, 403 — Forbidden, 404 — Not Found, 500 — Internal Server Error.
 
-**5. What is the difference between 401 and 403?**
+**10. What is the difference between 401 and 403?**
 401 — the user is not authenticated (no token or invalid token). 403 — the user is authenticated but does not have permission.
 
-**6. What does a REST request consist of?**
+**11. What does a REST request consist of?**
 URL (base URL + endpoint + path/query params), HTTP method, headers, and body (for POST / PUT / PATCH).
 
-**7. What authorization types do you know?**
+**12. What authorization types do you know?**
 Basic Auth, API Key, Bearer Token (JWT), OAuth 2.0.
 
-**8. What is the difference between Bearer Token and API Key?**
+**13. What is the difference between Bearer Token and API Key?**
 Bearer Token is issued after login and contains user info with an expiration time. API Key is a static key that identifies the client application.
 
-**9. What do you test in API testing?**
+**14. What do you test in API testing?**
 Positive cases (valid data → correct response), negative cases (invalid data, missing fields → correct error codes), boundary values, and auth checks.
 
-**10. What is Postman used for?**
+**15. What is Postman used for?**
 Postman is a tool for sending HTTP requests and checking API responses without writing code. Used for exploratory testing, saving request collections, and managing environments.
 
-**11. What is the difference between authentication and authorization?**
+**16. What is the difference between authentication and authorization?**
 Authentication answers "who are you?" — it verifies identity (login, token). Authorization answers "what are you allowed to do?" — it checks permissions. Status 401 relates to authentication, 403 to authorization.
 
-**12. What is an endpoint?**
+**17. What is an endpoint?**
 An endpoint is a specific URL where an API resource or action is available. In `GET /users/42`, the endpoint is `/users/42`. Each endpoint usually maps to one resource and accepts certain HTTP methods.
 
-**13. What is the difference between path parameters and query parameters?**
+**18. What is the difference between path parameters and query parameters?**
 Path parameters are part of the URL path and point to a specific resource: `/users/42` (42 is a path param). Query parameters come after `?` and are used for filtering, sorting, or pagination: `/users?role=admin&page=2`.
 
-**14. What is the difference between PUT and POST?**
+**19. What is the difference between PUT and POST?**
 POST creates a new resource and is not idempotent — calling it twice creates two resources. PUT creates or fully replaces a resource at a known URL and is idempotent — calling it twice gives the same result.
 
-**15. What tools are used for API testing?**
+**20. What tools are used for API testing?**
 Postman and Insomnia (manual/exploratory), Newman (run Postman collections in CI), REST Assured and Karate (Java), Python + requests/pytest, SoapUI (SOAP), and Swagger/OpenAPI for documentation and contract checks.
 
-**16. What is HTTP, and why is it stateless?**
+---
+
+### Intermediate Questions
+
+**1. What is HTTP, and why is it stateless?**
 HTTP (HyperText Transfer Protocol) is the protocol for sending requests and responses between client and server. It is stateless — the server does not remember anything between requests, so each request must carry all the information it needs (e.g. a token).
 
-**17. What is the difference between HTTP and HTTPS?**
+**2. What is the difference between HTTP and HTTPS?**
 HTTP sends data in plain text. HTTPS is HTTP over TLS/SSL — the data is encrypted, so it cannot be read or changed in transit, and the server's identity is verified with a certificate. HTTP uses port 80, HTTPS uses port 443.
 
-**18. What is TLS/SSL?**
+**3. What is TLS/SSL?**
 TLS (Transport Layer Security; SSL is its older name) is the encryption layer that turns HTTP into HTTPS. It encrypts the connection and uses certificates to prove the server is genuine.
 
-**19. What ports do HTTP and HTTPS use?**
+**4. What ports do HTTP and HTTPS use?**
 HTTP uses port 80 by default; HTTPS uses port 443.
 
-**20. What is the difference between HTTP/1.1, HTTP/2, and HTTP/3?**
+**5. What is the difference between HTTP/1.1, HTTP/2, and HTTP/3?**
 - **HTTP/1.1** — text-based, mostly one request at a time per connection (head-of-line blocking).
 - **HTTP/2** — binary, multiplexing (many requests over one connection), header compression — faster.
 - **HTTP/3** — runs over QUIC (UDP) instead of TCP, which removes connection-level blocking and connects faster.
 
-**21. What is the difference between TCP and UDP?**
+**6. What is the difference between TCP and UDP?**
 TCP is reliable and ordered — it guarantees delivery (used by HTTP/1.1 and HTTP/2). UDP is faster but does not guarantee delivery or order. HTTP/3 uses QUIC, built on UDP, to get speed plus its own reliability.
 
-**22. What is a persistent connection (keep-alive)?**
+**7. What is a persistent connection (keep-alive)?**
 Keep-alive lets several requests and responses reuse one TCP connection instead of opening a new one each time, which reduces delay. It is the default in HTTP/1.1.
 
-**23. What is HTTP caching?**
+**8. What is HTTP caching?**
 Caching stores responses so they can be reused without asking the server again. It is controlled by headers like `Cache-Control` (how long to cache) and `ETag` (a version tag — the server can answer 304 Not Modified if nothing changed).
 
-**24. How is state kept over a stateless HTTP?**
+**9. How is state kept over a stateless HTTP?**
 Since HTTP forgets between requests, state is kept with cookies, server sessions, or tokens (JWT). The client sends them on each request so the server knows who you are.
 
-**25. What are HTTP headers? Name common ones.**
+**10. What are HTTP headers? Name common ones.**
 Headers are key-value pairs with metadata about the request or response. Common ones: `Content-Type`, `Authorization`, `Accept`, `User-Agent`, `Cache-Control`, `Set-Cookie`.
 
-**26. What is CORS?**
-CORS (Cross-Origin Resource Sharing) is a browser rule that controls whether a web page from one origin (domain) may call an API on another origin. The server allows it with headers like `Access-Control-Allow-Origin`.
-
-**27. What is HSTS?**
-HSTS (HTTP Strict Transport Security) is a header that tells the browser to always use HTTPS for a site and never plain HTTP — protecting against downgrade attacks.
-
-**28. What is the difference between URL, URI, and URN?**
+**11. What is the difference between URL, URI, and URN?**
 URI is the general identifier of a resource. URL is a URI that also says where it is and how to reach it (e.g. `https://site.com/users/42`). URN names a resource without its location (e.g. `urn:isbn:0451450523`). Every URL is a URI.
 
-**29. What is content negotiation?**
+**12. What is content negotiation?**
 Content negotiation lets the client ask for a specific response format with the `Accept` header (e.g. `Accept: application/json`). The server returns the best matching format.
 
-**30. What is Protocol Buffers (protobuf)?**
+**13. What is Protocol Buffers (protobuf)?**
 Protocol Buffers is a compact binary data format created by Google and used by gRPC. The data structure is defined in a `.proto` file; messages are smaller and faster to parse than JSON, but they are not human-readable.
+
+**14. What is the difference between PUT and PATCH?**
+PUT replaces the full resource — if you omit a field, it gets deleted or reset. PATCH updates only the specified fields.
+
+**15. Why is gRPC faster than REST?**
+gRPC sends data in a compact binary format (Protocol Buffers) instead of text JSON, and uses HTTP/2, which lets several requests share one connection (multiplexing). Smaller messages plus a faster protocol give higher speed.
+
+**16. Which HTTP methods are idempotent?**
+Idempotent means that calling the request many times gives the same result as calling it once. GET, PUT, and DELETE are idempotent. POST is not — each call usually creates a new resource. PATCH may or may not be, depending on the implementation.
 
 ---
 
-**31. What is WSDL and why does a tester need it?**
+### Advanced Questions
+
+**1. What is CORS?**
+CORS (Cross-Origin Resource Sharing) is a browser rule that controls whether a web page from one origin (domain) may call an API on another origin. The server allows it with headers like `Access-Control-Allow-Origin`.
+
+**2. What is HSTS?**
+HSTS (HTTP Strict Transport Security) is a header that tells the browser to always use HTTPS for a site and never plain HTTP — protecting against downgrade attacks.
+
+**3. What is WSDL and why does a tester need it?**
 WSDL (Web Services Description Language) is an XML document that describes the contract of a SOAP service: available methods (operations), parameters for each method, response format, transport protocol, and the service URL.
 
 **Why testers need WSDL:**
@@ -957,9 +1020,7 @@ WSDL (Web Services Description Language) is an XML document that describes the c
 </wsdl:definitions>
 ```
 
----
-
-**32. What should you check in a SOAP response?**
+**4. What should you check in a SOAP response?**
 When testing a SOAP response, verify the following:
 
 1. **SOAP Envelope** — the response is wrapped in `<soap:Envelope>` with a correct namespace (`xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"`)
@@ -995,33 +1056,44 @@ When testing a SOAP response, verify the following:
 </soap:Envelope>
 ```
 
----
-
-### Tricky Questions
-
-**1. Can GET have a request body?**
+**5. Can GET have a request body?**
 Technically yes, but it is not recommended by REST conventions. GET is designed only for reading data. Most servers ignore the body of a GET request.
 
-**2. What is the difference between PUT and PATCH?**
-PUT replaces the full resource — if you omit a field, it gets deleted or reset. PATCH updates only the specified fields.
-
-**3. Is REST a protocol?**
+**6. Is REST a protocol?**
 No. REST is an architectural style — a set of constraints. HTTP is the protocol.
 
-**4. Does status code 200 always mean the test passed?**
+**7. Does status code 200 always mean the test passed?**
 No. The server can return 200 with an error message in the body. Always check both the status code and the response body.
 
-**5. Why is gRPC faster than REST?**
-gRPC sends data in a compact binary format (Protocol Buffers) instead of text JSON, and uses HTTP/2, which lets several requests share one connection (multiplexing). Smaller messages plus a faster protocol give higher speed.
-
-**6. Which HTTP methods are idempotent?**
-Idempotent means that calling the request many times gives the same result as calling it once. GET, PUT, and DELETE are idempotent. POST is not — each call usually creates a new resource. PATCH may or may not be, depending on the implementation.
-
-**7. Is it safe to pass a token or password in query parameters?**
+**8. Is it safe to pass a token or password in query parameters?**
 No. Query parameters are part of the URL, which is often logged by servers and proxies, saved in browser history, and may be cached. Sensitive data should go in headers (e.g. `Authorization`) or the request body, always over HTTPS.
 
-**8. What happens if you send DELETE for a resource that does not exist?**
+**9. What happens if you send DELETE for a resource that does not exist?**
 It depends on the API. Many return 404 Not Found. Some return 204 No Content to keep DELETE idempotent — the end state (resource gone) is the same either way. Always check the API documentation for the expected behavior.
 
-**9. Can a POST request be idempotent?**
+**10. Can a POST request be idempotent?**
 By default no — calling POST twice usually creates two resources. But it can be made idempotent with an "idempotency key": the client sends a unique key, and the server ignores duplicate requests with the same key. This is common in payment APIs.
+
+---
+
+### Code Questions
+
+**1. A login `POST /login` returns HTTP 200, but the body is `{"error": "invalid credentials"}` — is the test pass or fail?**
+**Fail.** Status 200 only means the server processed the request and answered at the HTTP level. The business result is an error (`"invalid credentials"`), so the *functional* outcome is failure. For a wrong password, the expected behavior is usually **401 Unauthorized** with a clear error message. Always assert both the status code *and* the response body — a 200 with an error body is a common API smell.
+
+**2. Write the minimal valid SOAP request envelope for a `GetUser` operation that takes an `id`.**
+```xml
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <GetUser>
+      <id>42</id>
+    </GetUser>
+  </soap:Body>
+</soap:Envelope>
+```
+Key points: the root is `<soap:Envelope>` with the SOAP namespace; the payload goes inside `<soap:Body>`; the operation name (`GetUser`) wraps the parameter (`id`). The expected success response would be `<GetUserResponse>` inside the body, and an error would come back as a `<soap:Fault>` (usually with HTTP 500).
+
+**3. Given the request `GET https://api.example.com/users/42`, identify the method, the path parameter, and whether it is safe to add `?token=abc` for authentication.**
+- **Method:** `GET` (a safe, idempotent read operation).
+- **Path parameter:** `42` — it identifies the specific `users` resource (`/users/{id}`).
+- **`?token=abc`:** not recommended. The query string is part of the URL, so it gets logged by servers and proxies, saved in browser history, and may be cached. Put the token in a header instead — `Authorization: Bearer abc` — and always use HTTPS.

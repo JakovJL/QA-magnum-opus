@@ -8,8 +8,13 @@
 - [[#Type Casting]]
 - [[#Operators]]
 - [[#String Basics]]
-- [[#var Keyword]]
+- [[#var Keyword (Java 10+)]]
 - [[#Wrapper Classes and Autoboxing]]
+- [[#Interview Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
+	- [[#Advanced Questions]]
+	- [[#Code Questions]]
 
 **Related notes:** [[AQA Java eng]]
 
@@ -339,7 +344,7 @@ This is a very common bug when working with collections, database results, or JS
 
 ## Interview Questions
 
-### Top 10
+### Beginner Questions
 
 **1. How many primitive types does Java have? Name them.**
 Java has 8 primitive types: `byte`, `short`, `int`, `long`, `float`, `double`, `boolean`, `char`. They store values directly in memory, not as objects.
@@ -359,21 +364,24 @@ The result is `3`, not `3.333`, because both operands are integers. Java perform
 **6. What is the difference between `++x` and `x++`?**
 `++x` (pre-increment) increments the value first, then returns the new value. `x++` (post-increment) returns the current value first, then increments. Example: if `x = 5`, `++x` returns 6, while `x++` returns 5 and x becomes 6.
 
-**7. What is the `var` keyword? When should you use it?**
-`var` (introduced in Java 10) lets the compiler infer the variable type from the right-hand side. Use it when the type is obvious (`var list = new ArrayList<String>()`). Avoid it when the type is not clear (`var result = getData()` — what type is `result`?).
-
-**8. Why is String immutable in Java?**
-Strings are immutable for security (sensitive data like passwords), caching (String pool), thread safety (no synchronization needed), and performance (hash code caching).
-
-**9. What is the difference between `float` and `double`?**
+**7. What is the difference between `float` and `double`?**
 `float` is 32-bit (precision ~7 decimal digits), requires the `f` suffix. `double` is 64-bit (precision ~15 decimal digits), is the default for decimal literals. For most calculations, `double` is preferred.
 
-**10. What are compound assignment operators? Give examples.**
+### Intermediate Questions
+
+**1. What is the `var` keyword? When should you use it?**
+`var` (introduced in Java 10) lets the compiler infer the variable type from the right-hand side. Use it when the type is obvious (`var list = new ArrayList<String>()`). Avoid it when the type is not clear (`var result = getData()` — what type is `result`?).
+
+**2. Why is String immutable in Java?**
+Strings are immutable for security (sensitive data like passwords), caching (String pool), thread safety (no synchronization needed), and performance (hash code caching).
+
+**3. What are compound assignment operators? Give examples.**
 Compound operators combine an operation with assignment: `+=`, `-=`, `*=`, `/=`, `%=`. Example: `x += 5` is equivalent to `x = x + 5`. They also include an implicit cast: `short s = 5; s += 2;` compiles, but `s = s + 2;` does not.
 
----
+**4. What is the difference between local, instance, and class (static) scope?**
+Local — declared inside a method/block, visible only there. Instance — a field, one copy per object. Class (static) — a field shared by all objects of the class.
 
-### Tricky Questions
+### Advanced Questions
 
 **1. What is the value of `2.0 - 1.1` in Java? Why?**
 It is not `0.9`. It will be something like `0.8999999999999999` due to floating-point precision errors. Binary floating point cannot represent `0.1` exactly. Always use `BigDecimal` for precise decimal arithmetic (money, calculations).
@@ -387,6 +395,41 @@ The designers chose to make String a class for flexibility: it can be interned (
 **4. What happens when you cast a large `long` value to `int`?**
 If the value exceeds the `int` range (−2³¹ to 2³¹−1), the bits are truncated and the result wraps around (overflow). Java does not throw an exception. Example: `(int) 3_000_000_000L` will produce a negative number.
 
-**5. Is it possible to change the value of a String after it is created?**
-No — strings are immutable by design. However, you can use reflection to modify the internal `char[]` array, but this breaks the contract and should never be done in real code. Use `StringBuilder` for mutable strings.
+**5. How does the Integer cache (-128 to 127) affect `==` on wrappers?**
+Within the cache range, `Integer.valueOf()` returns the same object, so `==` is `true`. Outside it, new objects are created and `==` is `false`. Always use `.equals()` for wrappers.
 
+### Code Questions
+
+**1. What does this print, and why?**
+
+```java
+Integer a = 127;
+Integer b = 127;
+Integer c = 128;
+Integer d = 128;
+System.out.println(a == b);
+System.out.println(c == d);
+System.out.println(c.equals(d));
+```
+
+Output: `true`, `false`, `true`. `a` and `b` hit the Integer cache (-128..127) → same object → `==` works. `c` and `d` are outside the cache → different objects → `==` fails, but `.equals()` compares content so it is `true`.
+
+**2. Will this compile? What happens at runtime?**
+
+```java
+Integer value = null;
+int x = value;
+```
+
+Compiles. At runtime throws `NullPointerException` — unboxing `null` calls `value.intValue()` on `null`. Common bug when reading from collections, DB results, or JSON parsing.
+
+**3. What does this print?**
+
+```java
+int[] arr1 = {1, 2, 3};
+int[] arr2 = arr1;
+arr2[0] = 99;
+System.out.println(arr1[0]);
+```
+
+Prints `99`. Arrays are reference types — `arr2 = arr1` copies the address, both point to the same array. Changing one changes the other.

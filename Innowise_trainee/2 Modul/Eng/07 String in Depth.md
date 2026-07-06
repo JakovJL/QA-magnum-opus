@@ -11,6 +11,10 @@
 - [[#String Formatting]]
 - [[#Basic Regular Expressions]]
 - [[#Interview Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
+	- [[#Advanced Questions]]
+	- [[#Code Questions]]
 
 **Related notes:** [[AQA Java eng]]
 
@@ -65,6 +69,23 @@ System.out.println(a == c);   // true — intern() returns the pooled version
 
 > [!tip] Practical Rule
 > Use literals (`"hello"`) whenever possible. Use `new String()` only when you explicitly need a separate object (which is almost never). Always compare with `.equals()`, never `==`.
+
+### Compile-Time Constant Folding
+
+When the compiler sees an expression made **only of literals and `final` constants**, it evaluates it at compile time and stores the single result in the pool. So `"ab" + "c"` becomes the same pooled `"abc"` as the literal `"abc"`:
+
+```java
+System.out.println("abc" == "ab" + "c");   // true — folded at compile time
+```
+
+But if part of the expression is a **variable** (not a compile-time constant), the concatenation happens at runtime and produces a new object:
+
+```java
+String a = "ab";
+System.out.println("abc" == a + "c");       // false — runtime concatenation
+```
+
+This is why `==` on Strings is unreliable: the result depends on how the strings were produced, not just on their content.
 
 ---
 
@@ -417,53 +438,99 @@ String number = price.replaceAll("[^\\d.]", "");  // "42.99"
 
 ## Interview Questions
 
-### Top 10
+### Beginner Questions
 
-**1. Why is String immutable in Java?**
+**Why is String immutable in Java?**
 For String Pool safety (shared references would corrupt if mutable), thread safety (no synchronization needed), security (sensitive strings can't be changed after checks), and performance (hashCode is cached). Immutability is enforced by `final` class + `private final` internal array.
 
-**2. What is the String Pool?**
+**What is the String Pool?**
 A special memory area where Java stores string literals. When you write `"hello"`, the JVM checks the pool first. If `"hello"` already exists, it returns the existing reference instead of creating a new object. This saves memory.
 
-**3. What is the difference between `==` and `.equals()` for Strings?**
+**What is the difference between `==` and `.equals()` for Strings?**
 `==` compares references (memory addresses). `.equals()` compares content (characters). Two strings with the same content may be different objects: `new String("a") == new String("a")` is `false`, but `.equals()` is `true`.
 
-**4. What is the difference between `StringBuilder` and `StringBuffer`?**
-Both are mutable character sequences. `StringBuilder` is not thread-safe but faster. `StringBuffer` is thread-safe (synchronized) but slower. Use `StringBuilder` in 99% of cases.
-
-**5. When should you use `StringBuilder` instead of `String` concatenation?**
-When concatenating in a loop or building text from many parts. `String` concatenation creates a new object each time. `StringBuilder` modifies in place. For simple `a + b + c` (no loop), the compiler optimizes it — `StringBuilder` is not needed.
-
-**6. What does `intern()` do?**
-`intern()` adds a string to the String Pool (or returns the existing pooled version). After `String s = new String("hi").intern();`, `s` points to the pooled `"hi"`. Useful in rare cases where you have many duplicate strings from external sources.
-
-**7. What is the difference between `trim()` and `strip()`?**
-`trim()` removes ASCII whitespace (characters <= ` `). `strip()` (Java 11+) removes all Unicode whitespace, including non-breaking spaces. `strip()` is the modern choice.
-
-**8. How does `split()` work? What is the gotcha?**
-`split(regex)` divides a string by a regex pattern. The gotcha: the argument is a regex, not a plain string. `"a.b".split(".")` returns an empty array because `.` means "any character" in regex. Use `split("\\.")` for a literal dot.
-
-**9. What are text blocks? (Java 15+)**
+**What are text blocks? (Java 15+)**
 Multi-line string literals using triple quotes (`"""`). They preserve line breaks and indentation, and strip common leading whitespace. Useful for JSON, SQL, HTML templates in tests.
 
-**10. What is `String.format()` used for?**
+**What is `String.format()` used for?**
 Creating strings with placeholders: `String.format("Name: %s, Age: %d", name, age)`. Placeholders: `%s` (String), `%d` (int), `%f` (float), `%.2f` (2 decimal places). Cleaner than concatenation for complex messages.
+
+### Intermediate Questions
+
+**What is the difference between `StringBuilder` and `StringBuffer`?**
+Both are mutable character sequences. `StringBuilder` is not thread-safe but faster. `StringBuffer` is thread-safe (synchronized) but slower. Use `StringBuilder` in 99% of cases.
+
+**When should you use `StringBuilder` instead of String concatenation?**
+When concatenating in a loop or building text from many parts. `String` concatenation creates a new object each time. `StringBuilder` modifies in place. For simple `a + b + c` (no loop), the compiler optimizes it — `StringBuilder` is not needed.
+
+**What is the difference between `trim()` and `strip()`?**
+`trim()` removes ASCII whitespace (characters <= ` `). `strip()` (Java 11+) removes all Unicode whitespace, including non-breaking spaces. `strip()` is the modern choice.
+
+**How does `split()` work? What is the gotcha?**
+`split(regex)` divides a string by a regex pattern. The gotcha: the argument is a regex, not a plain string. `"a.b".split(".")` returns an empty array because `.` means "any character" in regex. Use `split("\\.")` for a literal dot.
+
+**What does `intern()` do?**
+`intern()` adds a string to the String Pool (or returns the existing pooled version). After `String s = new String("hi").intern();`, `s` points to the pooled `"hi"`. Useful in rare cases where you have many duplicate strings from external sources.
+
+### Advanced Questions
+
+**How many String objects are created by `String s = new String("hello");`?**
+Up to two. The literal `"hello"` creates one object in the String Pool (if not already there). `new String(...)` creates a second object on the heap. The variable `s` references the heap object.
+
+**Is `"" + 5` valid? What happens?**
+Yes. The compiler converts it to `new StringBuilder().append("").append(5).toString()`, which produces `"5"`. Any type concatenated with a String becomes a String.
+
+**Why does `"abc" == "ab" + "c"` return `true`?**
+The compiler folds constant expressions at compile time. `"ab" + "c"` is made of literals, so it is evaluated to `"abc"` during compilation and the result uses the same pooled string. But `String a = "ab"; a + "c" == "abc"` is `false` — `a` is a variable, so the concatenation happens at runtime and creates a new object.
+
+**What happens if you call `split("")` on a string?**
+It splits every character: `"abc".split("")` returns `["a", "b", "c"]`. In Java 8+, this does not include a leading empty string (older Java versions did).
+
+### Code Questions
+
+```java
+String a = "hello";
+String b = "hello";
+String c = new String("hello");
+
+System.out.println(a == b);
+System.out.println(a == c);
+System.out.println(a.equals(c));
+```
+**What does this print?**
+**Answer:**
+```
+true
+false
+true
+```
+`a` and `b` reuse the same pooled literal, so `==` is `true`. `c` is a separate heap object from `new String(...)`, so `a == c` is `false`. `.equals()` compares content, so `a.equals(c)` is `true`.
 
 ---
 
-### Tricky Questions
+```java
+String name = "Alice";
+name.toUpperCase();
+System.out.println(name);
+```
+**What prints, and why?**
+**Answer:** It prints `Alice`. Strings are immutable, so `toUpperCase()` returns a **new** String and does not change `name`. You must capture the result: `name = name.toUpperCase();`.
 
-**1. How many String objects are created by `String s = new String("hello");`?**
-Up to two. The literal `"hello"` creates one object in the String Pool (if not already there). `new String(...)` creates a second object on the heap. The variable `s` references the heap object.
+---
 
-**2. Is `"" + 5` valid? What happens?**
-Yes. The compiler converts it to `new StringBuilder().append("").append(5).toString()`, which produces `"5"`. Any type concatenated with a String becomes a String.
+```java
+String log = "Order #123 and Order #456";
+String cleaned = log.replaceAll("#\\d+", "#XXX");
+System.out.println(cleaned);
 
-**3. Why does `"abc" == "ab" + "c"` return `true`?**
-The compiler optimizes constant expressions at compile time. `"ab" + "c"` is evaluated to `"abc"` during compilation, and the result uses the same pooled string. But `String a = "ab"; a + "c" == "abc"` is `false` — `a` is a variable, so the concatenation happens at runtime and creates a new object.
-
-**4. Can you change a String using reflection?**
-Technically yes — you can access the internal `char[]` (Java 8) or `byte[]` (Java 9+) via reflection. But this breaks the immutability contract, corrupts the String Pool, and should never be done. Java 9+ modules make this harder with access restrictions.
-
-**5. What happens if you call `split("")` on a string?**
-It splits every character: `"abc".split("")` returns `["a", "b", "c"]`. In Java 8+, this does not include a leading empty string (older Java versions did).
+String row = "alice,bob,kate";
+String[] users = row.split(",");
+System.out.println(users.length);
+```
+**What does this print?**
+**Answer:**
+```
+Order #XXX and Order #XXX
+3
+```
+`replaceAll` takes a regex, so `#\\d+` matches every "#digits" group. `split(",")` splits on each comma into three parts.

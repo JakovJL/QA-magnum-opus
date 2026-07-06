@@ -10,6 +10,10 @@
 - [[#Fields Methods and Constructors via Reflection]]
 - [[#Annotations and Reflection in AQA]]
 - [[#Interview Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
+	- [[#Advanced Questions]]
+	- [[#Code Questions]]
 
 **Related notes:** [[AQA Java eng]]
 
@@ -400,53 +404,130 @@ This can be useful in framework internals, but for beginner-level AQA code you s
 
 ## Interview Questions
 
-### Top 10
+### Beginner Questions
 
-**1. What is an annotation in Java?**  
+**1. What is an annotation in Java?**
 An annotation is metadata attached to code elements such as classes, methods, or fields. Tools, frameworks, or the compiler can read it and act on it.
 
-**2. What is reflection in Java?**  
+**2. What is reflection in Java?**
 Reflection is the ability of a program to inspect and interact with classes, fields, methods, and constructors at runtime.
 
-**3. What does `@Override` do?**  
+**3. What does `@Override` do?**
 It tells the compiler that the method should override a parent method. If it does not, compilation fails.
 
-**4. Why is `@Retention(RetentionPolicy.RUNTIME)` important?**  
-Because only runtime-retained annotations are available through reflection at runtime.
-
-**5. What is the difference between annotation and reflection?**  
-Annotation is metadata. Reflection is a mechanism to inspect and use code structure at runtime. Reflection can read annotations.
-
-**6. Can you create custom annotations?**  
+**4. Can you create custom annotations?**
 Yes. Java allows defining your own annotation types with optional values and meta-annotations.
 
-**7. What can reflection access?**  
+**5. What can reflection access?**
 Classes, fields, methods, constructors, interfaces, annotations, and more.
 
-**8. Why can reflection be dangerous?**  
-It is slower, bypasses some compile-time safety, and can make code harder to understand and maintain.
-
-**9. Where do you see annotations in testing frameworks?**  
+**6. Where do you see annotations in testing frameworks?**
 In JUnit annotations such as `@Test`, `@BeforeEach`, `@AfterEach`, and in custom tags or framework metadata.
 
-**10. When would you use reflection in practice?**  
+---
+
+### Intermediate Questions
+
+**1. What is the difference between annotation and reflection?**
+Annotation is metadata. Reflection is a mechanism to inspect and use code structure at runtime. Reflection can read annotations.
+
+**2. Why is `@Retention(RetentionPolicy.RUNTIME)` important?**
+Because only runtime-retained annotations are available through reflection at runtime. If a custom annotation is not retained at runtime, reflection will not see it.
+
+**3. Why can reflection be dangerous?**
+It is slower, bypasses some compile-time safety, and can make code harder to understand and maintain.
+
+**4. Does an annotation change code behavior by itself?**
+Usually no. It is only metadata. Behavior changes only when some tool, framework, or compiler processes it.
+
+**5. What is the difference between `getFields()` and `getDeclaredFields()`?**
+`getFields()` returns public fields including inherited ones. `getDeclaredFields()` returns all fields declared in the class itself, including private ones.
+
+**6. Why do many frameworks use reflection?**
+Because they need to inspect classes dynamically without hardcoding every class and method at compile time.
+
+**7. When would you use reflection in practice?**
 Mostly in frameworks, libraries, dependency injection, test runners, object mappers, and dynamic utility code.
 
 ---
 
-### Tricky Questions
+### Advanced Questions
 
-**1. Does an annotation change code behavior by itself?**  
-Usually no. It is only metadata. Behavior changes only when some tool, framework, or compiler processes it.
+**1. Can reflection access private fields and methods?**
+Yes, with `setAccessible(true)` in many cases, though this should be used carefully. It bypasses the private-access check so you can read or write private state.
 
-**2. Can reflection access private fields and methods?**  
-Yes, with `setAccessible(true)` in many cases, though this should be used carefully.
+**2. What are the common meta-annotations and what do they control?**
+| Meta-annotation | Controls |
+|---|---|
+| `@Target` | Where the annotation may be placed (method, field, type, ...) |
+| `@Retention` | How long it is kept (SOURCE / CLASS / RUNTIME) |
+| `@Documented` | Whether it appears in generated Javadoc |
+| `@Inherited` | Whether subclasses inherit the annotation |
 
-**3. What is the difference between `getFields()` and `getDeclaredFields()`?**  
-`getFields()` returns public fields including inherited ones. `getDeclaredFields()` returns all fields declared in the class itself, including private ones.
+`@Target` takes an `ElementType` value such as `TYPE`, `METHOD`, `FIELD`, `PARAMETER`, or `CONSTRUCTOR`.
 
-**4. Why do many frameworks use reflection?**  
-Because they need to inspect classes dynamically without hardcoding every class and method at compile time.
+**3. How does a test runner discover and run tests using annotations and reflection?**
+It loops over `clazz.getDeclaredMethods()`, keeps only the methods where `isAnnotationPresent(...)` is `true`, and `invoke()`s them. This is the same idea JUnit uses for `@Test`. The annotation must be retained at `RUNTIME` for reflection to see it.
 
-**5. Can reflection create objects dynamically?**  
-Yes. You can get a constructor and call `newInstance()` to create objects at runtime.
+**4. Can reflection create objects dynamically?**
+Yes. You get a constructor (e.g. via `clazz.getConstructor(String.class)`) and call `newInstance(...)` to create objects at runtime. This is how frameworks load page objects or data classes dynamically.
+
+---
+
+### Code Questions
+
+**1. What does this code print?**
+```java
+class User {
+    private String name = "Alice";
+}
+
+Field field = User.class.getDeclaredField("name");
+field.setAccessible(true);
+User user = new User();
+System.out.println(field.get(user));
+```
+**Answer:** `Alice`. `getDeclaredField("name")` grabs the private field, and `setAccessible(true)` bypasses the private-access check so `field.get(user)` can read its value.
+
+**2. What does this code print?**
+```java
+Class<?> clazz = ArrayList.class;
+System.out.println(clazz.getName());
+System.out.println(clazz.getSimpleName());
+```
+**Answer:**
+```
+java.util.ArrayList
+ArrayList
+```
+`getName()` returns the fully qualified name; `getSimpleName()` returns just the class name.
+
+**3. Will reflection find the annotation, and what does it print?**
+```java
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+@interface TestInfo {
+    String author();
+    int priority() default 1;
+}
+
+class LoginTests {
+    @TestInfo(author = "Ann", priority = 2)
+    public void checkoutTest() {}
+}
+
+Method m = LoginTests.class.getDeclaredMethod("checkoutTest");
+System.out.println(m.isAnnotationPresent(TestInfo.class));
+if (m.isAnnotationPresent(TestInfo.class)) {
+    TestInfo info = m.getAnnotation(TestInfo.class);
+    System.out.println(info.author());
+    System.out.println(info.priority());
+}
+```
+**Answer:**
+```
+true
+Ann
+2
+```
+The annotation is retained at `RUNTIME`, so reflection can see it. `isAnnotationPresent` confirms it, and `getAnnotation` returns the instance whose values (`author`, `priority`) can be read.

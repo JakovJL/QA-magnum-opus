@@ -11,6 +11,10 @@
 - [[#Maven vs Gradle]]
 - [[#Build Tools in AQA]]
 - [[#Interview Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
+	- [[#Advanced Questions]]
+	- [[#Code Questions]]
 
 **Related notes:** [[AQA Java eng]]
 
@@ -362,53 +366,85 @@ Build tools are central in automation projects.
 
 ## Interview Questions
 
-### Top 10
+### Beginner Questions
 
-**1. What is a build tool in Java?**  
+**1. What is a build tool in Java?**
 A build tool automates tasks such as dependency management, compilation, testing, packaging, and plugin execution.
 
-**2. What is Maven?**  
+**2. What is Maven?**
 Maven is a declarative Java build tool based on conventions and `pom.xml`.
 
-**3. What is Gradle?**  
+**3. What is Gradle?**
 Gradle is a flexible build tool that uses scripts and tasks to define the build.
 
-**4. What is a dependency?**  
+**4. What is a dependency?**
 An external library the project needs, for example JUnit or Selenium.
 
-**5. What is `pom.xml`?**  
+**5. What is `pom.xml`?**
 The main Maven configuration file where project coordinates, dependencies, plugins, and other settings are declared.
 
-**6. What is the Gradle wrapper?**  
-A project-provided script that runs Gradle with the correct version, so developers do not need to install the exact version manually.
-
-**7. What happens when you run `mvn test`?**  
-Maven runs all required earlier lifecycle phases and then executes the test phase.
-
-**8. What is the difference between Maven and Gradle?**  
-Maven is more standardized and convention-based. Gradle is more flexible and scriptable.
-
-**9. Why are build tools important in AQA?**  
-They manage automation dependencies, test execution, reports, and CI integration.
-
-**10. What is a plugin in a build tool?**  
+**6. What is a plugin in a build tool?**
 A plugin extends build functionality, for example running tests, generating reports, or checking code quality.
 
----
+### Intermediate Questions
 
-### Tricky Questions
+**1. What is the difference between Maven and Gradle?**
+Maven is more standardized and convention-based. Gradle is more flexible and scriptable.
 
-**1. Can a project work without Maven or Gradle?**  
-Yes, technically, but managing dependencies and build steps manually becomes hard very quickly.
+**2. What is the Gradle wrapper?**
+A project-provided script that runs Gradle with the correct version, so developers do not need to install the exact version manually.
 
-**2. Why is Maven often easier for beginners?**  
+**3. Why are build tools important in AQA?**
+They manage automation dependencies, test execution, reports, and CI integration.
+
+**4. What happens when you run `mvn test`?**
+Maven runs all required earlier lifecycle phases and then executes the test phase.
+
+### Advanced Questions
+
+**1. Why is Maven often easier for beginners?**
 Because it has strong conventions and predictable structure, so there are fewer decisions to make.
 
-**3. Why can Gradle be more powerful in complex projects?**  
+**2. Why can Gradle be more powerful in complex projects?**
 Because it is more programmable and flexible, so complex workflows can be modeled more easily.
 
-**4. What is the risk of unused dependencies?**  
+**3. What is the risk of unused dependencies?**
 They increase build size, can slow downloads, create conflicts, and make the project harder to maintain.
 
-**5. Why is it better to use repository-based dependencies than local jar files?**  
+**4. Why is it better to use repository-based dependencies than local jar files?**
 Because repository-based dependencies are versioned, repeatable, easier for CI, and easier for the whole team to manage.
+
+### Code Questions
+
+**1. What is the role of the highlighted `<scope>` in this `pom.xml` snippet?**
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter</artifactId>
+        <version>5.10.2</version>
+        <scope>test</scope>
+    </dependency>
+</dependencies>
+```
+
+**Answer:** `<scope>test</scope>` means JUnit is available only on the test classpath and is not included in the final build. This is how Maven keeps test-only libraries out of production runtime.
+
+**2. This Gradle config declares a dependency. What does `testImplementation` mean compared to Maven's `compile`?**
+
+```groovy
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+}
+```
+
+**Answer:** `testImplementation` is the Gradle equivalent of Maven's `<scope>test</scope>` — the dependency is available to test code only, not to main code or the final build.
+
+**3. A developer runs `mvn test` but the project has never been compiled. Will it fail?**
+
+```bash
+mvn test
+```
+
+**Answer:** No. Maven follows the standard lifecycle and runs all earlier phases before `test`, so it compiles the code first and then runs the tests.

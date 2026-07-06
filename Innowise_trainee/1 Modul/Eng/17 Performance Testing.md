@@ -14,8 +14,10 @@
 - [[#Performance Test Tools]]
 - [[#Performance Tests Using Postman]]
 - [[#Interview Questions]]
-	- [[#Top 10]]
-	- [[#Tricky Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
+	- [[#Advanced Questions]]
+	- [[#Code Questions]]
 
 **Related notes:** [[QA manual eng]]
 
@@ -176,53 +178,79 @@ Postman is primarily an API client (→ see [[09 API Testing Basics]]), but it i
 
 ## Interview Questions
 
-### Top 10
+### Beginner Questions
 
 **1. What is performance testing?**
 Performance testing checks how a system behaves under a given workload — how fast it responds, how much load it handles, and how stable it stays over time. It is non-functional: it asks "how well does it work?", not "does it work?".
 
-**2. What is the difference between functional and performance testing?**
-Functional testing checks correctness — the right result. Performance testing checks behavior under load — speed and stability. A feature can be 100% correct and still fail performance if it responds too slowly.
-
-**3. What is the difference between load and stress testing?**
-Load testing applies an expected, normal level of load to confirm the system meets its targets. Stress testing pushes the system beyond its capacity until it breaks, to find the breaking point and see how it fails and recovers.
-
-**4. What is spike testing?**
+**2. What is spike testing?**
 Applying a sudden, sharp increase in load for a short time — for example jumping from 100 to 5,000 users in seconds — to check how the system handles a fast surge like a flash sale.
 
-**5. What is endurance (soak) testing?**
+**3. What is endurance (soak) testing?**
 Applying a normal load over a long period (hours or days) to find problems that appear only over time, such as memory leaks or gradual performance degradation.
 
-**6. What are the key performance metrics?**
-Response time, latency, throughput (requests per second), error rate, concurrent users, and CPU/memory usage. These quantify how fast and stable the system is under load.
-
-**7. Why use percentiles instead of averages?**
-An average hides outliers. If the average is 200 ms but the 95th percentile is 4 seconds, 5% of users have a bad experience. Percentiles (p90/p95/p99) reveal the slow tail that averages mask.
-
-**8. What is throughput?**
+**4. What is throughput?**
 Throughput is the number of requests the system processes per unit of time, usually requests per second (RPS). It measures the system's capacity to handle work.
 
-**9. Name some performance testing tools.**
-Apache JMeter (free, very popular), k6 (JavaScript, CI-friendly), Gatling (Scala), Locust (Python), and LoadRunner (commercial). Postman can do a basic performance run for quick checks.
+---
 
-**10. What are the main steps of a performance test?**
+### Intermediate Questions
+
+**1. What is the difference between functional and performance testing?**
+Functional testing checks correctness — the right result. Performance testing checks behavior under load — speed and stability. A feature can be 100% correct and still fail performance if it responds too slowly.
+
+**2. What is the difference between load and stress testing?**
+Load testing applies an expected, normal level of load to confirm the system meets its targets. Stress testing pushes the system beyond its capacity until it breaks, to find the breaking point and see how it fails and recovers.
+
+**3. What are the key performance metrics?**
+Response time, latency, throughput (requests per second), error rate, concurrent users, and CPU/memory usage. These quantify how fast and stable the system is under load.
+
+**4. Why use percentiles instead of averages?**
+An average hides outliers. If the average is 200 ms but the 95th percentile is 4 seconds, 5% of users have a bad experience. Percentiles (p90/p95/p99) reveal the slow tail that averages mask.
+
+**5. What are the main steps of a performance test?**
 Define requirements/targets, identify key scenarios, prepare a production-like environment and realistic data, create the scripts, run from a baseline upward, analyze results against targets to find bottlenecks, then report and retest.
 
 ---
 
-### Tricky Questions
+### Advanced Questions
 
-**1. The performance test passed on your laptop. Can you trust the numbers for production?**
-No. Performance results are valid only for the environment they ran in. A laptop does not reflect production hardware, network, or data volume. You must run in a production-like environment and state the environment with every result.
-
-**2. Average response time is 200 ms and the team says performance is fine. What might they be missing?**
+**1. Average response time is 200 ms and the team says performance is fine. What might they be missing?**
 The average hides the tail. The p95 or p99 could be several seconds, meaning a meaningful share of users have a poor experience. Always check percentiles and the error rate, not just the average.
 
-**3. Is a performance test useful if you have no defined targets?**
+**2. Is a performance test useful if you have no defined targets?**
 Not really. Without targets (e.g. "p95 under 2s at 1,000 users") you cannot say whether the result is a pass or a fail — you only have numbers with no meaning. Requirements must be defined first.
 
-**4. Can you run a serious load test with thousands of users in Postman?**
-No. Postman's performance run is fine for a quick smoke check on an existing collection, but it is not built for large-scale load, complex scenarios, or detailed reporting. Use JMeter, k6, or Gatling for serious load testing.
-
-**5. Response time is good but the error rate rises sharply as load increases. What does that tell you?**
+**3. Response time is good but the error rate rises sharply as load increases. What does that tell you?**
 The system is hitting a capacity limit — it may be running out of resources (connections, memory, threads) and rejecting requests rather than slowing down. A low response time alone is misleading if many requests are failing; you must read it together with the error rate.
+
+---
+
+### Code Questions
+
+**1. Scenario — the performance test passed on your laptop with 1,000 simulated users. Can you trust these numbers for production? What is missing?**
+
+```text
+Laptop run:    1000 users, avg 200 ms, error rate 0%
+Concern:       results valid only for THIS environment
+```
+
+**Answer:** No. Performance results are valid only for the environment they ran in. A laptop does not reflect production hardware, network, or data volume. You must run in a production-like environment and state the environment with every result.
+
+**2. Scenario — you ran a load test and got these numbers. Is the system performing well? What additional metric would you check before deciding?**
+
+```text
+Average response time:  200 ms
+Throughput:             500 req/s
+```
+
+**Answer:** The average alone is not enough. Check the percentiles (p95/p99) — if p95 is several seconds, 5% of users have a bad experience the average hides. Also check the error rate: a low average response time is misleading if many requests are failing.
+
+**3. Scenario — you need a quick performance smoke check on an existing API collection, then a serious load test with thousands of users. Which tool do you use for each, and why?**
+
+```text
+Quick check:  Postman (Run collection -> Performance)
+Serious load: JMeter / k6 / Gatling
+```
+
+**Answer:** Postman's performance run is fine for a quick smoke check on an existing collection with no extra setup, but it is not built for large-scale load, complex scenarios, or detailed reporting. For thousands of users use JMeter, k6, or Gatling.

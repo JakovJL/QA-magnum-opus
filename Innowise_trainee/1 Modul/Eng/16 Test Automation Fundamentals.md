@@ -11,8 +11,10 @@
 - [[#CI/CD and Automation]]
 - [[#Common Mistakes]]
 - [[#Interview Questions]]
-	- [[#Top 10]]
-	- [[#Tricky Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
+	- [[#Advanced Questions]]
+	- [[#Code Questions]]
 
 **Related notes:** [[QA manual eng]]
 
@@ -124,7 +126,7 @@ Automation tools are chosen by test layer and project stack.
 
 An **automation framework** is the project structure around these tools: test runner, configuration, page objects or API clients, test data, logs, and reports.
 
-→ see [[Automation Framework Architecture]] for framework structure in Module 2.
+→ see [[20 Automation Framework Architecture]] for framework structure in Module 2.
 
 ---
 
@@ -186,7 +188,7 @@ A test run is only useful if people can understand the result quickly. A good re
 
 ## Interview Questions
 
-### Top 10
+### Beginner Questions
 
 **1. What is test automation?**
 Test automation uses software to run tests automatically, compare the result to the expected outcome, and report pass or fail — without a human repeating the steps. Its goal is fast, repeatable, reliable checks.
@@ -194,45 +196,79 @@ Test automation uses software to run tests automatically, compare the result to 
 **2. Does automation replace manual testing?**
 No. Automation is good at repeatedly checking known things; humans are good at exploring, judging usability, and finding the unexpected. A healthy project uses both.
 
-**3. What should you automate and what should you not?**
-Automate stable, repetitive, high-value tests — regression, smoke, data-driven cases. Do not automate one-off tests, frequently-changing features, or usability/exploratory testing where the result is subjective.
-
-**4. What is the automation pyramid?**
+**3. What is the automation pyramid?**
 A model showing how many tests of each type to have: many fast cheap unit tests at the bottom, some API/integration tests in the middle, and few slow expensive UI/E2E tests at the top.
 
-**5. What is the ice-cream-cone anti-pattern?**
+**4. What is the ice-cream-cone anti-pattern?**
 The inverted pyramid — most tests at the UI level and few unit tests. It makes the suite slow, flaky, and expensive to maintain, and should be avoided.
 
-**6. Why are flaky tests dangerous?**
+---
+
+### Intermediate Questions
+
+**1. What should you automate and what should you not?**
+Automate stable, repetitive, high-value tests — regression, smoke, data-driven cases. Do not automate one-off tests, frequently-changing features, or usability/exploratory testing where the result is subjective.
+
+**2. Why are flaky tests dangerous?**
 A test that randomly passes and fails without a real bug destroys trust in the suite. People start ignoring red builds, and real failures get missed. Flaky tests must be fixed or quarantined immediately.
 
-**7. What is the role of CI/CD in automation?**
+**3. What is the role of CI/CD in automation?**
 CI/CD runs the automated tests on every commit or pull request, catching bugs early and blocking broken changes from merging. Automation has real value only when it runs automatically, not manually.
 
-**8. What are good practices for writing automated tests?**
+**4. What are good practices for writing automated tests?**
 Keep tests independent, use clear names, test behavior rather than implementation, use simple test data, prefer smart waits over hard sleeps, and use strong assertions on the actual expected result.
 
-**9. What makes a good test report?**
+**5. What makes a good test report?**
 It shows totals (passed/failed/skipped), the name and reason for each failure, and logs or screenshots for failed UI tests. If you cannot tell why a test failed from the report, the report is incomplete.
 
-**10. How do you start automation on a new project?**
+**6. How do you start automation on a new project?**
 Define the goal, pick a small high-value scope (often smoke tests), choose tools that match the layer and stack, set up the framework and reporting, write simple reliable tests, run them in CI, and maintain them.
 
 ---
 
-### Tricky Questions
+### Advanced Questions
 
-**1. A test passes locally but fails in CI. What could be the cause?**
-Differences in environment — browser version, screen size, timing, test data, or parallel execution. It can also be a hidden dependency on local state. The fix is to make tests independent and environment-agnostic, and to reproduce the CI conditions.
-
-**2. Management wants to automate 100% of test cases. Is that a good idea?**
+**1. Management wants to automate 100% of test cases. Is that a good idea?**
 No. Some tests are not worth the maintenance cost — one-off cases, fast-changing features, and subjective usability checks. Automation should target stable, repetitive, high-value tests; chasing 100% wastes effort and creates a fragile suite.
 
-**3. Your UI test suite is slow and breaks often. How do you improve it?**
+**2. Your UI test suite is slow and breaks often. How do you improve it?**
 Move checks down the pyramid — cover business logic with fast unit and API tests, and keep only the most important user journeys at the UI level. Replace hard sleeps with smart waits and stabilize locators. This addresses the ice-cream-cone problem.
 
-**4. A test uses `Thread.sleep(5000)` and works. Why change it?**
-Fixed sleeps make tests slow (they always wait the full time) and flaky (the element may still not be ready, or be ready much sooner). Use an explicit wait for the actual condition instead — faster and more reliable.
-
-**5. All your tests are green, but bugs still reach production. What might be wrong?**
+**3. All your tests are green, but bugs still reach production. What might be wrong?**
 The tests may have weak assertions (only checking "page loaded"), cover the wrong areas, or rely on the same flawed assumptions as the code. Green does not mean correct — review what the tests actually verify and add coverage for the missed scenarios.
+
+---
+
+### Code Questions
+
+**1. Scenario — a test passes on your machine but fails in CI. Investigate the likely causes.**
+
+```text
+Possible causes:
+- Different browser version or screen size in CI
+- Timing / network differences
+- Different test data
+- Parallel execution in CI that exposes a hidden dependency on local state
+```
+
+What would you change to make the test reliable? **Answer:** Make tests independent (each sets up its own data) and environment-agnostic, and reproduce the CI conditions locally. A hidden dependency on local state is the usual culprit.
+
+**2. Scenario — a test uses a hard-coded wait and works. Why should it be changed, and to what?**
+
+```text
+Current:  sleep(5000)              // always waits 5 seconds
+Better:   wait until element is visible/clickable
+```
+
+**Answer:** A fixed sleep makes the test slow (it always waits the full time) and flaky (the element may still not be ready, or be ready much sooner). Use an explicit wait for the actual condition instead — faster and more reliable.
+
+**3. Scenario — your suite has 200 UI tests and 10 unit tests, and runs for an hour. Redesign it using the automation pyramid. What do you do?**
+
+```text
+Plan:
+- Move business-logic checks down to unit and API tests
+- Keep only the most important user journeys at the UI level
+- Stabilize locators and replace hard sleeps with smart waits
+```
+
+**Answer:** This is the ice-cream-cone anti-pattern. Push most checks to fast unit/API tests and keep only critical UI journeys, so the suite becomes faster, cheaper, and less flaky.

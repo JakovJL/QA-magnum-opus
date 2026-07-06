@@ -8,6 +8,11 @@
 - [[#Enum in switch]]
 - [[#Enum Utility Methods]]
 - [[#Enums in Practice]]
+- [[#Interview Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
+	- [[#Advanced Questions]]
+	- [[#Code Questions]]
 
 **Related notes:** [[AQA Java eng]]
 
@@ -247,53 +252,109 @@ public enum Priority implements Describable {
 
 ## Interview Questions
 
-### Top 10
+### Beginner Questions
 
-**1. What is an enum in Java?**
+**What is an enum in Java?**
 An enum is a special class that represents a fixed set of constants. Each constant is a `public static final` instance of the enum class. Enums provide type safety — the compiler ensures only declared values are used.
 
-**2. Can an enum have fields, methods, and constructors?**
+**Can an enum have fields, methods, and constructors?**
 Yes. Enums can have private fields, public methods, and constructors. The constructor is always private (implicitly). Each constant can pass arguments to the constructor, and each carries its own data.
 
-**3. What is the difference between `name()` and `toString()` for an enum?**
-`name()` always returns the exact constant name as declared (e.g., `"CHROME"`). `toString()` returns the same by default, but can be overridden to return a human-friendly string. `valueOf()` relies on `name()`, not `toString()`.
-
-**4. What does `values()` return?**
+**What does `values()` return?**
 A new array containing all constants of the enum, in the order they are declared. It is often used for iteration or validation.
 
-**5. How do you safely convert a String to an enum?**
-`Browser.valueOf("CHROME")` works if the string matches exactly. It throws `IllegalArgumentException` for unknown values. For safe conversion, wrap it in a try-catch or write a helper that iterates `values()`.
+**Can enums be used in switch statements?**
+Yes, and this is one of their primary use cases. The compiler checks that all cases are covered (in enhanced switch), which prevents bugs when new constants are added.
 
-**6. Can an enum implement an interface?**
-Yes. Enums can implement any number of interfaces. Each constant can provide its own implementation. This is useful for strategy-like patterns.
-
-**7. Can an enum extend a class?**
+**Can an enum extend a class?**
 No. Every enum already extends `java.lang.Enum` implicitly. Java does not allow multiple inheritance, so an enum cannot extend another class.
 
-**8. Why use enums instead of String or int constants?**
+### Intermediate Questions
+
+**What is the difference between `name()` and `toString()` for an enum?**
+`name()` always returns the exact constant name as declared (e.g., `"CHROME"`). `toString()` returns the same by default, but can be overridden to return a human-friendly string. `valueOf()` relies on `name()`, not `toString()`.
+
+**How do you safely convert a String to an enum?**
+`Browser.valueOf("CHROME")` works if the string matches exactly. It throws `IllegalArgumentException` for unknown values. For safe conversion, wrap it in a try-catch or write a helper that iterates `values()`.
+
+**Can an enum implement an interface?**
+Yes. Enums can implement any number of interfaces. Each constant can provide its own implementation. This is useful for strategy-like patterns.
+
+**Why use enums instead of String or int constants?**
 Type safety (compiler catches invalid values), no typos, auto-complete in IDE, ability to attach data and behavior, `values()` for listing all options.
 
-**9. Is it possible to create new enum instances at runtime?**
+### Advanced Questions
+
+**What happens if you compare enums with `==`?**
+It works correctly. Since each constant is a singleton instance, `==` compares identity, which is the same as logical equality. In fact, `==` is preferred over `.equals()` for enums because it is null-safe: `null == Browser.CHROME` returns `false`, while `null.equals(Browser.CHROME)` throws `NullPointerException`.
+
+**Is it possible to create new enum instances at runtime?**
 No. The set of instances is fixed at compile time. You cannot use `new`, reflection, or deserialization to create new instances. This makes enums inherently singleton-per-value.
 
-**10. Can enums be used in switch statements?**
-Yes, and this is one of their primary use cases. The compiler checks that all cases are covered (in enhanced switch), which prevents bugs when new constants are added.
+**Can an enum have an abstract method?**
+Yes. If an enum declares an abstract method, every constant must implement it. This is how you give each constant unique behavior without an interface.
+
+**Why is the enum constructor always private, and why are enums effectively singletons per constant?**
+The JVM creates exactly one instance per declared constant when the enum class is loaded, and the private constructor prevents anyone (including the enum itself after load) from creating more. This is what enforces the "fixed closed set" guarantee — there is no way to add a new value at runtime.
+
+### Code Questions
+
+```java
+public enum Season {
+    SPRING, SUMMER, AUTUMN, WINTER
+}
+
+Season current = Season.SUMMER;
+System.out.println(current);
+System.out.println(current.name());
+System.out.println(current.ordinal());
+```
+**What does this print?**
+**Answer:**
+```
+SUMMER
+SUMMER
+1
+```
+`toString()` defaults to the constant name, `name()` returns the exact declared name, and `ordinal()` returns the zero-based position (`SPRING`=0, `SUMMER`=1).
 
 ---
 
-### Tricky Questions
+```java
+String config = "chrome";
+Browser b = Browser.valueOf(config);
+System.out.println(b.getDriverName());
+```
+**Will this run? If not, what exception is thrown and how do you fix it?**
+**Answer:** It throws `IllegalArgumentException`. `valueOf()` is case-sensitive and requires the exact constant name `"CHROME"`, not `"chrome"`. Fix by passing the exact name, or by writing a helper that iterates `Browser.values()` and compares case-insensitively.
 
-**1. What happens if you compare enums with `==`?**
-It works correctly. Since each constant is a singleton instance, `==` compares identity, which is the same as logical equality. In fact, `==` is preferred over `.equals()` for enums because it is null-safe: `null == Browser.CHROME` returns `false`, while `null.equals(Browser.CHROME)` throws `NullPointerException`.
+---
 
-**2. Can an enum have an abstract method?**
-Yes. If an enum declares an abstract method, every constant must implement it. This is how you give each constant unique behavior without an interface.
+```java
+public enum Browser {
+    CHROME("chromedriver", 10),
+    FIREFOX("geckodriver", 15),
+    EDGE("msedgedriver", 10);
 
-**3. Are enums thread-safe?**
-Enum constants are created when the class is loaded — this is inherently thread-safe in Java. Enum fields marked `final` are safely published. However, if an enum has mutable state (non-final fields), that state is not automatically thread-safe.
+    private final String driverName;
+    private final int defaultTimeout;
 
-**4. Can an enum be serialized?**
-Yes, and serialization is handled specially. The JVM serializes only the constant's `name()` and recreates it via `valueOf()` on deserialization. This means enum singletons survive serialization, unlike regular classes.
+    Browser(String driverName, int defaultTimeout) {
+        this.driverName = driverName;
+        this.defaultTimeout = defaultTimeout;
+    }
+    public String getDriverName() { return driverName; }
+    public int getDefaultTimeout() { return defaultTimeout; }
+}
 
-**5. What is `EnumSet` and why use it instead of `HashSet<MyEnum>`?**
-`EnumSet` is a specialized `Set` implementation for enums. Internally it uses a bit vector, making it extremely fast and memory-efficient. Example: `EnumSet.of(Browser.CHROME, Browser.FIREFOX)`.
+Browser b = Browser.FIREFOX;
+System.out.println(b.getDriverName());
+System.out.println(b.getDefaultTimeout());
+```
+**What prints?**
+**Answer:**
+```
+geckodriver
+15
+```
+Each constant passes its own arguments to the private constructor, so `FIREFOX` stores its `driverName` ("geckodriver") and `defaultTimeout` (15).

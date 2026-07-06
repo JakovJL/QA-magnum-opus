@@ -10,6 +10,11 @@
 - [[#Getters and Setters]]
 - [[#The toString Method]]
 - [[#equals() and hashCode()]]
+- [[#Interview Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
+	- [[#Advanced Questions]]
+	- [[#Code Questions]]
 
 **Related notes:** [[AQA Java eng]]
 
@@ -418,54 +423,112 @@ public int hashCode() {
 
 ## Interview Questions
 
-### Top 10
+### Beginner Questions
 
-**1. What is the difference between a class and an object?**
+**What is the difference between a class and an object?**
 A class is a blueprint or template that defines the structure (fields) and behavior (methods) of something. An object is a specific instance of a class created with the `new` keyword. One class can produce many independent objects.
 
-**2. What is a constructor? Can it return a value?**
+**What is a constructor? Can it return a value?**
 A constructor is a special method that initializes an object when it is created with `new`. It has the same name as the class and no return type (not even `void`). It cannot return a value.
 
-**3. What is constructor overloading and constructor chaining?**
-Constructor overloading means having multiple constructors with different parameter lists. Constructor chaining is calling one constructor from another using `this(...)` — it avoids duplicating initialization code.
-
-**4. What does the `this` keyword refer to?**
-`this` refers to the current object — the object whose method or constructor is being called. It is used to distinguish fields from parameters (`this.name = name`), to call another constructor (`this(params)`), and to return the current object.
-
-**5. What is the difference between `static` and instance members?**
-Static members belong to the class itself and are shared by all instances. They are accessed via the class name (`ClassName.field`). Instance members belong to each individual object and require an instance to access. Static methods cannot access instance fields directly.
-
-**6. What is encapsulation? Why is it important?**
+**What is encapsulation? Why is it important?**
 Encapsulation is hiding internal data and exposing it only through public methods. It protects the object's state from invalid values and reduces coupling between components. Achieved by marking fields `private` and providing public getters/setters.
 
-**7. What are access modifiers in Java? List them from most to least restrictive.**
+**What are access modifiers in Java? List them from most to least restrictive.**
 `private` (class only), default/package-private (package only), `protected` (package + subclasses), `public` (everywhere).
 
-**8. What is the purpose of getters and setters?**
-Getters provide controlled read access to private fields. Setters provide controlled write access — they can validate data, perform transformations, or trigger side effects. Without setters, direct field access could set invalid values like `user.age = -5`.
-
-**9. What is the `toString()` method and why override it?**
+**What is the `toString()` method and why override it?**
 `toString()` is inherited from `Object` and returns a default string representation (class name + hash code). Overriding it provides meaningful information about the object's state, which is useful for debugging and logging.
 
-**10. What is a static constant? How is it declared?**
+**What is a static constant? How is it declared?**
 A static constant is a class-level value that cannot change. Declared as `public static final TYPE NAME = value;` — e.g., `public static final int MAX_SIZE = 100;`. The convention is UPPER_SNAKE_CASE.
+
+### Intermediate Questions
+
+**What is constructor overloading and constructor chaining?**
+Constructor overloading means having multiple constructors with different parameter lists. Constructor chaining is calling one constructor from another using `this(...)` — it avoids duplicating initialization code.
+
+**What does the `this` keyword refer to?**
+`this` refers to the current object — the object whose method or constructor is being called. It is used to distinguish fields from parameters (`this.name = name`), to call another constructor (`this(params)`), and to return the current object.
+
+**What is the difference between `static` and instance members?**
+Static members belong to the class itself and are shared by all instances. They are accessed via the class name (`ClassName.field`). Instance members belong to each individual object and require an instance to access. Static methods cannot access instance fields directly.
+
+**What is the purpose of getters and setters?**
+Getters provide controlled read access to private fields. Setters provide controlled write access — they can validate data, perform transformations, or trigger side effects. Without setters, direct field access could set invalid values like `user.age = -5`.
+
+**What is the difference between `==` and `.equals()` for objects?**
+`==` compares references (whether two variables point to the same object in memory). `.equals()`, inherited from `Object`, also compares references by default — but when overridden, it compares content. So `new User("a") == new User("a")` is `false`, and with a proper `equals()` override `.equals()` returns `true`.
+
+**Why should you override `hashCode()` when you override `equals()`?**
+The contract says equal objects must have the same hash code. `HashMap` and `HashSet` use `hashCode()` to find the bucket. If two equal objects have different hash codes, the collection puts them in different buckets and can never find one by the other — `contains()` returns `false` even for an equal object.
+
+### Advanced Questions
+
+**What happens if you do not write any constructor in a class?**
+Java automatically provides a default no-arg constructor that takes no parameters and does nothing (`public ClassName() { }`). It initializes all fields to their default values (0 for numbers, null for objects).
+
+**What happens if you write at least one constructor? Does the default constructor still exist?**
+No. Once you define any constructor, the default constructor is NOT automatically provided. If you still need a no-arg constructor, you must write it explicitly. This is a common mistake — extending a class whose parent only has a parameterized constructor causes a compile error.
+
+**Can a static method access non-static fields? Why?**
+No. A static method does not belong to any specific object. Since non-static fields require an object to exist, the static method has no object to access. The compiler error is: "Cannot make a static reference to the non-static field".
+
+**Can you use `this` inside a static method?**
+No. `this` refers to the current object. Static methods are not associated with any object, so there is no `this` available.
+
+**What is the initialization order when a class is loaded and an object is created?**
+Static fields and blocks run first, strictly top to bottom, when the class is loaded (once). Then, for each `new`: instance fields, instance blocks, and finally the constructor — all top to bottom. With inheritance, parent static runs before child static, then parent instance+constructor, then child instance+constructor.
+
+**What happens if a checked exception is thrown inside a static block?**
+Checked exceptions inside static blocks must be caught within the block. Unchecked exceptions are wrapped in `ExceptionInInitializerError`.
+
+### Code Questions
+
+```java
+public class Counter {
+    static int totalCount = 0;
+    int instanceCount = 0;
+
+    public Counter() {
+        totalCount++;
+        instanceCount++;
+    }
+}
+
+Counter c1 = new Counter();
+Counter c2 = new Counter();
+System.out.println(Counter.totalCount);
+System.out.println(c1.instanceCount);
+System.out.println(c2.instanceCount);
+```
+**What does this print?**
+**Answer:** `2`, then `1`, then `1`. `totalCount` is static and shared, so it reaches 2. `instanceCount` is per-object, so each instance has its own copy set to 1.
 
 ---
 
-### Tricky Questions
+```java
+User a = new User("Alice", 25);
+User b = new User("Alice", 25);
+System.out.println(a == b);
+System.out.println(a.equals(b));
+```
+**Assume `equals()` is NOT overridden. What prints? What changes after overriding it?**
+**Answer:** Without override, both `==` and `equals()` use reference comparison, so `false` and `false`. After overriding `equals()` to compare `name` and `age`, `a == b` is still `false` but `a.equals(b)` becomes `true`.
 
-**1. What happens if you do not write any constructor in a class?**
-Java automatically provides a default no-arg constructor that takes no parameters and does nothing (`public ClassName() { }`). It initializes all fields to their default values (0 for numbers, null for objects).
+---
 
-**2. What happens if you write at least one constructor? Does the default constructor still exist?**
-No. Once you define any constructor, the default constructor is NOT automatically provided. If you still need a no-arg constructor, you must write it explicitly. This is a common mistake — extending a class whose parent only has a parameterized constructor causes a compile error.
+```java
+public class Demo {
+    static int a = 1;
+    static { System.out.println("static: b=" + b); }
+    static int b = 2;
 
-**3. Can a static method access non-static fields? Why?**
-No. A static method does not belong to any specific object. Since non-static fields require an object to exist, the static method has no object to access. The compiler error is: "Cannot make a static reference to the non-static field".
-
-**4. Can you use `this` inside a static method?**
-No. `this` refers to the current object. Static methods are not associated with any object, so there is no `this` available.
-
-**5. What is the difference between `public` fields with direct access and private fields with getters/setters?**
-Public fields offer no control — anyone can set `product.price = -100;`. Getters/setters let you add validation, logging, or computed values. They also let you change internal implementation without breaking external code (encapsulation principle).
+    public static void main(String[] args) {
+        new Demo();
+    }
+}
+```
+**What prints, and why?**
+**Answer:** `static: b=0`. Static fields and blocks run top to bottom at class load. The block runs before `b` is assigned its value of 2, so `b` still holds the default `0`.
 

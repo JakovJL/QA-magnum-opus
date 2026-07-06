@@ -10,6 +10,11 @@
 - [[#Abstract Classes]]
 - [[#Polymorphism]]
 - [[#instanceof Operator]]
+- [[#Interview Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
+	- [[#Advanced Questions]]
+	- [[#Code Questions]]
 
 **Related notes:** [[AQA Java eng]]
 
@@ -274,54 +279,122 @@ if (payment instanceof CreditCardPayment cc) {
 
 ## Interview Questions
 
-### Top 10
+### Beginner Questions
 
-**1. What is inheritance in Java? What keyword is used?**
+**What is inheritance in Java? What keyword is used?**
 Inheritance allows a child class to reuse fields and methods from a parent class. The keyword is `extends`. Java supports single inheritance — a class can extend only one parent class.
 
-**2. What is the difference between method overloading and method overriding?**
-Overloading — same name, different parameters, in the same class (compile-time polymorphism). Overriding — same signature, in a child class, redefines the parent method (runtime polymorphism).
-
-**3. What does the `super` keyword do?**
+**What does the `super` keyword do?**
 `super` refers to the parent class. It is used to: (1) call the parent constructor (`super(params)` — must be the first line in the child constructor), (2) access the parent's methods when overridden (`super.methodName()`).
 
-**4. What is the difference between an abstract class and a concrete class?**
+**What is the difference between an abstract class and a concrete class?**
 An abstract class (declared with `abstract`) cannot be instantiated directly. It can contain abstract methods (no body) that children must implement. A concrete class can be instantiated and must implement all inherited abstract methods.
 
-**5. What is the `@Override` annotation? Why use it?**
+**What is the `@Override` annotation? Why use it?**
 `@Override` tells the compiler that a method is intended to override a parent method. It is optional but highly recommended because the compiler catches errors like typos in the method name or wrong parameter types.
 
-**6. What is polymorphism? Give an example.**
+**What is polymorphism? Give an example.**
 Polymorphism means "many forms" — the same method call behaves differently based on the actual object type at runtime. Example: `Animal a = new Dog(); a.makeSound();` calls `Dog`'s version of `makeSound()`, not `Animal`'s.
 
-**7. What does the `final` keyword do when applied to a method? A class? A variable?**
+**What does the `final` keyword do when applied to a method? A class? A variable?**
 `final` method — cannot be overridden by children. `final` class — cannot be extended (inherited). `final` variable — cannot be reassigned (constant).
 
-**8. Why doesn't Java support multiple class inheritance?**
-To avoid the "diamond problem": if two parent classes have the same method, the child does not know which version to inherit. Java solves this with interfaces — a class can implement multiple interfaces.
-
-**9. What is the `instanceof` operator?**
+**What is the `instanceof` operator?**
 `instanceof` checks if an object is an instance of a specific class, subclass, or interface. It returns `boolean`. Used before casting to avoid `ClassCastException`.
 
-**10. What is the difference between `extends` and `implements`?**
+### Intermediate Questions
+
+**What is the difference between method overloading and method overriding?**
+Overloading — same name, different parameters, in the same class (compile-time polymorphism). Overriding — same signature, in a child class, redefines the parent method (runtime polymorphism).
+
+**What is the difference between `extends` and `implements`?**
 `extends` is for class-to-class (or interface-to-interface) inheritance. A class can extend only one class. `implements` is for a class to fulfill an interface contract. A class can implement multiple interfaces.
+
+**Why doesn't Java support multiple class inheritance?**
+To avoid the "diamond problem": if two parent classes have the same method, the child does not know which version to inherit. Java solves this with interfaces — a class can implement multiple interfaces.
+
+**Why is overusing `instanceof` considered bad design?**
+Because it bypasses polymorphism. Instead of checking the type and casting manually (`if (animal instanceof Dog) { ((Dog) animal).bark(); }`), you should let the object do the work (`animal.makeSound()`). Overusing `instanceof` means your hierarchy probably needs redesign.
+
+**Can a constructor be `final`? Can it be `static`?**
+No to both. Constructors are not regular methods and cannot be overridden or inherited, so `final` does not apply. Constructors cannot be `static` because they must be associated with object creation.
+
+**Can an abstract class have a constructor? What is its purpose?**
+Yes. An abstract class can have a constructor, and it is called via `super()` from the child's constructor. Its purpose is to initialize the shared state (fields) of the abstract class before the child's constructor runs.
+
+### Advanced Questions
+
+**What happens if you call `super.super.methodName()`?**
+Compile error. Java does not allow accessing a grandparent's method directly if the parent overrides it. You can only access the direct parent with `super`. To access the grandparent's version, you would need the parent to expose it.
+
+**Can you override a `private` method?**
+No. Private methods are not inherited, so they cannot be overridden. If you declare a method with the same name in the child, it is a *new* method, not an override — and if the child adds `@Override`, the compiler will report an error.
+
+**What is the initialization order when a parent and child class are both loaded?**
+Parent static (fields and blocks) runs first, then child static. On `new Child()`: parent instance fields and blocks, then parent constructor, then child instance fields and blocks, then child constructor. `super()` must be the first statement in the child constructor.
+
+### Code Questions
+
+```java
+class Parent {
+    public void display() { System.out.println("Parent display"); }
+}
+
+class Child extends Parent {
+    @Override
+    public void display() {
+        super.display();
+        System.out.println("Child display");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Parent obj = new Child();
+        obj.display();
+    }
+}
+```
+**What does this print, and why?**
+**Answer:**
+```
+Parent display
+Child display
+```
+The reference type is `Parent`, but the object is a `Child`, so runtime polymorphism calls `Child`'s `display()`. Inside it, `super.display()` runs the parent version first, then "Child display".
 
 ---
 
-### Tricky Questions
+```java
+class Payment {
+    public void processPayment() { System.out.println("Processing payment"); }
+}
+class CreditCardPayment extends Payment {
+    @Override
+    public void processPayment() { System.out.println("Processing via card"); }
+}
 
-**1. Can a constructor be `final`? Can it be `static`?**
-No to both. Constructors are not regular methods and cannot be overridden or inherited, so `final` does not apply. Constructors cannot be `static` because they must be associated with object creation.
+Payment p = new CreditCardPayment();
+((CreditCardPayment) p).processPayment();
+```
+**Will this compile and run? What prints?**
+**Answer:** It compiles and runs, printing `Processing via card`. `p` actually holds a `CreditCardPayment`, so the downcast is safe and the overridden method runs.
 
-**2. Can an abstract class have a constructor? What is its purpose?**
-Yes. An abstract class can have a constructor, and it is called via `super()` from the child's constructor. Its purpose is to initialize the shared state (fields) of the abstract class before the child's constructor runs.
+---
 
-**3. Why is overusing `instanceof` considered bad design?**
-Because it bypasses polymorphism. Instead of checking the type and casting manually (`if (animal instanceof Dog) { ((Dog) animal).bark(); }`), you should let the object do the work (`animal.makeSound()`). Overusing `instanceof` means your hierarchy probably needs redesign.
+```java
+public class Vehicle {
+    protected String brand;
+    public Vehicle(String brand) { this.brand = brand; }
+}
 
-**4. What happens if you call `super.super.methodName()`?**
-Compile error. Java does not allow accessing a grandparent's method directly if the parent overrides it. You can only access the direct parent with `super`. To access the grandparent's version, you would need the parent to expose it.
-
-**5. Can you override a `private` method?**
-No. Private methods are not inherited, so they cannot be overridden. If you declare a method with the same name in the child, it is a *new* method, not an override — and if the child adds `@Override`, the compiler will report an error.
+public class Car extends Vehicle {
+    private String model;
+    public Car(String brand, String model) {
+        this.model = model;
+    }
+}
+```
+**Will this compile? If not, why?**
+**Answer:** No. `Vehicle` has no no-arg constructor, so the child's constructor must explicitly call `super(brand)` as its first line. Without it, the compiler tries to insert a default `super()` call, which fails because no matching parent constructor exists. Fix: add `super(brand);` before `this.model = model;`.
 

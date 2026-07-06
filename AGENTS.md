@@ -6,9 +6,12 @@
 knowledge base/
 ├── Innowise_trainee/
 │   ├── План обучения.md
+│   ├── ISTQB Glossary v3.2.md
+│   ├── Pro ISTQB вопросики с ответом.md
+│   ├── Trainee - Assessment QA auto.xlsx
 │   ├── Карточки/
 │   │   └── QA/
-│   │       └── 00 Testing Fundamentals.md
+│   │       └── Flashcards - Testing Fundamentals.md
 │   ├── Interview Practice/
 │   │   ├── Eng/
 │   │   │   ├── 01 Full QA AQA Interview - Junior Core.md
@@ -16,6 +19,11 @@ knowledge base/
 │   │   └── Rus/
 │   │       ├── 01 Полное QA AQA интервью - Junior Core.md
 │   │       └── 02 Полное QA AQA интервью - Практические сценарии.md
+│   ├── Examples/
+│   │   ├── Example Test Plan.md
+│   │   ├── Example Test Case.md
+│   │   └── Example Test Strategy.md
+│   ├── Meetings/
 │   ├── 1 Modul/
 │   │   ├── Eng/
 │   │   │   ├── QA manual eng.md
@@ -112,14 +120,15 @@ knowledge base/
 │           ├── 22 Docker и тестовые окружения.md
 │           ├── 23 Инженерные практики для AQA.md
 │           └── Практика - QA Issue Tracker.md
-├── Examples/
-│   ├── Example Test Plan.md
-│   ├── Example Test Case.md
-│   └── Example Test Strategy.md
-├── templates/
-├── Дневник/
 └── Разное/
     ├── English Learning Plan.md
+    ├── Consolidated Vocabulary List.md
+    ├── # 🧠 Шпаргалка по Markdown для Obsidian.md
+    ├── Места, где я хочу побывать.md
+    └── img/
+        ├── 06_ep_bva.png
+        ├── 06_state_transition.png
+        └── 07_severity_priority.png
 ```
 
 ## File Conventions
@@ -134,7 +143,7 @@ knowledge base/
 ## Note Format Rules
 
 - Every note starts with `# Title` (H1)
-- Followed by `## Table of Contents` with Obsidian `[[#Section]]` links
+- Followed by `## Table of Contents` (English notes) or `## Содержание` (Russian notes) with Obsidian `[[#Section]]` links
 - Followed by `**Related notes:**` block with a link to the Module Index (e.g. `[[QA manual eng]]`)
 - Then `---` divider, then content
 - Headings: H1 → H2 → H3, no skipped levels
@@ -144,7 +153,7 @@ knowledge base/
 
 ### Section Separators
 
-- Every `##` section must be preceded by `---` — except `## Table of Contents`, which follows the H1 directly
+- Every `##` section must be preceded by `---` — except the Table of Contents (`## Table of Contents` / `## Содержание`), which follows the H1 directly
 - `---` between `###` subsections only when they are long and self-contained (e.g. each subsection has its own Definition / Advantages / Disadvantages / Example block)
 - No `---` between short `###` subsections that are just a heading + a few lines
 
@@ -153,6 +162,7 @@ knowledge base/
 - Notes are in English (Eng/) or Russian (Rus/)
 - Every file must be fully in one language — no mixing within a file
 - Callout titles, body text, and labels must match the file language
+- The Table of Contents heading is `## Table of Contents` in English notes and `## Содержание` in Russian notes
 - Technical terms stay in English in both versions: Smoke, Sanity, Ad-hoc, CI, UAT, API, ARIA, SDLC, STLC (and library-specific ones like HashMap, ArrayList)
 - Terms with both names: Error (Ошибка), Defect (Дефект), Failure (Отказ)
 - User's English level: B1 — keep vocabulary simple, avoid rare words
@@ -234,7 +244,7 @@ Many notes end with an "Interview Questions" or self-check section. Every questi
 - List in the TOC every `###` that names a concept, type, or comparison (e.g. `ArrayList`, `Ordered vs Sorted`). Omit `###` that are just structural parts of an entry (`Key Rules`, `Advantages`, `Example`).
 
 ### 6. Vault Structure Update
-- After creating a **new** note (both Eng and Rus versions), update the `Vault Structure` section in this `AGENTS.md` file.
+- After creating a **new** note (both Eng and Rus versions), update the `Vault Structure` section in `AGENTS.md`.
 - Ensure the file tree stays visually consistent.
 
 ### 7. Module Index (MOC)

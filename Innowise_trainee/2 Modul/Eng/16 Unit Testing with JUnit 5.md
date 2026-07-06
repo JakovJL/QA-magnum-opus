@@ -11,6 +11,10 @@
 - [[#Best Practices and Common Mistakes]]
 - [[#JUnit 5 in AQA]]
 - [[#Interview Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
+	- [[#Advanced Questions]]
+	- [[#Code Questions]]
 
 **Related notes:** [[AQA Java eng]]
 
@@ -246,6 +250,19 @@ class DatabaseTest {
 }
 ```
 
+By default, JUnit creates a **new instance** of the test class for every test method. Because of this, `@BeforeAll` and `@AfterAll` must be `static` — there is no shared instance yet when they run.
+
+If you change the lifecycle with `@TestInstance(TestInstance.Lifecycle.PER_CLASS)`, JUnit creates **only one instance** for the whole class. Then `@BeforeAll` and `@AfterAll` may be non-static (instance) methods. This is useful when setup needs instance state, but it is less common and must be added explicitly:
+
+```java
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class DatabaseTest {
+
+    @BeforeAll          // no 'static' needed with PER_CLASS
+    void connect() { }
+}
+```
+
 ### `@DisplayName`
 
 Gives a human-readable name to a test.
@@ -427,53 +444,92 @@ class LoginTest {
 
 ## Interview Questions
 
-### Top 10
+### Beginner Questions
 
-**1. What is JUnit 5?**  
+**1. What is JUnit 5?**
 JUnit 5 is a Java testing framework used for writing and running tests.
 
-**2. What does `@Test` do?**  
+**2. What does `@Test` do?**
 It marks a method as a test method that JUnit should execute.
 
-**3. What is the difference between `@BeforeEach` and `@BeforeAll`?**  
-`@BeforeEach` runs before every test. `@BeforeAll` runs once before all tests in the class.
-
-**4. What is an assertion?**  
+**3. What is an assertion?**
 An assertion checks whether the actual result matches the expected result.
 
-**5. How do you test exceptions in JUnit 5?**  
-Use `assertThrows()` and check the thrown exception or its message.
-
-**6. What is a parameterized test?**  
-It is one test method executed multiple times with different input data.
-
-**7. Why should unit tests be independent?**  
-Because one test should not depend on the execution order or result of another test.
-
-**8. What is the Arrange Act Assert pattern?**  
-A common test structure: prepare data, execute logic, verify result.
-
-**9. Can JUnit 5 be used in AQA frameworks?**  
-Yes. It is often used as the main test framework in Java automation projects.
-
-**10. What is `@DisplayName` used for?**  
+**4. What is `@DisplayName` used for?**
 It gives a readable custom name to a test or test class.
 
----
+**5. Can JUnit 5 be used in AQA frameworks?**
+Yes. It is often used as the main test framework in Java automation projects.
 
-### Tricky Questions
+### Intermediate Questions
 
-**1. Must `@BeforeAll` be static?**  
-Usually yes, unless the test class uses a special lifecycle configuration like `@TestInstance(Lifecycle.PER_CLASS)`.
+**1. What is the difference between `@BeforeEach` and `@BeforeAll`?**
+`@BeforeEach` runs before every test. `@BeforeAll` runs once before all tests in the class.
 
-**2. Is a test with Selenium still a unit test?**  
-Usually no. It is closer to UI or integration testing because it depends on browser and external system behavior.
+**2. What is the Arrange Act Assert pattern?**
+A common test structure: prepare data, execute logic, verify result.
 
-**3. Why can `assertNotNull()` be a weak assertion?**  
-Because it checks very little. A non-null result can still be completely wrong.
+**3. How do you test exceptions in JUnit 5?**
+Use `assertThrows()` and check the thrown exception or its message.
 
-**4. When should you prefer parameterized tests?**  
+**4. What is a parameterized test?**
+It is one test method executed multiple times with different input data.
+
+**5. When should you prefer parameterized tests?**
 When one behavior should be checked against several different inputs or edge cases.
 
-**5. Why is hidden setup dangerous?**  
+### Advanced Questions
+
+**1. Why should unit tests be independent?**
+Because one test should not depend on the execution order or result of another test.
+
+**2. Must `@BeforeAll` be static?**
+Usually yes, unless the test class uses a special lifecycle configuration like `@TestInstance(Lifecycle.PER_CLASS)`.
+
+**3. Is a test with Selenium still a unit test?**
+Usually no. It is closer to UI or integration testing because it depends on browser and external system behavior.
+
+**4. Why can `assertNotNull()` be a weak assertion?**
+Because it checks very little. A non-null result can still be completely wrong.
+
+**5. Why is hidden setup dangerous?**
 Because tests become harder to read, understand, and debug when too much logic is outside the test body.
+
+### Code Questions
+
+**1. Does this test pass or fail, and why?**
+
+```java
+@Test
+void shouldAddTwoNumbers() {
+    Calculator calculator = new Calculator();
+    int result = calculator.add(2, 3);
+    assertEquals(5, result);
+}
+```
+
+**Answer:** It passes. The `add(2, 3)` call is expected to return `5`, and `assertEquals(5, result)` verifies that the actual result matches the expected value.
+
+**2. What does this exception test verify, and what happens if no exception is thrown?**
+
+```java
+IllegalArgumentException exception = assertThrows(
+    IllegalArgumentException.class,
+    () -> calculator.divide(10, 0)
+);
+assertEquals("Division by zero", exception.getMessage());
+```
+
+**Answer:** It checks that `divide(10, 0)` throws an `IllegalArgumentException`, and that the exception message is `"Division by zero"`. If no exception of that type is thrown, `assertThrows` fails the test.
+
+**3. How many times does this test method run, and with which inputs?**
+
+```java
+@ParameterizedTest
+@ValueSource(ints = {2, 4, 6, 8})
+void shouldRecognizeEvenNumbers(int number) {
+    assertTrue(number % 2 == 0);
+}
+```
+
+**Answer:** It runs 4 times — once for each value `2, 4, 6, 8`. The `@ParameterizedTest` plus `@ValueSource` feeds each integer into the `number` parameter, and `assertTrue(number % 2 == 0)` checks that each is even.

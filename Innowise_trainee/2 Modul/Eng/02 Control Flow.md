@@ -9,6 +9,11 @@
 - [[#while and do-while Loops]]
 - [[#break and continue]]
 - [[#Looping Through Arrays]]
+- [[#Interview Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
+	- [[#Advanced Questions]]
+	- [[#Code Questions]]
 
 **Related notes:** [[AQA Java eng]]
 
@@ -264,7 +269,7 @@ System.out.println("Average: " + average);
 
 ## Interview Questions
 
-### Top 10
+### Beginner Questions
 
 **1. What is the difference between `for` and `while` loops?**
 Use `for` when you know the number of iterations in advance (`for (int i = 0; i < 10; i++)`). Use `while` when the number of iterations depends on a condition that may change during execution (`while (input != null)`).
@@ -275,57 +280,70 @@ Use `for` when you know the number of iterations in advance (`for (int i = 0; i 
 **3. How does `switch` differ from `if-else`?**
 `switch` is cleaner when comparing one variable against many specific values. `if-else` is better for range checks, boolean conditions, or complex logical expressions.
 
-**4. What is fall-through in `switch`?**
-Fall-through happens when a `case` block does not end with `break`. Execution continues into the next `case`, regardless of whether its value matches. This can be intentional (grouping cases) but is usually a bug.
-
-**5. What is the enhanced `switch` (Java 14+)?**
-Enhanced switch uses arrow syntax (`->`) and does not require `break`. It can be used as an expression that returns a value: `String result = switch (x) { case 1 -> "one"; default -> "other"; };`.
-
-**6. What is the ternary operator and when should you use it?**
+**4. What is the ternary operator and when should you use it?**
 The ternary operator (`condition ? ifTrue : ifFalse`) is a compact `if-else` that returns a value. Use it for simple binary conditions. Avoid nesting ternary operators — it hurts readability.
 
-**7. What is the difference between `while` and `do-while`?**
+**5. What is the difference between `while` and `do-while`?**
 `while` checks the condition *before* the body — it may never execute. `do-while` checks the condition *after* the body — it executes at least once. Use `do-while` when the body must run at least once (e.g., input validation).
 
-**8. How does the for-each loop work? Can you modify elements inside it?**
+### Intermediate Questions
+
+**1. What is fall-through in `switch`?**
+Fall-through happens when a `case` block does not end with `break`. Execution continues into the next `case`, regardless of whether its value matches. This can be intentional (grouping cases) but is usually a bug.
+
+**2. What is the enhanced `switch` (Java 14+)?**
+Enhanced switch uses arrow syntax (`->`) and does not require `break`. It can be used as an expression that returns a value: `String result = switch (x) { case 1 -> "one"; default -> "other"; };`.
+
+**3. How does the for-each loop work? Can you modify elements inside it?**
 For-each iterates over an array or Iterable without using an index. The loop variable is a copy of the element, so reassigning it (`num = 99`) does not change the array. However, if elements are objects, you *can* modify their state through the loop variable (`user.setName("new")`). For collections, you *cannot* add or remove elements during iteration (will throw `ConcurrentModificationException`).
 
-**9. What is an infinite loop? How do you create one intentionally?**
+**4. What is an infinite loop? How do you create one intentionally?**
 An infinite loop runs forever unless interrupted. `while (true) { }` or `for (;;) { }`. Used in server loops, event listeners, or waiting for external events with a break condition.
 
-**10. What is a labeled break in Java?**
+### Advanced Questions
+
+**1. What is a labeled break in Java?**
 A labeled break exits a specific outer loop: `outer: for (...) { for (...) { break outer; } }`. Without a label, `break` only exits the innermost loop.
 
----
+**2. Can you declare a variable inside a `for` loop and use it outside?**
+No. The loop variable is scoped to the loop block. `for (int i = 0; ...) { }` — `i` is not accessible after the loop. Declare the variable before the loop if you need it later.
 
-### Tricky Questions
+**3. What is the difference between `++i` and `i++` inside a for loop update?**
+For standard use (`for (int i = 0; i < 5; i++)`), there is no practical difference because the update happens after each iteration, and the value is not used. The difference matters when the increment is part of an expression, e.g., `while (i++ < 5)` vs `while (++i < 5)`.
 
-**1. What is the output of this code?**
+### Code Questions
+
+**1. What does this print, and why?**
+
 ```java
 for (int i = 0; i < 5; i++) {
     if (i == 3) break;
     System.out.print(i);
 }
-// Output: 012
 ```
-The loop stops when `i == 3` because `break` exits the loop immediately. Only 0, 1, and 2 are printed.
 
-**2. What is the output of this code?**
+Output: `012`. The loop stops when `i == 3` because `break` exits the loop immediately — only 0, 1, and 2 are printed.
+
+**2. What does this print, and why?**
+
 ```java
 for (int i = 0; i < 5; i++) {
     if (i == 3) continue;
     System.out.print(i);
 }
-// Output: 0124
 ```
-`continue` skips the rest of the iteration when `i == 3`, so 3 is not printed but the loop continues with 4.
 
-**3. What happens if you omit `break` in a `switch` statement?**
-Execution falls through to the next `case`. For example, `case 1: System.out.println("one");` (no break) followed by `case 2: System.out.println("two"); break;` will print both "one" and "two" when the value is 1.
+Output: `0124`. `continue` skips the rest of the iteration when `i == 3`, so 3 is not printed but the loop continues with 4.
 
-**4. Can you declare a variable inside a `for` loop and use it outside?**
-No. The loop variable is scoped to the loop block. `for (int i = 0; ...) { }` — `i` is not accessible after the loop. Declare the variable before the loop if you need it later.
+**3. What does this switch print when `day == 1`?**
 
-**5. What is the difference between `++i` and `i++` inside a for loop update?**
-For standard use (`for (int i = 0; i < 5; i++)`), there is no practical difference because the update happens after each iteration, and the value is not used. The difference matters when the increment is part of an expression, e.g., `while (i++ < 5)` vs `while (++i < 5)`.
+```java
+switch (day) {
+    case 1: System.out.print("one ");
+    case 2: System.out.print("two "); break;
+    default: System.out.print("def");
+}
+```
+
+Prints `one two ` — fall-through. `case 1` has no `break`, so execution continues into `case 2`. The `break` after `case 2` then stops it.
 

@@ -13,8 +13,10 @@
 - [[#What Often Gets Overlooked]]
 - [[#Common Mistakes]]
 - [[#Interview Questions]]
-	- [[#Top 10]]
-	- [[#Tricky Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
+	- [[#Advanced Questions]]
+	- [[#Code Questions]]
 
 **Related notes:** [[QA manual eng]]
 
@@ -260,7 +262,7 @@ When estimating, teams frequently forget to account for:
 
 ## Interview Questions
 
-### Top 10
+### Beginner Questions
 
 **1. What is test estimation and why is it important?**
 Test estimation is the process of forecasting time, effort, and resources needed for testing. It is important because it enables realistic planning, helps allocate resources, and sets stakeholder expectations. Without estimation, deadlines are unreliable and risks are hidden.
@@ -271,39 +273,84 @@ Three-Point Estimation uses three scenarios: Optimistic (O), Most Likely (M), an
 **3. What is WBS and how do you use it for test estimation?**
 Work Breakdown Structure means breaking a large testing task into small, easily estimable subtasks. You decompose by feature, field, action, or scenario until each piece takes a few hours at most. Then you sum the estimates. The breakdown itself doubles as a testing checklist.
 
-**4. How does Planning Poker work?**
-Each team member privately selects a card with their estimate (Fibonacci numbers). Cards are revealed simultaneously to avoid bias. If estimates differ, the outliers explain their reasoning. The team discusses and re-votes until consensus is reached. It is used in Agile/Scrum.
-
-**5. What is the difference between effort and duration?**
-Effort is the total work required (e.g. 40 person-hours). Duration is the calendar time it takes to complete that work, considering meetings, blockers, dependencies, and availability. 40 hours of effort might take 2 weeks of duration.
-
-**6. What factors affect test estimation accuracy?**
-Functionality volume and complexity, quality of requirements, team experience and size, test environment stability, available tools and automation, and known project risks.
-
-**7. What do you do if your estimate turns out to be wrong?**
-Track the difference between estimated and actual time. Analyze what was missed — hidden complexity, unclear requirements, environment issues. Use this data to improve future estimates. Never punish wrong estimates — they improve with experience and feedback.
-
-**8. What estimation techniques do you know?**
+**4. What estimation techniques do you know?**
 Three-Point Estimation (PERT), Work Breakdown Structure (WBS), Planning Poker, Expert Judgment and Analogies, Wideband Delphi, Percentage Distribution, Function Point Analysis. In practice, teams often combine two or more techniques.
 
-**9. What is the difference between story points and hours?**
+### Intermediate Questions
+
+**1. How does Planning Poker work?**
+Each team member privately selects a card with their estimate (Fibonacci numbers). Cards are revealed simultaneously to avoid bias. If estimates differ, the outliers explain their reasoning. The team discusses and re-votes until consensus is reached. It is used in Agile/Scrum.
+
+**2. What is the difference between effort and duration?**
+Effort is the total work required (e.g. 40 person-hours). Duration is the calendar time it takes to complete that work, considering meetings, blockers, dependencies, and availability. 40 hours of effort might take 2 weeks of duration.
+
+**3. What is the difference between story points and hours?**
 Hours are an absolute measure of time. Story points are a relative measure of effort and complexity — a "5" is harder than a "3" but the actual hours depend on team velocity. Story points are used in Agile to plan sprints; hours are used in traditional estimation.
 
-**10. How would you estimate testing for a feature you have never seen before?**
+**4. What factors affect test estimation accuracy?**
+Functionality volume and complexity, quality of requirements, team experience and size, test environment stability, available tools and automation, and known project risks.
+
+**5. What do you do if your estimate turns out to be wrong?**
+Track the difference between estimated and actual time. Analyze what was missed — hidden complexity, unclear requirements, environment issues. Use this data to improve future estimates. Never punish wrong estimates — they improve with experience and feedback.
+
+### Advanced Questions
+
+**1. How would you estimate testing for a feature you have never seen before?**
 Start with WBS — break the feature into parts based on requirements. Use Three-Point Estimation for uncertain areas. Consult experienced team members (Expert Judgment). Add a buffer for unknowns (20–40%). Refine the estimate as you learn more about the feature.
+
+**2. A manager asks you to reduce your estimate by half. What do you do?**
+Never silently cut the estimate. Explain what the estimate includes and what will be lost if time is cut — reduced coverage, skipped regression, higher risk of bugs in production. Offer alternatives: prioritize critical paths, reduce scope, or add resources. The manager needs to make an informed trade-off, not just a shorter number.
+
+**3. Your estimate was 40 hours but the task took 60. Was the estimate wrong?**
+Not necessarily "wrong" — it may have been the best possible prediction with the information available at the time. The important part is analyzing why: were requirements unclear? Did the environment cause delays? Was regression underestimated? Use the gap to improve future estimates, not to blame the estimator.
+
+**4. Can you estimate without requirements?**
+You can produce a rough estimate based on analogies and expert judgment, but it will have very high uncertainty. Be explicit about this: "Based on similar past features, I estimate 30–80 hours. I'll refine this once requirements are clarified." Giving a range is more honest than a single number with hidden assumptions.
+
+**5. Is it better to overestimate or underestimate?**
+Overestimating is generally safer — it creates a buffer for unexpected issues and avoids deadline pressure that leads to skipped testing. However, consistently large overestimates waste resources and erode trust. The goal is accuracy, not padding. Track actuals and calibrate over time.
+
+### Code Questions
+
+**1.** Estimate the effort for the following task using the PERT formula.
+
+```text
+Task: Execute tests
+  Optimistic  (O) = 8h
+  Most Likely (M) = 12h
+  Pessimistic (P) = 20h
+```
+
+**Question:** Calculate the expected effort (E) and the standard deviation (SD), and state the realistic range.
+
+**Answer:**
+- E = (O + 4M + P) / 6 = (8 + 48 + 20) / 6 = 76 / 6 ≈ **12.7h**
+- SD = (P − O) / 6 = (20 − 8) / 6 = 12 / 6 = **2h**
+- Realistic range: **E ± SD = 10.7h – 14.7h**
 
 ---
 
-### Tricky Questions
+**2.** You need to estimate testing for the "Login" button of a login module.
 
-**1. A manager asks you to reduce your estimate by half. What do you do?**
-Never silently cut the estimate. Explain what the estimate includes and what will be lost if time is cut — reduced coverage, skipped regression, higher risk of bugs in production. Offer alternatives: prioritize critical paths, reduce scope, or add resources. The manager needs to make an informed trade-off, not just a shorter number.
+```text
+"Login" button
+├── Enabled/disabled states     → ?
+├── Double-click behavior       → ?
+```
 
-**2. Your estimate was 40 hours but the task took 60. Was the estimate wrong?**
-Not necessarily "wrong" — it may have been the best possible prediction with the information available at the time. The important part is analyzing why: were requirements unclear? Did the environment cause delays? Was regression underestimated? Use the gap to improve future estimates, not to blame the estimator.
+**Question:** Apply the WBS approach and estimate these two subtasks. What extra (overlooked) work should you add a buffer for before giving the final number?
 
-**3. Can you estimate without requirements?**
-You can produce a rough estimate based on analogies and expert judgment, but it will have very high uncertainty. Be explicit about this: "Based on similar past features, I estimate 30–80 hours. I'll refine this once requirements are clarified." Giving a range is more honest than a single number with hidden assumptions.
+**Answer:** Using the breakdown from the body, Enabled/disabled states ≈ 15 min and Double-click behavior ≈ 10 min, so the button is ~25 min. Before finalizing, add a buffer for the "invisible" work the body warns about — bug reporting and verification, communication overhead, environment setup, and blocked time. A common practice is to multiply the base estimate by 1.2–1.5 to cover these.
 
-**4. Is it better to overestimate or underestimate?**
-Overestimating is generally safer — it creates a buffer for unexpected issues and avoids deadline pressure that leads to skipped testing. However, consistently large overestimates waste resources and erode trust. The goal is accuracy, not padding. Track actuals and calibrate over time.
+---
+
+**3.** A team is about to give a fixed single-number estimate for a brand-new feature with no requirements yet.
+
+```text
+- Feature: brand new, no requirements documented
+- Only info: a similar past feature took ~30h
+```
+
+**Question:** What is wrong with a single fixed number here, and how should the estimate be presented instead?
+
+**Answer:** A single number hides the very high uncertainty of estimating without requirements. Present a **range** and be explicit about the assumptions: "Based on a similar past feature (~30h), I estimate 30–80h. I'll refine this once requirements are clarified." A range is more honest and lets stakeholders make an informed decision.

@@ -14,6 +14,10 @@
 - [[#Page Object Model]]
 - [[#Selenium Basics in AQA]]
 - [[#Interview Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
+	- [[#Advanced Questions]]
+	- [[#Code Questions]]
 
 **Related notes:** [[AQA Java eng]]
 
@@ -505,53 +509,86 @@ class LoginTest {
 
 ## Interview Questions
 
-### Top 10
+### Beginner Questions
 
-**1. What is Selenium WebDriver?**  
+**1. What is Selenium WebDriver?**
 It is a tool and API for automating browser actions.
 
-**2. What is `WebDriver` in Selenium?**  
+**2. What is `WebDriver` in Selenium?**
 It is the main interface used to control the browser.
 
-**3. What is the difference between `findElement()` and `findElements()`?**  
-`findElement()` returns one element or throws exception if nothing is found. `findElements()` returns a list and gives an empty list if nothing is found.
-
-**4. What are locators?**  
+**3. What are locators?**
 Locators are ways to find elements on a page, for example `id`, `name`, `cssSelector`, or `xpath`.
 
-**5. What does `driver.get()` do?**  
+**4. What does `driver.get()` do?**
 It opens the given URL in the browser.
 
-**6. What is the difference between `close()` and `quit()`?**  
-`close()` closes the current window. `quit()` closes the whole browser session.
-
-**7. Why do Selenium tests need waits?**  
-Because web elements may load or become clickable asynchronously.
-
-**8. What is `WebElement`?**  
+**5. What is `WebElement`?**
 It is Selenium's interface for a page element.
 
-**9. What is a common locator priority?**  
-Usually `id`, then `name`, then CSS, then XPath if needed.
-
-**10. What exception is common when element is not found?**  
+**6. What exception is common when element is not found?**
 `NoSuchElementException`.
 
----
+### Intermediate Questions
 
-### Tricky Questions
+**1. What is the difference between `findElement()` and `findElements()`?**
+`findElement()` returns one element or throws exception if nothing is found. `findElements()` returns a list and gives an empty list if nothing is found.
 
-**1. Is Selenium enough for the whole automation framework?**  
+**2. What is the difference between `close()` and `quit()`?**
+`close()` closes the current window. `quit()` closes the whole browser session.
+
+**3. Why do Selenium tests need waits?**
+Because web elements may load or become clickable asynchronously.
+
+**4. What is a common locator priority?**
+Usually `id`, then `name`, then CSS, then XPath if needed.
+
+### Advanced Questions
+
+**1. Is Selenium enough for the whole automation framework?**
 No. Selenium handles browser interaction, but tests usually also need a test framework, reports, configuration, and project structure.
 
-**2. Why is XPath sometimes criticized?**  
+**2. Why is XPath sometimes criticized?**
 Because complex XPath locators can become hard to read and fragile when page structure changes. But XPath is still useful in some cases.
 
-**3. Why can saving a `WebElement` too early be dangerous?**  
+**3. Why can saving a `WebElement` too early be dangerous?**
 Because DOM can change and later the stored reference becomes stale.
 
-**4. Is implicit wait enough for all real projects?**  
+**4. Is implicit wait enough for all real projects?**
 Usually no. Explicit waits are more precise and better for dynamic behavior.
 
-**5. Why is browser setup often moved to `@BeforeEach` or base classes?**  
+**5. Why is browser setup often moved to `@BeforeEach` or base classes?**
 To avoid duplication and keep tests cleaner and more maintainable.
+
+### Code Questions
+
+**1. No element matches the selector. What happens to `one` and `many`?**
+
+```java
+WebElement one = driver.findElement(By.id("submit"));
+List<WebElement> many = driver.findElements(By.cssSelector(".missing"));
+```
+
+**Answer:** `findElement(By.id("submit"))` throws `NoSuchElementException` if no element matches. `findElements(By.cssSelector(".missing"))` does **not** throw — it returns an empty list when nothing matches.
+
+**2. What exactly does this wait wait for, and what happens if it never becomes true?**
+
+```java
+WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+WebElement button = wait.until(
+    ExpectedConditions.elementToBeClickable(By.id("submit"))
+);
+button.click();
+```
+
+**Answer:** It waits until the `#submit` element is both **visible and enabled** (clickable), polling repeatedly, up to 10 seconds. If the condition is never met in time, it throws a `TimeoutException`.
+
+**3. This code runs after a page refresh. What goes wrong?**
+
+```java
+WebElement el = driver.findElement(By.id("name"));
+driver.navigate().refresh();
+el.getText();
+```
+
+**Answer:** After `refresh()`, the DOM is rebuilt, so the old `el` reference is no longer valid. Calling `el.getText()` throws a `StaleElementReferenceException`. The element must be found again after navigation.

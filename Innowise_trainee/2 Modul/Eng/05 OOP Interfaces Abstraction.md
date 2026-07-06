@@ -5,10 +5,15 @@
 - [[#What is an Interface]]
 - [[#Implementing Interfaces]]
 - [[#Multiple Inheritance via Interfaces]]
-- [[#Default and Static Methods]]
+- [[#Default and Static Methods (Java 8+)]]
 - [[#Functional Interfaces]]
 - [[#Abstract Classes vs Interfaces]]
 - [[#Practical Patterns for AQA]]
+- [[#Interview Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
+	- [[#Advanced Questions]]
+	- [[#Code Questions]]
 
 **Related notes:** [[AQA Java eng]]
 
@@ -304,54 +309,107 @@ public class LoginPageImpl implements LoginPage {
 
 ## Interview Questions
 
-### Top 10
+### Beginner Questions
 
-**1. What is an interface in Java?**
+**What is an interface in Java?**
 An interface is a reference type that defines a contract — what methods a class must implement, but not how. All methods are implicitly `public` and `abstract`. A class implements an interface using the `implements` keyword.
 
-**2. What is the difference between an abstract class and an interface?**
-Abstract classes can have fields (any kind), constructors, and concrete methods. Interfaces can only have `public static final` fields, no constructors, and (since Java 8) `default` and `static` methods. A class can extend only one abstract class but implement multiple interfaces.
-
-**3. Can a class implement multiple interfaces?**
+**Can a class implement multiple interfaces?**
 Yes. This is how Java achieves multiple inheritance: `class MyClass implements InterfaceA, InterfaceB { ... }`. The class must implement all abstract methods from all interfaces.
 
-**4. What are default methods in interfaces? (Java 8+)**
-`default` methods allow adding a method with a body to an interface without breaking existing implementations. Implementing classes inherit the default automatically and can override it if needed.
-
-**5. What is a functional interface?**
+**What is a functional interface?**
 A functional interface has exactly one abstract method. It is the foundation of lambda expressions. The `@FunctionalInterface` annotation is optional but recommended.
 
-**6. What is the difference between `extending` an interface and `implementing` an interface?**
-`extends` is used when an interface inherits from another interface: `interface B extends A`. `implements` is used when a class fulfills an interface contract: `class C implements A`.
+**What are default methods in interfaces? (Java 8+)**
+`default` methods allow adding a method with a body to an interface without breaking existing implementations. Implementing classes inherit the default automatically and can override it if needed.
 
-**7. Can interfaces have fields? If so, what kind?**
+**Can interfaces have fields? If so, what kind?**
 Yes, but they are implicitly `public static final` — constants. You cannot have instance fields in an interface. Example: `int MAX_VALUE = 100;` is equivalent to `public static final int MAX_VALUE = 100;`.
 
-**8. What is the diamond problem with interfaces? How does Java handle it?**
-If a class implements two interfaces that both have the same `default` method, the class must override it to resolve the conflict. Otherwise, the compiler throws an error and forces you to choose.
+### Intermediate Questions
 
-**9. What is the purpose of static methods in interfaces? (Java 8+)**
+**What is the difference between an abstract class and an interface?**
+Abstract classes can have fields (any kind), constructors, and concrete methods. Interfaces can only have `public static final` fields, no constructors, and (since Java 8) `default` and `static` methods. A class can extend only one abstract class but implement multiple interfaces.
+
+**What is the difference between `extends` an interface and `implementing` an interface?**
+`extends` is used when an interface inherits from another interface: `interface B extends A`. `implements` is used when a class fulfills an interface contract: `class C implements A`.
+
+**What is the purpose of static methods in interfaces? (Java 8+)**
 Static methods in interfaces provide utility/helper methods that belong to the interface concept. They are called via the interface name: `Validator.isValidEmail(email)`. They are NOT inherited by implementing classes.
 
-**10. Why are interfaces useful in test automation?**
+**Why are interfaces useful in test automation?**
 They let you decouple the test logic from the implementation. Example: `WebDriver driver = new ChromeDriver()` lets you switch to Firefox or Edge without changing test code. Page Object interfaces let you swap Selenium for Playwright by just changing the implementation class.
+
+**What is the diamond problem with interfaces? How does Java handle it?**
+If a class implements two interfaces that both have the same `default` method, the class must override it to resolve the conflict. Otherwise, the compiler throws an error and forces you to choose.
+
+### Advanced Questions
+
+**Can an interface extend multiple interfaces?**
+Yes. Unlike classes, interfaces can extend multiple interfaces: `interface C extends A, B { }`. This is safe because interfaces only declare method signatures — there is no implementation to conflict.
+
+**Can a default method in an interface be `final`?**
+No. A default method is designed to be overridden by implementing classes. Marking it `final` would contradict its purpose and is not allowed by the compiler.
+
+**If a class implements two interfaces with the same default method, what happens?**
+The class must override the method. If it does not, the compiler reports an error (diamond problem). The class must provide its own implementation, or call one of the parent defaults explicitly: `InterfaceA.super.methodName()`.
+
+**Can an interface be instantiated directly (with `new`)?**
+No. Interfaces cannot be instantiated. But you can create an *anonymous class* or a *lambda* (for functional interfaces) that implements the interface on the fly.
+
+**Can an interface have a `private` method? (Java 9+)**
+Yes, Java 9 introduced private methods in interfaces. They are used to share code between `default` methods within the same interface. Private methods are not visible to implementing classes.
+
+### Code Questions
+
+```java
+public interface Vehicle {
+    void start();
+    default void honk() { System.out.println("Beep beep!"); }
+}
+
+public class Car implements Vehicle {
+    @Override
+    public void start() { System.out.println("Car started"); }
+}
+
+Vehicle v = new Car();
+v.start();
+v.honk();
+```
+**What does this print?**
+**Answer:**
+```
+Car started
+Beep beep!
+```
+`Car` implements `start()`, and the `default` method `honk()` is inherited automatically from the interface without `Car` having to define it.
 
 ---
 
-### Tricky Questions
+```java
+@FunctionalInterface
+public interface Greeting {
+    String greet(String name);
+}
 
-**1. Can an interface extend multiple interfaces?**
-Yes. Unlike classes, interfaces can extend multiple interfaces: `interface C extends A, B { }`. This is safe because interfaces only declare method signatures — there is no implementation to conflict.
+Greeting hello = name -> "Hello, " + name;
+System.out.println(hello.greet("Alice"));
+```
+**What prints, and why does the lambda work?**
+**Answer:** It prints `Hello, Alice`. `Greeting` has exactly one abstract method, making it a functional interface, so the lambda `name -> "Hello, " + name` provides the body of `greet(String)`.
 
-**2. Can a default method in an interface be `final`?**
-No. A default method is designed to be overridden by implementing classes. Marking it `final` would contradict its purpose and is not allowed by the compiler.
+---
 
-**3. If a class implements two interfaces with the same default method, what happens?**
-The class must override the method. If it does not, the compiler reports an error (diamond problem). The class must provide its own implementation, or call one of the parent defaults explicitly: `InterfaceA.super.methodName()`.
+```java
+public interface Printable { void printInfo(); }
+public interface Resizable { void resize(double factor); }
 
-**4. Can an interface be instantiated directly (with `new`)?**
-No. Interfaces cannot be instantiated. But you can create an *anonymous class* or a *lambda* (for functional interfaces) that implements the interface on the fly.
-
-**5. Can an interface have a `private` method? (Java 9+)**
-Yes, Java 9 introduced private methods in interfaces. They are used to share code between `default` methods within the same interface. Private methods are not visible to implementing classes.
-
+public class Document implements Printable, Resizable {
+    @Override
+    public void printInfo() { System.out.println("Doc"); }
+    // resize() not implemented
+}
+```
+**Will this compile? Why or why not?**
+**Answer:** No. `Document` claims to implement `Resizable` but does not provide `resize(double)`. A concrete class must implement every abstract method of all its interfaces, or be declared `abstract`.

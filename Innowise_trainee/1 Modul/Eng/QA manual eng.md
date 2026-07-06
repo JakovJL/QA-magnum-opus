@@ -1,6 +1,6 @@
 # QA Manual (Module 1)
 
-## Topics
+## Active Topics
 1. [[00 Testing Fundamentals]]
 2. [[01 Types of Testing]]
 3. [[02 SDLC and STLC]]
@@ -19,3 +19,9 @@
 16. [[15 Security Testing Basics]]
 17. [[16 Test Automation Fundamentals]]
 18. [[17 Performance Testing]]
+
+## Practice
+
+- [[Example Test Plan]], [[Example Test Case]], [[Example Test Strategy]] — reference artifacts linked from [[03 Test Artifacts]]
+- [[Flashcards - Testing Fundamentals]] — spaced-repetition deck
+- [[01 Full QA AQA Interview - Junior Core]], [[02 Full QA AQA Interview - Practical Scenarios]] — full mock-interview decks

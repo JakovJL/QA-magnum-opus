@@ -10,8 +10,10 @@
 - [[#Testing Strategies]]
 - [[#Tools]]
 - [[#Interview Questions]]
-	- [[#Top 10]]
-	- [[#Tricky Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
+	- [[#Advanced Questions]]
+	- [[#Code Questions]]
 
 **Related notes:** [[QA manual eng]]
 
@@ -232,7 +234,7 @@ Used early in development for fast feedback loops.
 
 ## Interview Questions
 
-### Top 10
+### Beginner Questions
 
 **1. What is mobile app testing?**
 Mobile app testing verifies that a mobile application works correctly across different devices, operating systems, screen sizes, and network conditions. It covers functionality, usability, performance, compatibility, and security in the mobile context.
@@ -243,30 +245,27 @@ Native (built for one platform with its native language — Swift/Kotlin), hybri
 **3. What is the difference between a simulator and an emulator?**
 A simulator mimics only the software behavior of a device (iOS Simulator). An emulator replicates both hardware and software (Android Emulator), so it is more accurate but slower and can simulate GPS, battery, and calls.
 
-**4. When should you test on real devices instead of emulators?**
-For performance, battery drain, hardware-specific features (NFC, biometrics, camera), and final verification before release. Emulators are fine for early functional checks but do not reproduce real hardware behavior.
-
-**5. How do you select which devices to test on?**
-By market-share data for the target audience, OS-version coverage (current plus two previous), a range of screen sizes, and both high-end and low-end hardware tiers. Testing every device is not feasible, so you pick a representative subset.
-
-**6. Why is Android more challenging to test than iOS?**
-Android has high fragmentation — many manufacturers, OS versions, and screen sizes — so bugs can appear on specific device/OS combinations. iOS has fewer combinations and faster, more uniform OS update adoption.
-
-**7. What are some mobile-specific things to test that desktop does not have?**
-Interruptions (calls, notifications, low battery), network switching (Wi-Fi to 4G to offline), different gestures, screen rotation, limited resources (memory, battery), and app behavior on install/update/uninstall.
-
-**8. What are the main testing strategies for mobile?**
-Real device testing (most accurate, expensive), cloud device farms like BrowserStack or Firebase Test Lab (wide coverage without owning hardware), and emulator/simulator testing (fast, free, early-stage).
-
-**9. Name some common mobile automation tools.**
-Appium (cross-platform), XCTest/XCUITest (iOS), Espresso (Android), Detox (React Native). Cloud farms like BrowserStack and Sauce Labs support running them on many devices.
-
-**10. What is a cloud device farm and why use one?**
+**4. What is a cloud device farm and why use one?**
 A cloud device farm gives access to hundreds of real devices via a web interface. It provides wide device coverage without buying and maintaining hardware, and supports both manual and automated testing.
 
----
+### Intermediate Questions
 
-### Tricky Questions
+**1. When should you test on real devices instead of emulators?**
+For performance, battery drain, hardware-specific features (NFC, biometrics, camera), and final verification before release. Emulators are fine for early functional checks but do not reproduce real hardware behavior.
+
+**2. How do you select which devices to test on?**
+By market-share data for the target audience, OS-version coverage (current plus two previous), a range of screen sizes, and both high-end and low-end hardware tiers. Testing every device is not feasible, so you pick a representative subset.
+
+**3. Why is Android more challenging to test than iOS?**
+Android has high fragmentation — many manufacturers, OS versions, and screen sizes — so bugs can appear on specific device/OS combinations. iOS has fewer combinations and faster, more uniform OS update adoption.
+
+**4. What are the main testing strategies for mobile?**
+Real device testing (most accurate, expensive), cloud device farms like BrowserStack or Firebase Test Lab (wide coverage without owning hardware), and emulator/simulator testing (fast, free, early-stage).
+
+**5. Name some common mobile automation tools.**
+Appium (cross-platform), XCTest/XCUITest (iOS), Espresso (Android), Detox (React Native). Cloud farms like BrowserStack and Sauce Labs support running them on many devices.
+
+### Advanced Questions
 
 **1. The app works on the emulator but fails on a real phone. Why might that be?**
 Emulators do not replicate real hardware, sensors, performance, or network behavior. The real device may have less memory, a slower CPU, a different OS build, or hardware features the emulator only simulates. This is exactly why final testing needs real devices.
@@ -282,3 +281,45 @@ Because phones constantly interrupt apps — incoming calls, notifications, alar
 
 **5. You have time to test on only two devices. How do you choose?**
 Pick based on the audience: usually one widely-used Android device and one common iPhone, covering the most popular OS versions and a difference in screen size. Use market-share data to justify the choice rather than guessing.
+
+### Code Questions
+
+**1.** The app passes all functional tests on the Android Emulator, but on a real mid-range phone it crashes when opening the camera.
+
+```text
+- Emulator (AVD):      camera opens correctly
+- Real device:         Samsung Galaxy A12 (low-end), crashes on camera open
+- Feature used:        native camera + biometric check
+```
+
+**Question:** Why does this happen, and which testing strategy should have caught it earlier?
+
+**Answer:** Emulators do not replicate real hardware, sensors, or performance — the crash is likely caused by the real device's limited memory, a different OS/manufacturer build, or a hardware feature (biometrics/camera) the emulator only simulates. **Real-device testing** (or a **cloud device farm** covering low-end hardware) should have been used for final verification of hardware-dependent features.
+
+---
+
+**2.** A user reports a crash, but you cannot reproduce it on any device in your lab.
+
+```text
+- User device:  Xiaomi Redmi Note 11, Android 12, MIUI customization
+- Your lab:     Pixel 6 (Android 13), Samsung S22 (Android 14)
+- Crash:        app closes on background→foreground resume
+```
+
+**Question:** What is the likely cause, and how do you reproduce it?
+
+**Answer:** **Android fragmentation** — the bug is likely specific to that device model, OS version, or the MIUI manufacturer customization, none of which your lab covers. To reproduce it, use a **cloud device farm** (e.g. BrowserStack, Firebase Test Lab) to get the same or a very similar device/OS combination and re-run the scenario.
+
+---
+
+**3.** You have budget/time to test on only two devices for a consumer app aimed at a broad audience.
+
+```text
+- App type:    consumer (broad audience, mixed region)
+- Constraint:  only 2 devices
+- Data available: market-share analytics for the target region
+```
+
+**Question:** Which two devices do you choose, and how do you justify the selection?
+
+**Answer:** Pick **one widely-used Android device and one common iPhone**, using market-share data to choose the most popular models in the target region. Cover the most-used OS version on each and ensure a difference in screen size (e.g. one standard phone + one larger device) so layout/compatibility differences are represented. The choice is justified by the analytics, not by guessing.

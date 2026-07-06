@@ -11,10 +11,11 @@
 - [[#Optional]]
 - [[#Lambda Streams and Optional in AQA]]
 - [[#Interview Questions]]
-	- [[#Top 10]]
-	- [[#Tricky Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
 	- [[#Advanced Questions]]
 	- [[#Code Questions]]
+- [[#Practical Tasks]]
 
 **Related notes:** [[AQA Java eng]]
 
@@ -396,62 +397,59 @@ String actualToken = token.orElseThrow(() -> new IllegalStateException("API toke
 
 ## Interview Questions
 
-### Top 10
+### Beginner Questions
 
-**1. What is a lambda expression in Java?**  
+**1. What is a lambda expression in Java?**
 A lambda expression is a short way to represent an anonymous function. It lets you pass behavior as data.
 
-**2. What is a functional interface?**  
+**2. What is a functional interface?**
 An interface with exactly one abstract method. Lambdas can be assigned to it.
 
-**3. What is the difference between `map()` and `filter()` in streams?**  
-`filter()` keeps only elements that match a condition. `map()` transforms each element into another value.
-
-**4. Does a stream modify the original collection?**  
-No. A stream processes data and usually returns a new result without changing the source collection.
-
-**5. What is the difference between intermediate and terminal operations?**  
-Intermediate operations return another stream and build the pipeline. Terminal operations finish the pipeline and produce a result or side effect.
-
-**6. What is `Optional` used for?**  
-It is used to represent a value that may be present or absent, as a safer alternative to raw `null` in many cases.
-
-**7. What is the difference between `orElse()` and `orElseGet()`?**  
-`orElse()` always evaluates its argument. `orElseGet()` evaluates the supplier only if the value is absent.
-
-**8. Can a stream be reused?**  
-No. After a terminal operation, the stream is closed and cannot be used again.
-
-**9. What is a method reference?**  
+**3. What is a method reference?**
 A shorter form of lambda when the lambda only calls an existing method, for example `System.out::println`.
 
-**10. When would you use a stream and when a loop?**  
-Use a stream for clear data pipelines like filtering and mapping. Use a loop when logic is stateful, complex, or easier to read imperatively.
+**4. What is `Optional` used for?**
+It is used to represent a value that may be present or absent, as a safer alternative to raw `null` in many cases.
+
+**5. Does a stream modify the original collection?**
+No. A stream processes data and usually returns a new result without changing the source collection.
+
+**6. Can a stream be reused?**
+No. After a terminal operation, the stream is closed and cannot be used again.
 
 ---
 
-### Tricky Questions
+### Intermediate Questions
 
-**1. Is `Optional` a replacement for every `null` in Java?**  
-No. It is mostly good for return values. Using it everywhere often makes code harder to read.
+**1. What is the difference between `map()` and `filter()` in streams?**
+`filter()` keeps only elements that match a condition. `map()` transforms each element into another value.
 
-**2. Why is `forEach()` often not ideal for business logic?**  
+**2. What is the difference between intermediate and terminal operations?**
+Intermediate operations return another stream and build the pipeline. Terminal operations finish the pipeline and produce a result or side effect.
+
+**3. What is the difference between `orElse()` and `orElseGet()`?**
+`orElse()` always evaluates its argument. `orElseGet()` evaluates the supplier only if the value is absent.
+
+**4. Is `Optional` a replacement for every `null` in Java?**
+No. It is mostly good for return values. Using it everywhere often makes code harder to read. It is usually not recommended for entity fields, DTO fields, or method parameters.
+
+**5. Why is `forEach()` often not ideal for business logic?**
 Because it is mainly for side effects. For transformations and filtering, `map()` and `filter()` are usually clearer.
 
-**3. Can you throw checked exceptions inside a lambda easily?**  
-Not always. Many functional interfaces do not declare checked exceptions, so you often need wrapping or custom handling.
+**6. When would you use a stream and when a loop?**
+Use a stream for clear data pipelines like filtering and mapping. Use a loop when logic is stateful, complex, or easier to read imperatively.
 
-**4. What is lazy evaluation in streams?**  
-Intermediate operations do not run immediately. They are executed only when a terminal operation starts.
-
-**5. Why can parallel streams be dangerous?**  
-They can cause thread-safety issues, extra overhead, and unpredictable performance if the operation is not stateless and safe for parallel execution.
+**7. Why is calling `Optional.get()` directly a bad idea?**
+It throws `NoSuchElementException` if the value is absent. Prefer `ifPresent()`, `orElse()`, or `orElseThrow()`.
 
 ---
 
 ### Advanced Questions
 
-**1. What is "effectively final" in the context of lambdas?**  
+**1. What is lazy evaluation in streams?**
+Intermediate operations do not run immediately. They are executed only when a terminal operation starts. This lets the JVM optimize the pipeline (e.g., short-circuit with `findFirst`).
+
+**2. What is "effectively final" in the context of lambdas?**
 A lambda can use variables from the outer scope only if they are **effectively final** — not changed after initialization. The compiler checks this. If the variable changes anywhere, the lambda will not compile. This is because the lambda captures a copy of the variable, and if the original changed, the copy would be outdated.
 
 ```java
@@ -460,15 +458,10 @@ int threshold = 5;
 list.stream().filter(n -> n > threshold).toList(); // ✅ threshold is effectively final
 ```
 
-**2. What is the difference between `findFirst()` and `findAny()`?**  
+**3. What is the difference between `findFirst()` and `findAny()`?**
 Both return `Optional<T>`, but: `findFirst()` guarantees the first element in stream order (important for ordered streams). `findAny()` returns any element — useful in parallel streams (no ordering overhead, faster). For sequential streams, there is no practical difference.
 
-```java
-Optional<Integer> first = list.stream().findFirst(); // guaranteed first
-Optional<Integer> any = list.parallelStream().findAny(); // any — faster
-```
-
-**3. How does `reduce()` work?**  
+**4. How does `reduce()` work?**
 Reduces the entire stream to a single value. Three forms: (1) with accumulator: `reduce((a, b) -> a + b)` — returns `Optional` (stream may be empty), (2) with identity + accumulator: `reduce(0, (a, b) -> a + b)` — identity is returned for empty stream, (3) with identity + accumulator + combiner for parallel streams.
 
 ```java
@@ -476,106 +469,27 @@ int sum = List.of(1, 2, 3).stream().reduce(0, Integer::sum); // 6
 Optional<Integer> max = List.of(3, 1, 4).stream().reduce(Integer::max); // Optional[4]
 ```
 
-**4. What is the difference between `collect(Collectors.toList())` and `toList()` (Java 16+)?**  
+**5. What is the difference between `collect(Collectors.toList())` and `toList()` (Java 16+)?**
 `collect(Collectors.toList())` returns a `List` — the implementation is not guaranteed (usually ArrayList). It is modifiable. `stream.toList()` (Java 16+) returns an **unmodifiable** list — any `add()`/`remove()` call throws `UnsupportedOperationException`. If you need a mutable list after streams, use `collect(toCollection(ArrayList::new))`.
 
-```java
-List<String> modifiable = stream.collect(Collectors.toList());       // mutable
-List<String> unmodifiable = stream.toList();                         // immutable (Java 16+)
-List<String> explicitMutable = stream.collect(Collectors.toCollection(ArrayList::new));
-```
-
-**5. What is a parallel stream? When should you use it?**  
-`parallelStream()` splits data into chunks, processes them in **multiple threads** via `ForkJoinPool.commonPool()`, then merges the result. It speeds up **only** CPU-bound operations on large data sets (>10k elements). Does not help with I/O-bound or simple operations — the overhead of splitting outweighs the benefit. Requires stateless, independent operations. Dangerous: non-thread-safe collections, locks, stateful `forEach`.
-
-```java
-int sum = list.parallelStream()
-    .filter(n -> n > 10)
-    .reduce(0, Integer::sum); // parallel filter + sum
-```
-
-**6. How does `flatMap()` work?**  
-`flatMap()` is map + flatten. `map()` transforms each element into one element. `flatMap()` transforms each element into a **stream** of elements and then flattens all those streams into one. Classic example: list of orders → list of all products from all orders.
-
-```java
-List<List<Integer>> nested = List.of(List.of(1, 2), List.of(3, 4, 5));
-List<Integer> flat = nested.stream()
-    .flatMap(Collection::stream) // each sublist → stream of numbers
-    .toList(); // [1, 2, 3, 4, 5]
-
-List<String> words = List.of("hello", "world");
-List<String> letters = words.stream()
-    .flatMap(w -> Arrays.stream(w.split("")))
-    .toList(); // [h, e, l, l, o, w, o, r, l, d]
-```
-
-**7. What is the difference between `peek()` and `forEach()`?**  
-`peek()` — an intermediate operation, accepts a `Consumer`, **returns a stream**. Useful for debugging (inspecting elements). `forEach()` — a terminal operation, returns void. In production, avoid `peek()` — it is meant for debugging only.
-
-```java
-List<Integer> result = stream
-    .peek(x -> System.out.println("before: " + x)) // debug only
-    .filter(x -> x > 0)
-    .peek(x -> System.out.println("after filter: " + x))
-    .toList();
-
-stream.forEach(x -> System.out.println(x)); // terminal — ends the pipeline
-```
-
-**8. What is the difference between `groupingBy()` and `partitioningBy()`?**  
-`groupingBy(Function)` groups elements into a Map by key, returns `Map<K, List<V>>`. You can add a downstream collector (e.g. `counting()`).  
-`partitioningBy(Predicate)` is a special case of groupingBy where the key is always `boolean`. Returns `Map<Boolean, List<V>>` — exactly two groups: true and false.
-
-```java
-Map<String, List<String>> byFirstLetter = names.stream()
-    .collect(Collectors.groupingBy(s -> s.substring(0, 1)));
-
-Map<Boolean, List<Integer>> partitioned = nums.stream()
-    .collect(Collectors.partitioningBy(n -> n % 2 == 0));
-// {true=[2, 4], false=[1, 3, 5]}
-```
-
-**9. Best practices for using `Optional`?**  
-(1) `ifPresentOrElse()` — run action if present or if absent. (2) `or()` — return another Optional if empty (Java 9+). (3) `stream()` — convert Optional to a stream of 0 or 1 elements (Java 9+). (4) `filter()` — keep value only if condition matches.
-
-```java
-Optional<String> opt = Optional.ofNullable(getName());
-
-opt.ifPresentOrElse(
-    n -> log("Found: " + n),
-    () -> log("Not found")
-);
-
-Optional<String> fallback = opt.or(() -> Optional.of("Default"));
-
-opt.stream().forEach(System.out::println); // 0 or 1 elements
-
-String result = opt.filter(n -> n.length() > 3).orElse("too short");
-```
-
-**10. How to handle checked exceptions in lambdas?**  
+**6. How to handle checked exceptions in lambdas?**
 Functional interfaces (`Function`, `Predicate`) do not declare checked exceptions. You cannot directly throw `IOException` inside a lambda. Solutions: (1) wrap in unchecked (`RuntimeException`), (2) create your own functional interface with throws, (3) use try-catch inside the lambda.
 
 ```java
-// Solution 1 — wrapper:
+// Solution — wrap in unchecked:
 list.stream()
     .map(s -> {
         try { return new URL(s); }
         catch (MalformedURLException e) { throw new RuntimeException(e); }
     })
     .toList();
-
-// Solution 2 — utility method:
-static <T, R> Function<T, R> unchecked(CheckedFunction<T, R> fn) {
-    return t -> { try { return fn.apply(t); } catch (Exception e) { throw new RuntimeException(e); } };
-}
 ```
 
 ---
 
 ### Code Questions
 
-**1. What does this code print?**  
+**1. What does this code print?**
 ```java
 List<Integer> nums = List.of(1, 2, 3, 4, 5);
 List<Integer> result = nums.stream()
@@ -586,7 +500,7 @@ System.out.println(result);
 ```
 **Answer:** `[4, 16]`. Filter keeps even numbers (2, 4), map squares them (4, 16). Works as a pipeline.
 
-**2. What does this code print?**  
+**2. What does this code print?**
 ```java
 List<String> names = List.of("Alice", "Bob", "Anna", "Alex");
 long count = names.stream()
@@ -596,14 +510,14 @@ System.out.println(count);
 ```
 **Answer:** `3`. "Alice", "Anna", "Alex" — 3 names starting with A.
 
-**3. What does this code print?**  
+**3. What does this code print?**
 ```java
 Optional<String> result = List.<String>of().stream().findFirst();
 System.out.println(result.orElse("empty"));
 ```
 **Answer:** `empty`. Empty list → empty stream → findFirst returns `Optional.empty()` → orElse returns "empty".
 
-**4. What does this code print?**  
+**4. What does this code print?**
 ```java
 List<String> words = List.of("one", "two", "three");
 String joined = words.stream()
@@ -612,7 +526,7 @@ System.out.println(joined);
 ```
 **Answer:** `"ONETWOTHREE"`. Reduce starts with empty string, each step adds the word in uppercase.
 
-**5. What does this code print?**  
+**5. What does this code print?**
 ```java
 List<List<Integer>> data = List.of(List.of(1, 2), List.of(3, 4, 5));
 int sum = data.stream()
@@ -624,12 +538,12 @@ System.out.println(sum);
 
 ---
 
-### Practical Tasks
+## Practical Tasks
 
 > [!tip] How to practice
 > Try to solve each task yourself first, then check the solution.
 
-#### 1. Filter and Transform
+### 1. Filter and Transform
 
 **Task:** Given a list of strings, keep only names longer than 3 characters, convert to uppercase, collect to a list.
 
@@ -646,7 +560,7 @@ System.out.println(result); // [ANNA, ALEXANDRA]
 
 | Complexity | O(n) time, O(n) memory |
 
-#### 2. Sum via reduce
+### 2. Sum via reduce
 
 **Task:** Given a list of numbers, find the sum of all even numbers using reduce.
 
@@ -662,7 +576,7 @@ System.out.println(sum); // 12 (2+4+6)
 
 | Complexity | O(n) time, O(1) memory |
 
-#### 3. Flatten nested lists with flatMap
+### 3. Flatten nested lists with flatMap
 
 **Task:** Given a list of lists of strings, combine all strings into one flat list.
 
@@ -682,7 +596,7 @@ System.out.println(flat); // [a, b, c, d, e, f]
 
 | Complexity | O(n) time, O(n) memory |
 
-#### 4. Group by length
+### 4. Group by length
 
 **Task:** Group words by their length: key = length, value = list of words of that length.
 
@@ -698,7 +612,7 @@ System.out.println(byLength);
 
 | Complexity | O(n) time, O(n) memory |
 
-#### 5. Optional — safe value retrieval
+### 5. Optional — safe value retrieval
 
 **Task:** Given a method that may return null, use Optional to get the value or "Default" if null. If the value is present and longer than 3 chars — print it, otherwise — "Short".
 

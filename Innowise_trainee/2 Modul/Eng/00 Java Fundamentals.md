@@ -7,6 +7,11 @@
 - [[#First Java Program]]
 - [[#Package and Import]]
 - [[#Naming Conventions]]
+- [[#Interview Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
+	- [[#Advanced Questions]]
+	- [[#Code Questions]]
 
 **Related notes:** [[AQA Java eng]]
 
@@ -142,7 +147,7 @@ public class UserAccount {                               // PascalCase — class
 
 ## Interview Questions
 
-### Top 10
+### Beginner Questions
 
 **1. What is the difference between JDK, JRE, and JVM?**
 JVM (Java Virtual Machine) executes bytecode — it is the core runtime. JRE is JVM + standard class libraries (you need it to *run* Java programs). JDK is JRE + development tools like `javac` and `jar` (you need it to *develop* Java programs). The JDK includes a JRE, so installing the JDK is enough for both development and running.
@@ -150,33 +155,33 @@ JVM (Java Virtual Machine) executes bytecode — it is the core runtime. JRE is 
 **2. What does "Write Once, Run Anywhere" mean?**
 Java source code is compiled into bytecode (`.class` files). Bytecode is platform-independent — it runs on any device that has a JVM. Only the JVM needs to be platform-specific. So you write the code once and it runs on Windows, Linux, macOS, or any other platform with a JVM.
 
-**3. Why is the main method declared `public static void`?**
-`public` — the JVM needs to access it from outside the class. `static` — the JVM calls it without creating an object (there is no object yet when the program starts). `void` — the main method does not return a value to the JVM.
-
-**4. What is the difference between bytecode and machine code?**
-Bytecode (`.class` files) is an intermediate representation that the JVM interprets or JIT-compiles. It is not specific to any physical processor. Machine code is native binary instructions for a specific CPU architecture (x86, ARM). Bytecode → JIT compiler → machine code at runtime.
-
-**5. What is a package in Java?**
+**3. What is a package in Java?**
 A package is a namespace that organizes classes. It prevents naming conflicts, controls access (default access modifier), and makes code easier to manage. Packages use reverse domain naming: `com.innowise.training`.
 
-**6. What are the naming conventions in Java?**
+**4. What are the naming conventions in Java?**
 Classes — PascalCase (`HelloWorld`). Methods and variables — camelCase (`getUserName`, `totalCount`). Constants — UPPER_SNAKE_CASE (`MAX_SIZE`). Packages — all lowercase (`com.innowise`).
 
-**7. What happens if you don't declare a package?**
+**5. What happens if you don't declare a package?**
 The class goes into the *default package*. This is acceptable for small examples but strongly discouraged in real projects because classes from different projects can collide.
 
-**8. How does Java achieve platform independence?**
-Through bytecode and the JVM. The same `.class` file runs on any platform that has a JVM. The JVM abstracts away the underlying OS and hardware. This is the key idea behind WORA.
-
-**9. What is the `String[] args` parameter in main?**
+**6. What is the `String[] args` parameter in main?**
 It is an array of strings that holds command-line arguments passed when you run the program. For example, `java MyApp arg1 arg2` makes `args[0] = "arg1"` and `args[1] = "arg2"`.
 
-**10. Can a Java source file have more than one public class?**
+### Intermediate Questions
+
+**1. Why is the main method declared `public static void`?**
+`public` — the JVM needs to access it from outside the class. `static` — the JVM calls it without creating an object (there is no object yet when the program starts). `void` — the main method does not return a value to the JVM.
+
+**2. What is the difference between bytecode and machine code?**
+Bytecode (`.class` files) is an intermediate representation that the JVM interprets or JIT-compiles. It is not specific to any physical processor. Machine code is native binary instructions for a specific CPU architecture (x86, ARM). Bytecode → JIT compiler → machine code at runtime.
+
+**3. What is the difference between `javac` and `java`?**
+`javac` is the Java compiler — it translates `.java` source files into `.class` bytecode files. `java` is the launcher — it starts the JVM and loads the specified class's main method.
+
+**4. Can a Java source file have more than one public class?**
 No. Each source file can have at most one `public` class, and the file name must match that class name. You can have multiple non-public classes in the same file.
 
----
-
-### Tricky Questions
+### Advanced Questions
 
 **1. Is it possible to have a `main` method that is not `public`?**
 Yes, it compiles. But the JVM will not find it at startup and you will get a `NoSuchMethodError` at runtime. The JVM specifically looks for `public static void main(String[])`.
@@ -184,12 +189,39 @@ Yes, it compiles. But the JVM will not find it at startup and you will get a `No
 **2. Can you compile and run Java code without a `main` method?**
 Compile — yes. A class without `main` compiles fine. Run — no. The JVM needs an entry point. However, a class can be run without `main` using JUnit or by being referenced by another class that does have `main`.
 
-**3. What is the difference between `javac` and `java`?**
-`javac` is the Java compiler — it translates `.java` source files into `.class` bytecode files. `java` is the launcher — it starts the JVM and loads the specified class's main method.
-
-**4. If a class is compiled successfully but the `.class` file is deleted, can the class still run?**
+**3. If a class is compiled successfully but the `.class` file is deleted, can the class still run?**
 No. The JVM executes `.class` files. If the bytecode is missing, the JVM cannot load the class. However, if the class was already loaded into memory by the ClassLoader before the file was deleted, it will continue to work — the JVM reads the `.class` file only once, at class loading time.
 
-**5. Why does Java use both a compiler and an interpreter?**
+**4. Why does Java use both a compiler and an interpreter?**
 Java uses a compiler (`javac`) to produce bytecode (portable, platform-independent). At runtime, the JVM uses an interpreter to execute bytecode initially, and a JIT (Just-In-Time) compiler to translate hot paths into native machine code for performance. This hybrid approach gives both portability and speed.
+
+### Code Questions
+
+**1. Explain each line of this program.**
+
+```java
+public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!");
+    }
+}
+```
+
+- `public class HelloWorld` — declares a class; the file must be named `HelloWorld.java`
+- `public static void main(String[] args)` — the entry point; JVM calls it without an object (`static`), from outside the class (`public`), and it returns nothing (`void`)
+- `String[] args` — command-line arguments
+- `System.out.println(...)` — prints to the console
+
+**2. Will this code compile? If yes, what happens at runtime?**
+
+```java
+// File: App.java
+public class App {
+    private static void main(String[] args) {
+        System.out.println("Hi");
+    }
+}
+```
+
+It compiles — visibility of `main` is not checked at compile time. At runtime the JVM does not find `public static void main(String[])` and throws `NoSuchMethodError`. The fix is to make `main` `public`.
 

@@ -13,8 +13,10 @@
 	- [[#Basic Queries]]
 	- [[#MongoDB Tools]]
 - [[#Interview Questions]]
-	- [[#Top 10]]
-	- [[#Tricky Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
+	- [[#Advanced Questions]]
+	- [[#Code Questions]]
 
 **Related notes:** [[QA manual eng]]
 
@@ -129,6 +131,8 @@ SELECT orders.id, users.name, orders.total_price
 FROM orders
 JOIN users ON orders.user_id = users.id;
 ```
+
+**JOIN types:** A plain `JOIN` (also called `INNER JOIN`) returns only rows that have a match in *both* tables. A `LEFT JOIN` keeps every row from the left table even when there is no match on the right (the missing columns come back as `NULL`). For a QA this matters: an `INNER JOIN` can silently drop rows that have no match, which can hide missing or orphaned data. A JOIN can also produce **duplicate rows** if the join key is not unique, so always check key uniqueness before trusting a joined result.
 
 **ORDER BY / LIMIT** — sort and limit results.
 
@@ -307,53 +311,83 @@ db.orders.countDocuments({ status: "shipped" })
 
 ## Interview Questions
 
-### Top 10
+### Beginner Questions
 
 **1. What is the difference between a database and a DBMS?**
 A database is an organized collection of data. A DBMS (Database Management System) is the software that manages it — handling storage, retrieval, security, concurrency, and backup. MySQL and MongoDB are DBMSs; the data they store is the database.
 
-**2. What is the difference between SQL and NoSQL databases?**
-SQL (relational) databases store data in tables with a fixed schema and use SQL and JOINs. NoSQL databases have a flexible schema and come in types like document, key-value, column, and graph. SQL fits structured data with relationships; NoSQL fits large-scale or evolving data.
-
-**3. What is a primary key and a foreign key?**
+**2. What is a primary key and a foreign key?**
 A primary key uniquely identifies each row in a table and cannot be NULL. A foreign key is a column that references the primary key of another table, creating a relationship between the two tables.
 
-**4. What does a JOIN do?**
+**3. What does a JOIN do?**
 A JOIN combines rows from two or more tables based on a related column. For example, joining `orders` and `users` on `user_id` lets you show each order together with the name of the user who placed it.
 
-**5. Why does a QA engineer need to know SQL?**
-To verify that data is saved correctly after an action, check data integrity (no duplicates or orphaned records), validate business logic by querying directly, and reproduce or investigate data-related bugs.
-
-**6. What is the difference between WHERE and a JOIN?**
-WHERE filters rows by a condition within the result set. A JOIN combines columns from multiple tables based on a relationship. They are often used together: JOIN to connect tables, WHERE to filter the combined result.
-
-**7. How does MongoDB differ from a relational database?**
-MongoDB is a document database — it stores JSON-like documents in collections instead of rows in tables. Its schema is flexible, fields can vary per document, and related data is often embedded rather than joined.
-
-**8. What is an index and what is the trade-off?**
-An index is a data structure that speeds up data retrieval, so a query does not scan the whole table. The trade-off is slower writes and extra storage, because the index must be updated and stored.
-
-**9. What does NULL mean in SQL?**
+**4. What does NULL mean in SQL?**
 NULL means the absence of a value — it is not zero and not an empty string. In SQL logic, `NULL` is not equal to `NULL`, so comparisons with NULL need `IS NULL` / `IS NOT NULL`.
 
-**10. Name some common database tools a QA might use.**
+**5. Name some common database tools a QA might use.**
 DBeaver (multi-database GUI), MySQL Workbench, pgAdmin (PostgreSQL), TablePlus, and MongoDB Compass for MongoDB. They let you browse data, run queries, and inspect schema.
 
 ---
 
-### Tricky Questions
+### Intermediate Questions
 
-**1. You ran an UPDATE without a WHERE clause on a test database. What happened and how do you prevent it?**
-The UPDATE applied to every row in the table. To prevent this, always write the WHERE clause first, verify with a SELECT before updating, and use a transaction (`BEGIN` / `ROLLBACK`) so destructive queries can be undone. Never run such queries against production by mistake.
+**1. Why does a QA engineer need to know SQL?**
+To verify that data is saved correctly after an action, check data integrity (no duplicates or orphaned records), validate business logic by querying directly, and reproduce or investigate data-related bugs.
 
-**2. A user reports their order is missing from the UI. How do you confirm whether the data exists?**
-Query the database directly — `SELECT * FROM orders WHERE user_id = ...`. If the row exists, the bug is in the UI or API layer; if it does not, the data was never saved. This isolates where the defect actually is.
+**2. What is the difference between WHERE and a JOIN?**
+WHERE filters rows by a condition within the result set. A JOIN combines columns from multiple tables based on a relationship. They are often used together: JOIN to connect tables, WHERE to filter the combined result.
 
-**3. When would NoSQL be a worse choice than SQL?**
+**3. What is the difference between SQL and NoSQL databases?**
+SQL (relational) databases store data in tables with a fixed schema and use SQL and JOINs. NoSQL databases have a flexible schema and come in types like document, key-value, column, and graph. SQL fits structured data with relationships; NoSQL fits large-scale or evolving data.
+
+**4. How does MongoDB differ from a relational database?**
+MongoDB is a document database — it stores JSON-like documents in collections instead of rows in tables. Its schema is flexible, fields can vary per document, and related data is often embedded rather than joined.
+
+**5. What is an index and what is the trade-off?**
+An index is a data structure that speeds up data retrieval, so a query does not scan the whole table. The trade-off is slower writes and extra storage, because the index must be updated and stored.
+
+---
+
+### Advanced Questions
+
+**1. When would NoSQL be a worse choice than SQL?**
 When the data has many strong relationships and needs transactions across them — for example, banking or orders with strict consistency. Relational databases enforce these with foreign keys and ACID transactions, while most NoSQL stores favor flexibility over strict consistency.
 
-**4. Two equal-looking rows have a subtle difference. How can a JOIN hide a bug?**
+**2. How can a JOIN hide a bug?**
 A JOIN can produce duplicate rows if the join key is not unique, or drop rows if you use an INNER JOIN where a LEFT JOIN was needed. A QA must understand the join type and key uniqueness to trust the result.
 
-**5. In MongoDB, the same field is a string in one document and a number in another. Is that allowed, and why is it risky?**
+**3. In MongoDB, the same field is a string in one document and a number in another. Is that allowed, and why is it risky?**
 Yes, MongoDB's flexible schema allows it. It is risky because queries and the application may expect one type, so mixed types cause subtle bugs, failed comparisons, or crashes. Schema validation or application-level checks are needed to avoid it.
+
+---
+
+### Code Questions
+
+**1. Scenario — a user reports their order is missing from the UI. Confirm whether the data actually exists in the database.**
+
+```sql
+SELECT * FROM orders WHERE user_id = :user_id;
+```
+
+How would you interpret the result to isolate the defect?
+
+**Answer:** If the row exists, the bug is in the UI or API layer; if it does not, the data was never saved. Querying the database directly isolates where the defect actually is.
+
+**2. Given the `users` and `orders` tables, write a query to list each order together with the user's name.**
+
+```sql
+SELECT orders.id, users.name, orders.total_price
+FROM orders
+JOIN users ON orders.user_id = users.id;
+```
+
+**Answer:** This joins the two tables on the foreign key `orders.user_id → users.id`, so every order row is returned together with the matching user's name.
+
+**3. You accidentally ran an UPDATE without a WHERE clause on a test database. What happened, and what should you do next time to prevent it?**
+
+```sql
+UPDATE orders SET status = 'shipped';   -- every row updated!
+```
+
+**Answer:** The UPDATE applied to every row. Next time, write the WHERE clause first, verify the target rows with a SELECT before updating, and wrap destructive queries in a transaction (`BEGIN` / `ROLLBACK`) so they can be undone.

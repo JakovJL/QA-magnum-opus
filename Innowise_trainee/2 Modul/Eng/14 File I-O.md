@@ -8,8 +8,12 @@
 - [[#Writing Files]]
 - [[#Byte Streams and Character Streams]]
 - [[#Try-With-Resources and File Errors]]
-- [[#File I-O in AQA]]
+- [[#File I/O in AQA]]
 - [[#Interview Questions]]
+	- [[#Beginner Questions]]
+	- [[#Intermediate Questions]]
+	- [[#Advanced Questions]]
+	- [[#Code Questions]]
 
 **Related notes:** [[AQA Java eng]]
 
@@ -306,53 +310,85 @@ if (!Files.exists(downloaded)) {
 
 ## Interview Questions
 
-### Top 10
+### Beginner Questions
 
-**1. What is File I/O in Java?**  
+**1. What is File I/O in Java?**
 It is reading data from files and writing data to files or other external sources.
 
-**2. What is the difference between `Path` and `File`?**  
-`File` is the older API. `Path` is the modern NIO.2 API and works better with `Files` utility methods.
-
-**3. What does `Files.readString()` do?**  
+**2. What does `Files.readString()` do?**
 It reads the whole text file into one `String`.
 
-**4. What is the difference between byte streams and character streams?**  
-Byte streams work with raw bytes, usually for binary data. Character streams work with text data.
-
-**5. Why is try-with-resources important for file work?**  
-It closes readers, writers, and streams automatically, making code safer and shorter.
-
-**6. What exception is common in file operations?**  
-`IOException` and its subclasses are very common.
-
-**7. What does `Files.exists(path)` check?**  
+**3. What does `Files.exists(path)` check?**
 It checks whether a path exists on disk.
 
-**8. How do you append text to a file?**  
-Use `Files.writeString()` with `StandardOpenOption.APPEND` and usually `CREATE`.
+**4. What exception is common in file operations?**
+`IOException` and its subclasses are very common.
 
-**9. Where is test data usually stored in Java test projects?**  
+**5. Where is test data usually stored in Java test project?**
 Often in `src/test/resources`.
 
-**10. When would you read a file as bytes instead of text?**  
+### Intermediate Questions
+
+**1. What is the difference between `Path` and `File`?**
+`File` is the older API. `Path` is the modern NIO.2 API and works better with `Files` utility methods.
+
+**2. What is the difference between byte streams and character streams?**
+Byte streams work with raw bytes, usually for binary data. Character streams work with text data.
+
+**3. When would you read a file as bytes instead of text?**
 When the file is binary, such as image, PDF, zip, or other non-text content.
 
----
+**4. How do you append text to a file?**
+Use `Files.writeString()` with `StandardOpenOption.APPEND` and usually `CREATE`.
 
-### Tricky Questions
-
-**1. Does `Files.readAllLines()` work well for huge files?**  
-Not always. It loads all lines into memory. For very large files, buffered reading is safer.
-
-**2. Why can a file path work on one machine and fail on another?**  
-Because of different working directories, separators, permissions, or missing files.
-
-**3. Can `Files.writeString()` create a file?**  
-Yes, depending on options and method behavior. But parent directories must still exist.
-
-**4. What is the difference between `Files.createDirectory()` and `Files.createDirectories()`?**  
+**5. What is the difference between `Files.createDirectory()` and `Files.createDirectories()`?**
 `createDirectory()` creates one directory and fails if parent is missing. `createDirectories()` creates missing parent directories too.
 
-**5. Why is hardcoding absolute paths in tests usually bad?**  
+### Advanced Questions
+
+**1. Why is try-with-resources important for file work?**
+It closes readers, writers, and streams automatically, making code safer and shorter.
+
+**2. Does `Files.readAllLines()` work well for huge files?**
+Not always. It loads all lines into memory. For very large files, buffered reading is safer.
+
+**3. Why can a file path work on one machine and fail on another?**
+Because of different working directories, separators, permissions, or missing files.
+
+**4. Can `Files.writeString()` create a file?**
+Yes, depending on options and method behavior. But parent directories must still exist.
+
+**5. Why is hardcoding absolute paths in tests usually bad?**
 Because such tests become environment-dependent and break on other machines or CI servers.
+
+### Code Questions
+
+**1. What does this print?**
+
+```java
+Path path = Path.of("data", "users.txt");
+System.out.println(path);
+```
+
+**Answer:** It prints the joined path using the OS separator, e.g. `data\users.txt` on Windows or `data/users.txt` on Unix. `Path.of` builds the path in a platform-friendly way without manual separators.
+
+**2. Will this append or replace the file content?**
+
+```java
+Files.writeString(
+    Path.of("logs/app.log"),
+    "New log line\n",
+    StandardOpenOption.CREATE,
+    StandardOpenOption.APPEND
+);
+```
+
+**Answer:** It appends. `APPEND` adds to the end of the file, and `CREATE` makes sure the file is created if it does not exist. Without `APPEND`, the file content is replaced by default.
+
+**3. What is wrong with this code for reading a large file?**
+
+```java
+List<String> lines = Files.readAllLines(Path.of("data/huge.log"));
+```
+
+**Answer:** `readAllLines()` loads every line into memory at once, which is risky for very large files. For big files, buffered reading with `Files.newBufferedReader(...)` is safer because it reads one line at a time.
