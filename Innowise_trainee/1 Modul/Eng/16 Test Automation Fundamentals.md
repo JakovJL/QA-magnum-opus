@@ -237,6 +237,18 @@ Move checks down the pyramid — cover business logic with fast unit and API tes
 **3. All your tests are green, but bugs still reach production. What might be wrong?**
 The tests may have weak assertions (only checking "page loaded"), cover the wrong areas, or rely on the same flawed assumptions as the code. Green does not mean correct — review what the tests actually verify and add coverage for the missed scenarios.
 
+**4. Why should automated tests be independent?**
+If tests depend on execution order or shared state, one failure can break many unrelated tests. Independent tests are easier to run in parallel, debug, and trust in CI.
+
+**5. Why are strong assertions important?**
+A test that only checks that a page opened may pass while the business result is wrong. Strong assertions verify the expected behavior or data, so a green test actually means something useful.
+
+**6. What is the risk of automating unstable features too early?**
+The tests will change every time the feature changes, so maintenance cost becomes higher than the value of the checks. It is better to automate stable high-value flows first and test unstable areas manually.
+
+**7. What should be included in a useful automation report?**
+It should show passed, failed, and skipped tests, failure reasons, logs, screenshots for UI failures, and enough context to reproduce the problem. A report should help the team act quickly, not just show a red number.
+
 ---
 
 ### Code Questions

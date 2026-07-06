@@ -21,6 +21,8 @@
 	- [[#Ajax]]
 - [[#Browser and DevTools]]
 - [[#Storage]]
+	- [[#Cache]]
+	- [[#Cookie]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -441,6 +443,15 @@ An HttpOnly cookie cannot be read by JavaScript, which protects it from being st
 
 **4. Why might a WebSocket connection be used instead of regular HTTP requests?**
 WebSocket keeps a single persistent, bi-directional connection open, so the server can push data to the client in real time with low overhead. It suits chats, live scores, and dashboards, where repeated HTTP requests would be slow and wasteful.
+
+**5. Why can a DNS issue look like an application bug?**
+If the domain does not resolve to the correct IP address, the browser cannot reach the server even if the application itself is healthy. A QA should separate DNS/connectivity problems from real application defects.
+
+**6. Why is the DOM more important for UI automation than the page source?**
+The page source shows the original HTML, but the DOM shows the current page after JavaScript has modified it. UI automation interacts with the live DOM, so missing or changed DOM elements can break tests.
+
+**7. What is the difference between cache and cookies from a QA point of view?**
+Cache stores page resources to load them faster, so stale cache can hide UI or asset changes. Cookies store small pieces of state, often sessions or preferences, so cookie issues can affect login, authorization, and user-specific behavior.
 
 ### Code Questions
 

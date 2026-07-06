@@ -310,6 +310,15 @@ You can produce a rough estimate based on analogies and expert judgment, but it 
 **5. Is it better to overestimate or underestimate?**
 Overestimating is generally safer — it creates a buffer for unexpected issues and avoids deadline pressure that leads to skipped testing. However, consistently large overestimates waste resources and erode trust. The goal is accuracy, not padding. Track actuals and calibrate over time.
 
+**6. Why should bug reporting and verification be included in an estimate?**
+Testing work does not end when a defect is found. A QA may need to write a clear bug report, discuss it with developers, retest the fix, and run related regression checks. If this work is not estimated, the plan looks smaller than the real effort.
+
+**7. How is Wideband Delphi different from simple expert judgment?**
+Expert judgment can be one person's estimate. Wideband Delphi is a structured group process: experts estimate independently, discuss differences, and repeat until they reach a shared estimate. It reduces personal bias.
+
+**8. When can percentage distribution be useful, and what is its risk?**
+It is useful for rough early planning when the project has typical proportions, such as analysis, test design, execution, and regression. The risk is that a real project may not follow the typical pattern, so the estimate must be checked against actual scope and risks.
+
 ### Code Questions
 
 **1.** Estimate the effort for the following task using the PERT formula.

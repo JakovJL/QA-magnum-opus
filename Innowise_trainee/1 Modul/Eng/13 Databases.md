@@ -4,10 +4,16 @@
 
 - [[#Core Concepts]]
 - [[#Types of Databases]]
+	- [[#Relational Databases (SQL)]]
+	- [[#NoSQL Databases]]
 - [[#Relational Databases]]
 	- [[#Key Concepts]]
 	- [[#SQL Basics for QA]]
 - [[#SQL Tools]]
+	- [[#DBeaver]]
+	- [[#MySQL Workbench]]
+	- [[#pgAdmin]]
+	- [[#TablePlus]]
 - [[#MongoDB]]
 	- [[#Document Model]]
 	- [[#Basic Queries]]
@@ -359,6 +365,18 @@ A JOIN can produce duplicate rows if the join key is not unique, or drop rows if
 
 **3. In MongoDB, the same field is a string in one document and a number in another. Is that allowed, and why is it risky?**
 Yes, MongoDB's flexible schema allows it. It is risky because queries and the application may expect one type, so mixed types cause subtle bugs, failed comparisons, or crashes. Schema validation or application-level checks are needed to avoid it.
+
+**4. Why should QA be careful with UPDATE and DELETE queries?**
+They change data, and a missing WHERE clause can affect every row. A QA should first check the target rows with SELECT and use a safe test database or transaction when destructive queries are needed.
+
+**5. What can a database check prove that a UI check cannot?**
+It can show whether data was actually saved, updated, or deleted in storage. This helps isolate whether a defect is in the UI, API, business logic, or database layer.
+
+**6. Why are foreign keys useful for data quality?**
+Foreign keys protect relationships between tables. They prevent records from pointing to missing parent records, such as an order linked to a user that does not exist.
+
+**7. Why can flexible schemas in NoSQL be both useful and risky?**
+They make it easy to store changing data without migrations, which is useful during fast development. The risk is inconsistent documents, unexpected field types, and application code that fails because it expects a stable structure.
 
 ---
 

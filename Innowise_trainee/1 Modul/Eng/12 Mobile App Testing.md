@@ -4,10 +4,18 @@
 
 - [[#What Is Mobile App Testing]]
 - [[#Types of Mobile Apps]]
+	- [[#Native Apps]]
+	- [[#Hybrid Apps]]
+	- [[#Mobile Web Apps]]
 - [[#Simulators vs Emulators]]
+	- [[#Simulator]]
+	- [[#Emulator]]
 - [[#iOS vs Android]]
 - [[#Device Selection]]
 - [[#Testing Strategies]]
+	- [[#Real Device Testing]]
+	- [[#Cloud Device Farms]]
+	- [[#Emulator / Simulator Testing]]
 - [[#Tools]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
@@ -281,6 +289,15 @@ Because phones constantly interrupt apps — incoming calls, notifications, alar
 
 **5. You have time to test on only two devices. How do you choose?**
 Pick based on the audience: usually one widely-used Android device and one common iPhone, covering the most popular OS versions and a difference in screen size. Use market-share data to justify the choice rather than guessing.
+
+**6. Why should permission handling be tested carefully on mobile?**
+Mobile apps often need camera, location, storage, or notification permissions. A QA should check first request, denial, repeated denial, permission changes in settings, and whether the app explains the need clearly without crashing.
+
+**7. When is a cloud device farm useful?**
+It is useful when the team cannot own every device model and OS version. A cloud farm gives access to many real devices for compatibility checks, reproduction of device-specific bugs, and broader regression coverage.
+
+**8. Why is install and update testing important for native apps?**
+Native apps have lifecycle steps that web apps do not: installation, update, downgrade behavior, data migration, permissions, and app store delivery. A broken update can affect existing users even if a fresh install works.
 
 ### Code Questions
 

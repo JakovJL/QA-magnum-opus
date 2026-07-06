@@ -10,6 +10,9 @@
 	- [[#Corrective Regression]]
 - [[#How to Do Regression Testing]]
 - [[#How to Select a Regression Test Suite]]
+	- [[#Risk-Based Selection]]
+	- [[#Priority-Based Selection]]
+	- [[#Coverage-Based Selection]]
 - [[#Regression vs Retesting]]
 - [[#Best Practices]]
 - [[#Interview Questions]]
@@ -211,6 +214,15 @@ Because it represents lost functionality — something that previously worked no
 
 **5. Can automated regression fully replace manual regression?**
 No. Automation handles stable, repetitive checks well, but new, frequently-changing, or visual/usability aspects still need human judgment. A healthy regression strategy combines both.
+
+**6. What is the difference between progressive and corrective regression testing?**
+Progressive regression is used when new functionality is added, so both the new feature and connected old areas must be checked. Corrective regression is used when the product has not changed much and existing tests can be re-run without major updates.
+
+**7. How do you choose regression tests after an environment change?**
+Focus on areas affected by the environment: integrations, database connections, file paths, browsers, operating systems, configuration, and deployment flow. Even without code changes, environment changes can break existing behavior.
+
+**8. Why should obsolete regression tests be removed or updated?**
+Old tests that no longer match requirements create noise and waste time. They can fail for reasons that are no longer relevant, hide real risks, and make the regression suite slower and harder to trust.
 
 ### Code Questions
 

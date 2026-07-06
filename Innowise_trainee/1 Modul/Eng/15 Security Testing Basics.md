@@ -264,6 +264,12 @@ Not necessarily. XSS has many vectors — attributes, event handlers, URLs, and 
 **5. A test environment uses default credentials (admin/admin). Is that only a test problem?**
 No. Default credentials and other misconfigurations often leak into production or staging that is reachable from outside. Security misconfiguration is itself an OWASP risk, so default credentials, verbose errors, and open services should be flagged wherever they appear.
 
+**6. What is the difference between XSS and CSRF?**
+XSS runs attacker-controlled script in a victim's browser. CSRF tricks an already authenticated user into sending an unwanted request. XSS attacks the browser context; CSRF abuses the user's existing session.
+
+**7. Why should sensitive data exposure be checked in responses and logs?**
+Secrets can leak even when the UI hides them. A QA should check API responses, browser storage, logs, and error messages for passwords, tokens, personal data, stack traces, or internal system details.
+
 ---
 
 ### Code Questions

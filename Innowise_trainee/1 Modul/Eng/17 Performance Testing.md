@@ -224,6 +224,21 @@ Not really. Without targets (e.g. "p95 under 2s at 1,000 users") you cannot say 
 **3. Response time is good but the error rate rises sharply as load increases. What does that tell you?**
 The system is hitting a capacity limit — it may be running out of resources (connections, memory, threads) and rejecting requests rather than slowing down. A low response time alone is misleading if many requests are failing; you must read it together with the error rate.
 
+**4. Why is a baseline performance test useful?**
+A baseline gives the first known result under a controlled load. Later runs can be compared against it to detect degradation after code, configuration, or environment changes.
+
+**5. What is the difference between load testing and scalability testing?**
+Load testing checks behavior under expected load. Scalability testing checks whether the system can handle more load when resources are added, such as more servers or larger infrastructure.
+
+**6. Why should test data be realistic in performance testing?**
+Small or artificial data can make the system look faster than it will be in production. Realistic data volume and distribution help reveal slow queries, cache issues, and bottlenecks.
+
+**7. Why is Postman not enough for serious load testing?**
+Postman is useful for quick performance smoke checks on API collections, but it is not designed for thousands of users, complex load profiles, distributed execution, or deep performance reporting.
+
+**8. What should a performance test report include besides response time?**
+It should include load level, environment, test data, throughput, error rate, percentiles, resource usage, bottlenecks found, and whether the system met the defined targets.
+
 ---
 
 ### Code Questions

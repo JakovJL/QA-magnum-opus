@@ -269,6 +269,15 @@ Not necessarily. High unit test coverage proves individual components work but s
 **6. E2E tests keep failing randomly. Should you just delete them?**
 No. Flaky tests are a symptom, not the cause. First, investigate why they fail — common causes are timing issues, test data dependencies, or environment instability. Fix the root cause. If a check is genuinely untestable at E2E level, move it to a lower level instead of deleting it.
 
+**7. What does it mean to push tests down the pyramid?**
+It means moving a check to the lowest reliable level where it can be tested. For example, validation rules should usually be tested with unit tests, API behavior with integration tests, and only the main user journey with E2E tests.
+
+**8. Why is the integration layer important if you already have unit tests?**
+Unit tests prove that small parts work alone. Integration tests prove that those parts work together: services call each other correctly, data is saved and read correctly, and contracts between modules are respected.
+
+**9. Why is duplicated coverage at several levels a problem?**
+Duplicated checks increase maintenance cost and slow down CI without adding much confidence. If the same rule is tested at unit, integration, and E2E level, one requirement change may require three test updates.
+
 ### Code Questions
 
 **1.** A team's pipeline looks like the Ice Cream Cone: most tests are E2E/manual, almost none are unit tests, and CI takes hours to run.
