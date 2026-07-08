@@ -23,6 +23,7 @@
 - [[#Storage]]
 	- [[#Cache]]
 	- [[#Cookie]]
+	- [[#Session]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -391,6 +392,35 @@ A **cookie** is a small piece of data the server sends to the browser, which the
 > | **Sent to server?** | No | Yes, automatically |
 > | **Controlled by** | Server headers | Server + client JS |
 > | **View in DevTools** | Network tab (from disk/memory) | Application tab |
+
+---
+
+### Session
+
+A **session** is server-side storage for a user's state during interaction with the application.
+
+**Goal:** let the server remember the user between requests.
+
+**How it works:**
+- the server creates session data
+- the browser usually stores only a session identifier in a cookie
+- with the session ID, the server finds the real data on its side
+
+**Session vs Cookie:**
+- session data is stored on the server
+- cookie data is stored on the client
+- a cookie often carries the session ID, not the whole session state
+
+**Session timeout:** after inactivity or after a defined lifetime, the session expires and the user may need to log in again.
+
+**QA relevance:**
+- verify logout really destroys the session
+- check what happens after session timeout
+- check whether parallel sessions are allowed
+- verify the app does not restore an expired session incorrectly
+
+> [!tip] Session vs Cookie
+> A session usually lives on the server, while a cookie lives in the browser. In many systems the cookie only stores the session ID.
 
 ---
 

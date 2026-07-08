@@ -14,6 +14,9 @@
 - [[#TCP/IP]]
 - [[#DNS]]
 - [[#Serialization and Deserialization]]
+	- [[#JSON Syntax Rules]]
+	- [[#XML Syntax Rules]]
+	- [[#XSD]]
 - [[#GraphQL]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
@@ -726,6 +729,81 @@ User user = objectMapper.readValue(json, User.class);
 **XML** — `<name>John</name><age>30</age>` — even larger due to tags
 **Protobuf** — `\x0a\x04John\x10\x1e` — not readable, but very compact
 
+### JSON Syntax Rules
+
+JSON has a strict syntax.
+
+**Main rules:**
+- objects use `{}`
+- arrays use `[]`
+- strings use double quotes
+- numbers are written without quotes
+- allowed types are `string`, `number`, `boolean`, `null`, `object`, and `array`
+- comments are not allowed
+- `NaN`, `Infinity`, and `undefined` are not valid JSON values
+- trailing commas are not allowed
+
+**Valid example:**
+
+```json
+{
+  "name": "John",
+  "age": 30,
+  "active": true,
+  "skills": ["API", "SQL"],
+  "manager": null
+}
+```
+
+### XML Syntax Rules
+
+XML also has strict structure rules.
+
+**Main rules:**
+- every opened tag must be closed
+- tags are case-sensitive
+- attribute values must be in quotes
+- the document must have one root element
+- special characters must be escaped: `&lt;`, `&gt;`, `&amp;`, `&quot;`, `&apos;`
+
+**Valid example:**
+
+```xml
+<user id="42">
+  <name>John</name>
+  <active>true</active>
+</user>
+```
+
+### XSD
+
+**XSD** (XML Schema Definition) is a formal schema used to validate XML structure.
+
+**Goal:** define which elements, attributes, data types, and required fields are allowed in an XML document.
+
+**Why it matters:**
+- validates XML structure
+- checks data types
+- marks required and optional fields
+- helps detect invalid SOAP requests and responses
+
+**Relation to WSDL:** in SOAP services, WSDL describes the operations, while XSD describes the data types used inside those operations.
+
+**Minimal example:**
+
+```xml
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="user">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="name" type="xs:string"/>
+        <xs:element name="age" type="xs:int"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
+```
+
 ### For Testers
 
 1. **Structure check** — after deserialization, fields must match the expected schema
@@ -865,6 +943,9 @@ API test automation means running API tests automatically with scripts or tools 
 1. Write test scripts that send requests to endpoints (e.g. Postman/Newman, REST Assured, Karate, or Python + requests/pytest).
 2. Each test sends a request (method, headers, body), then asserts the response (status code, body fields, schema, response time).
 3. Tests are grouped into a suite and run automatically — locally or in a CI/CD pipeline (e.g. Jenkins, GitHub Actions) on every build.
+
+**4. What is XSD?**
+XSD is XML Schema Definition, a formal schema used to validate XML structure, data types, and required fields.
 4. A report shows which tests passed or failed.
 
 Benefits: fast regression, repeatable results, no manual effort, and early detection of breakages.

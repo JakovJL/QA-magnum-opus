@@ -6,6 +6,7 @@
 - [[#Pipeline Basics]]
 - [[#GitHub Actions]]
 - [[#AQA Pipeline Example]]
+- [[#Role of Testing in CI/CD]]
 - [[#Common Problems]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
@@ -104,6 +105,28 @@ Good practice:
 - run slower regression tests by schedule or manual trigger
 - keep test data independent
 - save screenshots, logs, and reports as artifacts
+
+---
+
+## Role of Testing in CI/CD
+
+Testing is one of the main reasons CI/CD exists.
+
+**Where tests usually run in the pipeline:**
+- **unit tests** — early, fast quality check
+- **API and integration tests** — after build or deploy to a test environment
+- **UI / E2E tests** — later, because they are slower and more fragile
+
+**How tests affect the pipeline:**
+- passing tests allow the pipeline to continue
+- failing tests can stop the build, block deploy, or block merge
+
+**Testing as a quality gate:**
+- pull requests often require green tests before merge
+- smoke tests may run right after deployment
+- if critical tests fail after deployment, the team may rollback automatically or manually
+
+**Goal:** find defects as early as possible and prevent broken code from moving forward.
 
 ---
 

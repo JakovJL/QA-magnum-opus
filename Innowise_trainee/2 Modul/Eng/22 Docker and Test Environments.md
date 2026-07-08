@@ -4,6 +4,7 @@
 
 - [[#What a Test Environment Is]]
 - [[#Virtualization and Containerization]]
+	- [[#Snapshot VM]]
 - [[#Docker Basics]]
 - [[#Docker in AQA]]
 - [[#Common Problems]]
@@ -46,6 +47,21 @@ It can include:
 | Size | larger | smaller |
 | Isolation | stronger | good but lighter |
 | Common tool | VMware, VirtualBox | Docker |
+
+### Snapshot VM
+
+A **snapshot** is a saved state of a virtual machine at a specific moment.
+
+**Goal:** return quickly to the same environment state without reinstalling everything.
+
+**When to use:**
+- restore a clean test state
+- switch between configurations
+- return to a known point after a failed deploy or broken setup
+
+**Snapshot vs backup:**
+- a snapshot is fast and tied to the VM state
+- a backup is a more complete long-term copy used for recovery
 
 ---
 

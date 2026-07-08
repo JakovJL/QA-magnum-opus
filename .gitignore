@@ -12,6 +12,7 @@ node_modules/
 # --- IDE / tooling ---
 .idea/
 .claude/
+/.commandcode/
 
 # --- OS junk ---
 Thumbs.db

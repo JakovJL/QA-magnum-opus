@@ -19,6 +19,9 @@
 16. [[15 Security Testing Basics]]
 17. [[16 Test Automation Fundamentals]]
 18. [[17 Performance Testing]]
+19. [[18 Operating Systems]]
+20. [[19 Charles Proxy and Network Sniffing]]
+21. [[20 Testing Metrics]]
 
 ## Practice
 

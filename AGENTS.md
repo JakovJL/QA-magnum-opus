@@ -23,7 +23,6 @@ knowledge base/
 │   │   ├── Example Test Plan.md
 │   │   ├── Example Test Case.md
 │   │   └── Example Test Strategy.md
-│   ├── Meetings/
 │   ├── 1 Modul/
 │   │   ├── Eng/
 │   │   │   ├── QA manual eng.md
@@ -44,7 +43,10 @@ knowledge base/
 │   │   │   ├── 14 Test Management.md
 │   │   │   ├── 15 Security Testing Basics.md
 │   │   │   ├── 16 Test Automation Fundamentals.md
-│   │   │   └── 17 Performance Testing.md
+│   │   │   ├── 17 Performance Testing.md
+│   │   │   ├── 18 Operating Systems.md
+│   │   │   ├── 19 Charles Proxy and Network Sniffing.md
+│   │   │   └── 20 Testing Metrics.md
 │   │   └── Rus/
 │   │       ├── QA manual rus.md
 │   │       ├── 00 Основы тестирования.md
@@ -64,7 +66,10 @@ knowledge base/
 │   │       ├── 14 Управление тестированием.md
 │   │       ├── 15 Основы тестирования безопасности.md
 │   │       ├── 16 Основы автоматизации тестирования.md
-│   │       └── 17 Тестирование производительности.md
+│   │       ├── 17 Тестирование производительности.md
+│   │       ├── 18 Операционные системы.md
+│   │       ├── 19 Charles Proxy и анализ трафика.md
+│   │       └── 20 Метрики тестирования.md
 │   └── 2 Modul/
 │       ├── Eng/
 │       │   ├── AQA Java eng.md
@@ -120,9 +125,14 @@ knowledge base/
 │           ├── 22 Docker и тестовые окружения.md
 │           ├── 23 Инженерные практики для AQA.md
 │           └── Практика - QA Issue Tracker.md
+├── English/
+│   ├── English Learning Plan.md
+│   ├── Consolidated Vocabulary List.md
+│   └── Speaking Practice/
+│       ├── 00 Speaking Practice Index.md
+│       ├── Recurring Mistakes Tracker.md
+│       └── Session YYYY-MM-DD — Topic.md   (one per recorded lesson)
 └── Разное/
-    ├── English Learning Plan.md
-    ├── Consolidated Vocabulary List.md
     ├── # 🧠 Шпаргалка по Markdown для Obsidian.md
     ├── Места, где я хочу побывать.md
     └── img/
@@ -166,6 +176,16 @@ knowledge base/
 - Technical terms stay in English in both versions: Smoke, Sanity, Ad-hoc, CI, UAT, API, ARIA, SDLC, STLC (and library-specific ones like HashMap, ArrayList)
 - Terms with both names: Error (Ошибка), Defect (Дефект), Failure (Отказ)
 - User's English level: B1 — keep vocabulary simple, avoid rare words
+
+### Use Theory Terms As Primary
+
+For QA/AQA notes, use terminology as it appears in the theory/course material and common interview practice.
+
+- If a term is taught primarily in English, keep the **English term** as the main term.
+- Russian may be added only as a short clarification when it improves understanding.
+- Do not invent mixed forms or ad-hoc hybrids if they are not used in the theory.
+- Prefer theory-consistent terms such as: `Retest`, `Regression testing`, `Verification`, `Validation`, `Performance testing`, `Load testing`, `Stress testing`, `Soak testing`, `Volume testing`, `Capacity testing`, `Scalability testing`, `Test Strategy`, `Test Plan`, `RTM`, `Test Summary Report`.
+- When choosing between a translated label and the original theory term, prefer the original theory term.
 
 ## Entry Structure
 

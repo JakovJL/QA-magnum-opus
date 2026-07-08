@@ -391,12 +391,12 @@ Waterfall for core system, Agile for UI components.
 
 ### Test Planning
 
-**Objective:** Define the scope, resources, timeline, and approach for testing.
+**Objective:** Define the scope, resources, timeline, and overall approach for testing.
 
 **Activities:**
-- Create a test plan covering scope, required resources, schedule, and deliverables.
-- Choose testing tools and techniques.
-- Assign roles and responsibilities to the testing team.
+- Prepare a test plan covering scope, resources, schedule, deliverables, and risks.
+- Choose suitable testing tools and techniques.
+- Assign roles and areas of responsibility within the team.
 
 ---
 
@@ -451,7 +451,7 @@ Waterfall for core system, Agile for UI components.
 SDLC (Software Development Life Cycle) is a framework that defines the structured steps involved in building software. Its main phases are Planning, Analysis, Design, Implementation, Testing, Deployment, and Maintenance.
 
 **2. What is STLC and how does it relate to SDLC?**
-STLC (Software Testing Life Cycle) is a subset of SDLC that focuses exclusively on testing activities. While SDLC covers the full product lifecycle from requirements to maintenance, STLC defines a structured process specifically for testing: from requirements analysis through test closure.
+STLC is the part of SDLC that describes the testing process. SDLC covers the full product lifecycle, from requirements to release and maintenance. STLC works inside that lifecycle and includes testing activities such as requirements analysis, test planning, test design, execution, reporting, and test closure.
 
 **3. What is the objective of the Requirements Analysis stage in STLC?**
 To understand what the software must do and determine what needs to be tested. This involves reviewing the SRS, identifying functional and non-functional requirements, and defining the test conditions needed to verify each requirement.
@@ -488,24 +488,24 @@ False. STLC begins in parallel with SDLC, starting from the Requirements Analysi
 False. Test Closure means testing activities have been formally completed and the software has been signed off as meeting the agreed acceptance criteria. Known open defects may still exist — they are documented, prioritized, and often deferred to a future release based on risk and business decisions.
 
 **3. A project has no formal SRS. Can STLC still proceed?**
-It can proceed, but with significantly higher risk. Without an SRS, testers must derive test conditions from other sources — user stories, wireframes, stakeholder interviews, or existing behavior. The risk is that “expected behavior” becomes ambiguous, making it harder to determine whether something is a defect or a feature. In Agile projects, acceptance criteria in user stories serve a similar purpose.
+Yes, but with higher risk. Without a formal SRS, testers have to rely on user stories, acceptance criteria, wireframes, API documentation, stakeholder interviews, and current system behavior. The main problem is that expected behavior may be described unclearly, which makes it harder to decide what should be treated as a defect.
 
 **4. If a product passes Test Closure sign-off, does that mean it has no remaining defects?**
-No. Sign-off means the product meets the *agreed acceptance criteria* — not that it is defect-free. There may be known low-priority defects that were accepted, and there may be unknown defects that testing did not reach. Sign-off is a business decision based on risk tolerance, not a guarantee of perfection.
+No. Test Closure does not mean that no defects remain. It means the testing activities are complete, the results have been reviewed, and the next decision is made based on agreed acceptance criteria and risk level. Some defects may still stay open if the team and the business consider that acceptable.
 
 ### Advanced Questions
 
 **1. Why should STLC start during requirements analysis?**
-Early testing activities help find unclear, missing, or untestable requirements before development makes them expensive to fix.
+Because the earlier the team finds unclear, incomplete, or untestable requirements, the cheaper and easier they are to fix. This reduces the risk of carrying those problems into design, code, and test cases.
 
 **2. Why does the V-Model connect test levels with development stages?**
-It shows that each development artifact has a related testing activity, so validation planning starts early and is not delayed until coding ends.
+Because each development stage has a matching verification activity. This helps the team prepare tests earlier and check the product in a structured way instead of leaving all testing until the end.
 
-**3. Why can Agile still have STLC?**
-Agile changes the rhythm, not the need for testing activities. Requirements analysis, planning, design, execution, reporting, and closure still happen, often inside each sprint.
+**3. What does STLC look like in an Agile project?**
+In Agile, testing activities do not disappear; they repeat in each sprint. The team still analyses requirements, prepares tests, executes them, reports results, and wraps up the cycle, but does it in short iterations.
 
-**4. Why is Test Closure a process activity, not just a meeting?**
-It includes checking exit criteria, summarizing results, documenting open risks, lessons learned, and preparing final reports.
+**4. What is checked during Test Closure besides the fact that testing is finished?**
+During Test Closure, the team checks whether exit criteria were met, which defects remain open, which risks were accepted, what needs to be archived, and what lessons should be recorded for future cycles.
 
 ### Code Questions
 

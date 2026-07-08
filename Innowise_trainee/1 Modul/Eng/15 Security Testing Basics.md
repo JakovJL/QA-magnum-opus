@@ -11,6 +11,7 @@
 	- [[#Sensitive Data Exposure]]
 	- [[#Broken Access Control]]
 	- [[#Security Misconfiguration]]
+- [[#Access Token And Refresh Token]]
 - [[#Keycloak]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
@@ -164,6 +165,46 @@ Default settings, verbose errors, or open services leave the system exposed.
 > | Access | Direct URL/id access is blocked for other roles |
 > | Data | No secrets in responses, URLs, or logs |
 > | Errors | No stack traces or internal paths shown |
+
+---
+
+## Access Token And Refresh Token
+
+In an `Access token / Refresh token` scheme, the user first passes **authentication** and then receives tokens for further API work. The `access token` is usually short-lived and is used in normal requests. The `refresh token` lives longer and is used to get a new `access token` without logging in again.
+
+**Goal:** Give the user short secure access to the API without asking for a login and password too often.
+
+**How it works:**
+1. The user logs in and the server verifies the credentials
+2. The server issues an `access token` and a `refresh token`
+3. The client sends the `access token` with each API request
+4. The server checks the token signature, expiry, and claims
+5. When the `access token` expires, the client sends the `refresh token` to a special endpoint
+6. If the `refresh token` is valid, the server issues a new `access token`
+
+**Difference between the tokens:**
+
+| Token | Purpose | Notes |
+|---|---|---|
+| `Access token` | Access protected resources | Short lifetime, sent often |
+| `Refresh token` | Get a new `access token` | Longer lifetime, must be stored very carefully |
+
+**What QA should understand:**
+- **Authentication** answers who logged in
+- **Authorization** answers what that user may do after login
+- Even if a token is valid, the server must still check roles and permissions
+
+**What a QA tests:**
+- an `access token` with expired `exp` should return `401 Unauthorized`
+- an edited token or a token with an invalid signature must be rejected
+- a `refresh token` should stop working after logout
+- reuse of a revoked `refresh token` must be rejected
+- a normal user with a valid token must not access admin endpoints
+- a request without a token must be rejected
+- the server should clearly distinguish `401 Unauthorized` and `403 Forbidden`
+
+> [!tip] `401` vs `403`
+> `401 Unauthorized` usually means the user is not authenticated: the token is missing, expired, or invalid. `403 Forbidden` means the user is authenticated, but does not have the required permissions.
 
 ---
 
