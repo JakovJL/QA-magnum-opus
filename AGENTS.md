@@ -8,17 +8,87 @@ knowledge base/
 │   ├── План обучения.md
 │   ├── ISTQB Glossary v3.2.md
 │   ├── Pro ISTQB вопросики с ответом.md
+│   ├── Skills Matrix Automation QA.xlsx
 │   ├── Trainee - Assessment QA auto.xlsx
 │   ├── Карточки/
 │   │   └── QA/
 │   │       └── Flashcards - Testing Fundamentals.md
 │   ├── Interview Practice/
+│   │   ├── Skills Matrix AQA/
+│   │   │   ├── Eng/
+│   │   │   │   ├── 00 Skills Matrix AQA Index.md
+│   │   │   │   ├── 01 The Use of AI.md
+│   │   │   │   ├── 02 Estimations.md
+│   │   │   │   ├── 03 Processes and Methodologies.md
+│   │   │   │   ├── 04 Test Documentation and Bug Tracking Systems.md
+│   │   │   │   ├── 05 Automation Testing Basic Theory.md
+│   │   │   │   ├── 06 Version Control System.md
+│   │   │   │   ├── 07 CI-CD.md
+│   │   │   │   ├── 08 Automation Tools and Frameworks.md
+│   │   │   │   ├── 09 Project Management and Package Manager.md
+│   │   │   │   ├── 10 Locators.md
+│   │   │   │   ├── 11 Browser Initialisation.md
+│   │   │   │   ├── 12 Selenium API.md
+│   │   │   │   ├── 13 BDD.md
+│   │   │   │   ├── 14 Waiters.md
+│   │   │   │   ├── 15 REST SOAP and WebSockets.md
+│   │   │   │   ├── 16 Authorization Protocols.md
+│   │   │   │   ├── 17 Framework Architecture.md
+│   │   │   │   ├── 18 Loggers Reporters and Metrics.md
+│   │   │   │   ├── 19 Virtualisation and Containerisation.md
+│   │   │   │   ├── 20 TestOps.md
+│   │   │   │   ├── 21 Mobile Automation.md
+│   │   │   │   ├── 22 Mobile Device Farms.md
+│   │   │   │   ├── 23 Performance Testing.md
+│   │   │   │   ├── 24 Message Brokers and Monitoring Tools.md
+│   │   │   │   ├── 25 Databases.md
+│   │   │   │   ├── 26 Software Engineering Practices.md
+│   │   │   │   ├── 27 Java.md
+│   │   │   │   └── 28 Business Focus.md
+│   │   │   └── Rus/
+│   │   │       ├── 00 Индекс Skills Matrix AQA.md
+│   │   │       ├── 01 Использование AI.md
+│   │   │       ├── 02 Estimations.md
+│   │   │       ├── 03 Процессы и методологии.md
+│   │   │       ├── 04 Тестовая документация и системы отслеживания дефектов.md
+│   │   │       ├── 05 Основы автоматизации тестирования.md
+│   │   │       ├── 06 Система контроля версий.md
+│   │   │       ├── 07 CI-CD.md
+│   │   │       ├── 08 Инструменты и фреймворки автоматизации.md
+│   │   │       ├── 09 Управление проектом и Package Manager.md
+│   │   │       ├── 10 Locators.md
+│   │   │       ├── 11 Инициализация браузера.md
+│   │   │       ├── 12 Selenium API.md
+│   │   │       ├── 13 BDD.md
+│   │   │       ├── 14 Waiters.md
+│   │   │       ├── 15 REST SOAP и WebSockets.md
+│   │   │       ├── 16 Протоколы авторизации.md
+│   │   │       ├── 17 Архитектура фреймворка.md
+│   │   │       ├── 18 Loggers reporters и metrics.md
+│   │   │       ├── 19 Виртуализация и контейнеризация.md
+│   │   │       ├── 20 TestOps.md
+│   │   │       ├── 21 Mobile Automation.md
+│   │   │       ├── 22 Mobile Device Farms.md
+│   │   │       ├── 23 Performance Testing.md
+│   │   │       ├── 24 Message Brokers и инструменты мониторинга.md
+│   │   │       ├── 25 Базы данных.md
+│   │   │       ├── 26 Software Engineering Practices.md
+│   │   │       ├── 27 Java.md
+│   │   │       └── 28 Business Focus.md
 │   │   ├── Eng/
 │   │   │   ├── 01 Full QA AQA Interview - Junior Core.md
 │   │   │   └── 02 Full QA AQA Interview - Practical Scenarios.md
 │   │   └── Rus/
 │   │       ├── 01 Полное QA AQA интервью - Junior Core.md
-│   │       └── 02 Полное QA AQA интервью - Практические сценарии.md
+│   │       ├── 02 Полное QA AQA интервью - Практические сценарии.md
+│   │       ├── 03 Подготовка к собеседованию по CV - Индекс.md
+│   │       ├── 04 День 1 - Разбор CV и основы C Sharp.md
+│   │       ├── 05 День 2 - Стек автоматизации C Sharp.md
+│   │       ├── 06 День 3 - Проект финансовой аналитики.md
+│   │       ├── 07 День 4 - Проект интернет-магазина.md
+│   │       ├── 08 День 5 - Инфраструктура и пробное интервью.md
+│   │       ├── 09 День собеседования - Чек-лист.md
+│   │       └── 10 Вопросы и ответы по проектам CV - Java и Kotlin.md
 │   ├── Examples/
 │   │   ├── Example Test Plan.md
 │   │   ├── Example Test Case.md
@@ -272,6 +342,10 @@ Many notes end with an "Interview Questions" or self-check section. Every questi
 - This file acts as a Map of Content (MOC) to keep the Obsidian Graph clean.
 - All notes within the module must link **only** to this Index in their `**Related notes:**` block.
 - Semantic links are allowed within the text body if they add conceptual value.
+
+### 8. Git Push
+- When the user asks to `push` or «запушить», commit the requested changes and push them directly to `main`.
+- Do not create a branch or pull request unless the user explicitly asks for one.
 
 ## Content Standards
 
