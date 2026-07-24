@@ -88,7 +88,8 @@ knowledge base/
 │   │       ├── 07 День 4 - Проект интернет-магазина.md
 │   │       ├── 08 День 5 - Инфраструктура и пробное интервью.md
 │   │       ├── 09 День собеседования - Чек-лист.md
-│   │       └── 10 Вопросы и ответы по проектам CV - Java и Kotlin.md
+│   │       ├── 10 Вопросы и ответы по проектам CV - Java и Kotlin.md
+│   │       └── 11 Достижения и челленджи по проектам CV.md
 │   ├── Examples/
 │   │   ├── Example Test Plan.md
 │   │   ├── Example Test Case.md
@@ -200,6 +201,14 @@ knowledge base/
 │           ├── 24 Паттерны проектирования для AQA.md
 │           ├── 25 Selenium Grid.md
 │           ├── 26 REST API тестирование с REST Assured.md
+│           ├── 27 SOAP и SoapUI.md
+│           ├── 28 WireMock.md
+│           ├── 29 Mockito.md
+│           ├── 30 Appium.md
+│           ├── 31 RabbitMQ.md
+│           ├── 32 MongoDB.md
+│           ├── 33 OpenSearch.md
+│           ├── 34 Kubernetes.md
 │           └── Практика - QA Issue Tracker.md
 ├── English/
 │   ├── English Learning Plan.md
