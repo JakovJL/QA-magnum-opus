@@ -170,8 +170,16 @@ knowledge base/
 │       │   ├── 23 Software Engineering Practices for AQA.md
 │       │   ├── 24 Design Patterns for AQA.md
 │       │   ├── 25 Selenium Grid.md
-│       │   ├── 26 REST API Testing with REST Assured.md
-│       │   └── Practice - QA Issue Tracker.md
+│           │   ├── 26 REST API Testing with REST Assured.md
+│           │   ├── 27 SOAP and SoapUI.md
+│           │   ├── 28 WireMock.md
+│           │   ├── 29 Mockito.md
+│           │   ├── 30 Appium.md
+│           │   ├── 31 RabbitMQ.md
+│           │   ├── 32 MongoDB.md
+│           │   ├── 33 OpenSearch.md
+│           │   ├── 34 Kubernetes.md
+│           │   └── Practice - QA Issue Tracker.md
 │       └── Rus/
 │           ├── AQA Java rus.md
 │           ├── 00 Основы Java.md
