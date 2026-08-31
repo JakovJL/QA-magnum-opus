@@ -18,6 +18,7 @@
 	- [[#Document Model]]
 	- [[#Basic Queries]]
 	- [[#MongoDB Tools]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -312,6 +313,20 @@ db.orders.countDocuments({ status: "shipped" })
 **mongosh** (MongoDB Shell) — official command-line interface. Successor to the old `mongo` shell. Uses JavaScript syntax.
 
 **MongoDB Atlas** — cloud-hosted MongoDB service. Provides a web-based UI for managing databases, running queries, and monitoring.
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - A database stores data, a DBMS is the software that manages it — MySQL, PostgreSQL, MongoDB are DBMSs
+> - Relational (SQL) databases use tables with a fixed schema; tables are linked by Primary Key → Foreign Key relationships
+> - A Primary Key uniquely identifies each row and cannot be NULL; NULL means the absence of a value, and NULL is not equal even to another NULL
+> - `JOIN` combines tables: `INNER JOIN` drops rows without a match, `LEFT JOIN` keeps them — a wrong join type can hide missing or orphaned data, and a non-unique key duplicates rows
+> - An index speeds up data retrieval but slows down writes and takes extra storage
+> - NoSQL has a flexible schema (document, key-value, column, graph); MongoDB stores JSON-like documents in collections, each with a unique `_id`
+> - For QA, a direct query proves whether data was really saved and isolates a bug between UI, API and database layers; check targets with SELECT before UPDATE/DELETE and use transactions (`BEGIN` / `ROLLBACK`) for destructive queries
+> - Most often asked: Primary Key vs Foreign Key, JOIN types, SQL vs NoSQL, why a QA engineer needs SQL
 
 ---
 

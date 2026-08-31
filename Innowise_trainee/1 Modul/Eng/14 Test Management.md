@@ -11,6 +11,7 @@
 	- [[#Jira Redmine and TFS]]
 - [[#Reporting]]
 - [[#Test Management Tools]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -232,6 +233,20 @@ Tools used to organize test cases, plan test runs, and track execution results.
 
 > [!info] TMS vs Issue Tracker
 > A **Test Management System (TMS)** stores test cases, organizes test runs, and tracks execution results. An **issue tracker** (Jira, YouTrack) stores defects and tasks. Most QA teams use both: TMS for test case management, issue tracker for defects. Some teams use Jira + Zephyr/Xray to combine both in one system.
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - Test management coordinates the whole testing lifecycle: the test manager defines the approach, estimates effort, assigns tasks, manages risks, reports to stakeholders, and closes the cycle
+> - The process follows the STLC phases: initiation, planning, design, execution, monitoring and controlling, closure
+> - A Test Plan defines scope, approach, resources, schedule, entry and exit criteria, risks, and deliverables for one testing effort
+> - Monitoring tracks actual progress against the plan, controlling takes corrective action; key metrics are execution progress, pass rate, defect detection and fix rates, requirements coverage
+> - Stop testing when exit criteria are met, time or budget is exhausted, or risk is accepted — "no new defects found" is not a valid criterion
+> - Risk priority = Likelihood × Impact; disputed defects and blockers go up the escalation path — QA Lead → Test Manager → Project Manager → Stakeholders
+> - A TMS (TestRail, Zephyr Scale, Xray) manages test cases and runs, an issue tracker (Jira) manages defects and tasks; tailor reports to the audience
+> - Most often asked: entry vs exit criteria, when to stop testing, monitoring vs controlling, TMS vs issue tracker
 
 ---
 

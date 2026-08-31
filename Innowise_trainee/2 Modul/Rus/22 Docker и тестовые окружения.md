@@ -8,6 +8,7 @@
 - [[#Основы Docker]]
 - [[#Docker в AQA]]
 - [[#Частые проблемы]]
+- [[#Суть темы]]
 - [[#Вопросы для собеседования]]
 	- [[#Вопросы начального уровня]]
 	- [[#Вопросы среднего уровня]]
@@ -47,7 +48,7 @@
 | Size | больше | меньше |
 | Isolation | сильнее | хорошая, но легче |
 | Common tool | VMware, VirtualBox | Docker |
-ц
+
 ### Snapshot VM
 
 **Snapshot** — это сохранённое состояние virtual machine в конкретный момент времени.
@@ -127,6 +128,20 @@ services:
 - жди service readiness, а не только container start
 - очищай test data
 - держи secrets вне Docker files
+
+---
+
+## Суть темы
+
+> [!summary] Главное за 30 секунд
+> - Тестовое окружение — место, где выполняют проверки: application build, database, browser, test data, mocks, configuration
+> - Virtualization запускает полноценную virtual machine со своей OS, containerization — изолированный process, разделяющий kernel host OS
+> - Container быстрее и меньше virtual machine, изоляция у VM сильнее; snapshot позволяет быстро вернуться к сохранённому состоянию VM
+> - Docker: image — шаблон, container — запущенный instance image, Dockerfile описывает сборку, volume — постоянное хранилище
+> - Docker Compose запускает несколько containers вместе, например database для tests через `docker-compose.yml`
+> - В AQA Docker даёт databases, mock services, Selenium Grid, стабильные CI environments и воспроизведение bugs локально
+> - Container может быть running, но application внутри ещё инициализируется — тест должен ждать service readiness, а не только запуск container
+> - Спрашивают чаще всего: image vs container, зачем Docker в AQA, Docker Compose, почему container running но service не готов
 
 ---
 

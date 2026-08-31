@@ -9,6 +9,7 @@
 - [[#Основы Reflection]]
 - [[#Поля методы и конструкторы через Reflection]]
 - [[#Аннотации и Reflection в AQA]]
+- [[#Суть темы]]
 - [[#Вопросы для собеседования]]
 	- [[#Вопросы начального уровня]]
 	- [[#Вопросы среднего уровня]]
@@ -348,6 +349,20 @@ Object page = clazz.getDeclaredConstructor(WebDriver.class).newInstance(driver);
 
 > [!info] Хорошее правило для AQA
 > Аннотации — частый и дружественный инструмент. Reflection мощный, но его лучше держать в основном внутри framework internals, а не в каждом тесте.
+
+---
+
+## Суть темы
+
+> [!summary] Главное за 30 секунд
+> - Аннотация — метаданные через `@`: сама по себе поведение не меняет, его меняет компилятор, JVM или framework, который её читает
+> - Встроенные: `@Override` помогает компилятору ловить ошибки, `@Deprecated` помечает устаревший код, `@FunctionalInterface` требует ровно один абстрактный метод
+> - Свои аннотации — через `@interface`, со значениями и default; мета-аннотации `@Target` и `@Retention` задают, где её можно применять и как долго она хранится
+> - Чтобы reflection увидел аннотацию, нужна `@Retention(RetentionPolicy.RUNTIME)` — иначе он её не увидит
+> - Reflection исследует классы во время выполнения: `getDeclaredField`, `getDeclaredMethod`, `setAccessible(true)` для private, `invoke()` вызывает метод, `newInstance()` создаёт объект
+> - Так работают test framework: JUnit через reflection находит методы с `@Test`; кастомные аннотации вроде `@Smoke` помечают тесты
+> - Питфолл: reflection медленнее, обходит compile-time проверки и ухудшает читаемость — держи его во framework, а не в обычных тестах
+> - Спрашивают чаще всего: аннотация vs reflection, зачем `@Retention(RUNTIME)`, как test runner находит `@Test`, доступ к private через `setAccessible(true)`
 
 ---
 

@@ -15,13 +15,18 @@
 	- [[#Purpose]]
 	- [[#Practices]]
 	- [[#Retesting]]
+- [[#User Acceptance Testing (UAT)]]
+	- [[#Purpose]]
+	- [[#Types]]
+- [[#Testing Approaches]]
+	- [[#Black-Box Testing]]
+	- [[#White-Box Testing]]
+	- [[#Grey-Box Testing]]
 - [[#Execution Approach]]
 	- [[#Manual Testing]]
 	- [[#Automated Testing]]
 - [[#Testing Levels]]
-- [[#User Acceptance Testing (UAT)]]
-	- [[#Purpose]]
-	- [[#Types]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -314,6 +319,20 @@ A process in which specialized tools and scripts automatically execute test scen
 > | Integration | Interactions between modules | Developers / QA | Verify data flow between components |
 > | System | Entire integrated system | QA engineers | Verify full system against requirements |
 > | Acceptance | Business requirements and user needs | Client / end users | Confirm readiness for release |
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - Functional testing checks what the system does against requirements; non-functional testing checks how well it does it — performance, security, usability
+> - Test run depth: Smoke → Sanity → Critical Path → Extended, each level deeper and broader than the previous one
+> - Regression testing ensures new changes did not break existing functionality; Retesting confirms a specific defect is fixed with the same steps that found it
+> - Performance testing subtypes: Load, Stress, Soak, Volume, Capacity, Scalability — from expected load to maximum limits and growth
+> - Testing levels: Unit → Integration → System → Acceptance; unit tests are written mainly by developers, acceptance by users and clients
+> - Black-box tests through inputs and outputs without code knowledge; White-box needs full code knowledge; Grey-box uses partial knowledge such as API specs
+> - Pitfall: passing all functional tests does not mean the product is ready for release — performance, security and usability need separate testing
+> - Most often asked: Regression vs Retesting, Smoke vs Sanity, Black-box vs White-box vs Grey-box, manual vs automated
 
 ---
 

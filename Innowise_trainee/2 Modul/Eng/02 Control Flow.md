@@ -9,6 +9,7 @@
 - [[#while and do-while Loops]]
 - [[#break and continue]]
 - [[#Looping Through Arrays]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -264,6 +265,20 @@ System.out.println("Average: " + average);
 ```
 
 
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - `if-else` fits range checks and complex conditions; `switch` is cleaner when one variable is compared against many values
+> - Without `break` a switch case falls through into the next case — usually a bug
+> - Enhanced switch (Java 14+) uses `->`, needs no `break`, and can return a value
+> - The ternary operator `condition ? a : b` is a compact if-else that returns a value — do not nest it
+> - `for` when the number of iterations is known; for-each when you don't need the index
+> - `while` checks the condition before the body and may never run; `do-while` checks after and runs at least once
+> - `break` exits the loop, `continue` skips to the next iteration, a labeled break exits an outer loop
+> - Most often asked: for vs while, while vs do-while, switch fall-through, break vs continue
 
 ---
 

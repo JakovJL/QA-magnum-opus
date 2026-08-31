@@ -8,6 +8,7 @@
 - [[#Interaction Verification]]
 - [[#ArgumentCaptor]]
 - [[#Common Mistakes]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -124,6 +125,20 @@ Use it when you need to verify an object constructed inside the tested class.
 | Verifying every internal call | Verify the result and key side effects |
 | Returning unrealistic data | Use data close to real scenarios |
 | Using `@Spy` unnecessarily | Prefer a plain object or `@Mock` |
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - Mockito is a Java unit-test library that creates managed test objects instead of real dependencies — goal: verify the logic of a single class in isolation
+> - Mock — a replaced object whose calls can be configured and verified; stub — predefined behavior: what result to return or what exception to throw
+> - `@Mock` creates a mock object, `@InjectMocks` creates the tested object and injects matching mocks into it, `@Spy` keeps real behavior that can be partially overridden
+> - `when().thenReturn()` configures the return value; for `void` methods use `doThrow().when()`
+> - `verify()` checks that the mock was called as expected — with the expected arguments and count (`times()`, `never()`)
+> - ArgumentCaptor reads the argument a mock was called with — useful for objects constructed inside the tested class
+> - Pitfalls: do not mock the class under test, and verify only interactions that matter — verifying every internal step makes tests brittle during refactoring
+> - Most often asked: mock vs stub, `@Mock` vs `@InjectMocks`, `verify()` and ArgumentCaptor, mocking `void` methods with `doThrow()`
 
 ---
 

@@ -10,6 +10,7 @@
 - [[#Parameterized Tests]]
 - [[#Best Practices and Common Mistakes]]
 - [[#JUnit 5 in AQA]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -439,6 +440,20 @@ class LoginTest {
 
 > [!info] Good Rule for AQA
 > Even if the framework uses Selenium or API tools, JUnit usually controls the structure: what is a test, what runs before it, and what happens after it.
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - A unit test checks one small piece of code in isolation and should be fast, isolated, deterministic, and easy to read
+> - `@Test` marks a test method; by default JUnit creates a new instance of the test class for every test method
+> - Tests follow the Arrange -> Act -> Assert pattern: prepare data, call the method under test, check the result
+> - Lifecycle: `@BeforeEach`/`@AfterEach` run around every test, `@BeforeAll`/`@AfterAll` run once per class and must be `static` unless `@TestInstance(TestInstance.Lifecycle.PER_CLASS)` is used
+> - Assertions verify behavior: `assertEquals`, `assertTrue`, `assertThrows` for exceptions, `assertAll` for grouped checks — only `assertNotNull()` is a weak check
+> - Parameterized tests (`@ValueSource`, `@CsvSource`, `@MethodSource`) run one test with many inputs and reduce duplication
+> - Common mistakes: dependent tests, a real database or API in a unit test, random values that make tests unstable
+> - Most often asked: `@BeforeEach` vs `@BeforeAll`, Arrange Act Assert, `assertThrows`, parameterized tests
 
 ---
 

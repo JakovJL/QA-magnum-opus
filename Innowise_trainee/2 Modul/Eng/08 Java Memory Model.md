@@ -9,6 +9,7 @@
 - [[#Garbage Collection]]
 - [[#null and NullPointerException]]
 - [[#Memory Leaks in Java]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -300,6 +301,20 @@ Connection conn = DriverManager.getConnection(url);
 
 > [!warning] OutOfMemoryError
 > When the heap is full and GC cannot free enough space, the JVM throws `OutOfMemoryError`. Common causes: memory leak, too much test data loaded at once, or heap size too small. Increase with `-Xmx` flag: `java -Xmx2g MyApp`.
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - Java memory has two main areas: the stack (per-thread, local variables and method frames, cleaned automatically) and the heap (shared, all objects and arrays)
+> - Primitives live where they are declared — local → stack, object field → heap; objects are always on the heap; static fields live in metaspace
+> - An object becomes eligible for GC when no live reference points to it; GC works by mark and sweep and runs automatically
+> - You cannot force GC: `System.gc()` is only a suggestion, and `finalize()` is deprecated — use try-with-resources for cleanup
+> - The heap is split into Young Generation (new objects, frequent minor GC) and Old Generation (long-lived objects, rare major GC)
+> - `StackOverflowError` — the stack is full (deep recursion); `OutOfMemoryError` — the heap is full (memory leak, too much data, small `-Xmx`)
+> - Pitfalls: `NullPointerException` when calling a method on `null` (check for null, use `"expected".equals(name)`), and memory leaks from growing or static collections and unclosed resources
+> - Most often asked: stack vs heap, where a variable lives, when an object is eligible for GC, StackOverflowError vs OutOfMemoryError
 
 ---
 

@@ -7,6 +7,7 @@
 - [[#First Java Program]]
 - [[#Package and Import]]
 - [[#Naming Conventions]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -142,6 +143,19 @@ public class UserAccount {                               // PascalCase — class
 > [!info] Why Conventions Matter
 > In automation projects you read other people's code every day. Consistent naming makes the code predictable. When you see `LoginPage` you instantly know it's a class. When you see `getDriver()` you know it's a method.
 
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - Java is a high-level, object-oriented language: `.java` files compile to bytecode that any JVM can run — Write Once, Run Anywhere
+> - JVM executes bytecode; JRE = JVM + standard libraries; JDK = JRE + development tools — installing the JDK is enough
+> - The entry point is `public static void main(String[] args)`; the public class name must match the file name
+> - `javac` compiles source into bytecode; `java` starts the JVM and runs the class
+> - A package groups related classes and prevents name conflicts — use reverse-domain names like `com.innowise.training`, never the default package
+> - Naming conventions: classes PascalCase, methods and variables camelCase, constants UPPER_SNAKE_CASE, packages all lowercase
+> - Most often asked: JDK vs JRE vs JVM, why main is public static void, bytecode and platform independence, packages and naming
 
 ---
 

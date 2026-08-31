@@ -18,6 +18,7 @@
 	- [[#XML Syntax Rules]]
 	- [[#XSD]]
 - [[#GraphQL]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -921,6 +922,20 @@ mutation {
 - **Deeply nested query:** what if the client requests 10 levels of nesting? Does the server handle it?
 - **Nullable vs Required:** required field missing → correct schema error
 - **Subscription:** WebSocket opened, data arrives in real time
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - An API is a contract between client and server: the client sends a request — the server returns a response
+> - Main API types: REST (JSON over HTTP), SOAP (XML with a strict WSDL contract), gRPC (binary Protocol Buffers over HTTP/2)
+> - HTTP methods: `GET` read, `POST` create, `PUT` full update, `PATCH` partial update, `DELETE` delete; `POST` is not idempotent
+> - Status code classes: 2xx success, 3xx redirect, 4xx client error, 5xx server error; 401 = not authenticated, 403 = no permission
+> - A request consists of a URL (endpoint + path and query parameters), headers (`Content-Type`, `Authorization`), and a body for `POST` / `PUT` / `PATCH`
+> - Authorization types: Basic Auth, API Key, Bearer Token (JWT), OAuth 2.0 — in tests, try a missing, expired, or wrong-role token (401 / 403)
+> - Pitfalls: 200 does not always mean the test passed — always check the response body; never pass tokens in query parameters, put them in headers
+> - Most often asked: REST vs SOAP vs gRPC, HTTP methods and idempotency, status codes (401 vs 403), what to test in API
 
 ---
 

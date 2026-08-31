@@ -8,6 +8,7 @@
 - [[#Data Indexing]]
 - [[#What to Check as a Tester]]
 - [[#Typical Mistakes]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 
 **Related notes:** [[AQA Java eng]]
@@ -88,6 +89,20 @@ Tests must account for this: wait for the document to appear within a configured
 | Expecting exact search from a `text` field | Use `keyword` for exact comparison |
 | Checking only the result count | Also verify content and order of results |
 | Treating the index as the primary database | Verify the data source and the search index separately |
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - OpenSearch is a search engine and data store optimized for fast search, filtering, and analytics — used for products, logs, events, and analytical data
+> - Main units: Index (a set of documents), Document (a JSON data unit), Mapping (field type definitions), Shard (a part of an index), Replica (a copy of a shard)
+> - In full-text search a string is split into tokens: a `text` field is for word search, a `keyword` field is for exact values, filters, sorting, and aggregations
+> - Data is written directly via API or asynchronously from the main database through a queue and a separate indexing service
+> - Eventual consistency: the record already exists in the main system but has not yet appeared in the search index — wait within a configured timeout instead of a single immediate assertion
+> - Do not check only the result count — also verify the content and order of results
+> - Do not treat the index as the primary database — verify the data source and the search index separately
+> - Most often asked: text vs keyword, eventual consistency, mapping, what a tester checks in search
 
 ---
 

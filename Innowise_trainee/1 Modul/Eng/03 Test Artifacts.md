@@ -14,6 +14,7 @@
 	- [[#Test Log]]
 - [[#Completion Artifacts]]
 	- [[#Test Summary Report]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -221,6 +222,20 @@ Documents created after testing is finished to summarize what was done and what 
 - Gives a clear picture of product quality at release time
 - Highlights known risks that stakeholders must accept
 - Serves as a historical record for future projects
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - Test artifacts are documents produced during testing, grouped by phase: planning (Test Strategy, Test Plan), design (Test Case, Checklist, RTM), execution (Bug Report, Test Log), completion (Test Summary Report)
+> - Test Strategy is high-level and long-term — how we test in general; Test Plan is release-specific — what exactly to test, when, and with what resources
+> - A Test Case documents steps, test data, and expected result — precise and repeatable but costly to maintain; a Checklist is a quick list without steps — good for smoke and exploratory testing
+> - RTM (Requirements Traceability Matrix) links each requirement to the test cases covering it — shows coverage gaps and supports impact analysis when requirements change
+> - A Bug Report describes a defect in enough detail for a developer to reproduce and fix it; a Test Log is a chronological record of a test session
+> - The Test Summary Report gives stakeholders the full picture — tests executed, defects, untested features, risks — for the Go / No-Go release decision
+> - Pitfall: if requirements change and artifacts are not updated, the RTM and test cases show coverage that no longer reflects reality
+> - Most often asked: Test Strategy vs Test Plan, Test Case vs Checklist, why the RTM is needed, what goes into a Test Summary Report
 
 ---
 

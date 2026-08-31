@@ -10,6 +10,7 @@
 - [[#Abstract Classes]]
 - [[#Polymorphism]]
 - [[#instanceof Operator]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -274,6 +275,20 @@ if (payment instanceof CreditCardPayment cc) {
 > ```
 
 
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - Inheritance lets a child reuse fields and methods of a parent via `extends` — a class can extend only one parent
+> - `private` members and constructors are not inherited; `super(...)` must be the first line of the child constructor
+> - Overriding: same signature in the child, bound at runtime; overloading: same name with different parameters in one class, bound at compile time
+> - `final` means: a variable cannot change, a method cannot be overridden, a class cannot be extended
+> - An abstract class cannot be instantiated; abstract methods (no body) must be overridden by children
+> - Polymorphism: the same method call runs the version of the actual object type — like `WebDriver driver = new ChromeDriver()` in AQA
+> - `instanceof` checks the type before casting, but overusing it is a code smell — prefer polymorphism
+> - Most often asked: overriding vs overloading, `super` and constructor order, polymorphism, `final` and `instanceof`
 
 ---
 

@@ -26,6 +26,7 @@
 	- [[#Test Execution]]
 	- [[#Test Reporting]]
 	- [[#Test Closure]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -440,6 +441,20 @@ Waterfall for core system, Agile for UI components.
 - Review the final test results together with the development team.
 - Sign off on the software if it meets the acceptance criteria.
 - Archive all test documentation for future reference.
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - SDLC is the framework of development phases: Planning, Analysis, Design, Implementation, Testing, Deployment, Maintenance
+> - STLC is a subset of SDLC focused on testing, with six stages: Requirements Analysis, Test Planning, Test Case Development, Test Execution, Test Reporting, Test Closure
+> - SDLC models split into sequential (Waterfall, V-Model), iterative (Iterative, Spiral) and Agile (Agile, Scrum), plus alternative models: Big Bang, RAD, Hybrid
+> - Waterfall moves forward only, so defects are found late; the V-Model pairs each development phase with a matching testing phase
+> - Spiral adds risk analysis to each iteration; Scrum organizes Agile work into sprints with roles, ceremonies and artifacts
+> - STLC runs in parallel with development, not after it — reviewing requirements early is the cheapest way to find problems
+> - Test Closure does not mean zero defects — known issues may stay open if documented, prioritized and accepted
+> - Most often asked: SDLC vs STLC, the six STLC stages, Waterfall vs Agile, why testing starts at requirements analysis
 
 ---
 

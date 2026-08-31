@@ -45,6 +45,7 @@
 - [[#Iteration and Common Operations]]
 	- [[#Iterator and ListIterator]]
 - [[#Arrays and Collections in AQA]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -1088,6 +1089,20 @@ Set<String> uniqueUserIds = new HashSet<>();
 > | Queue (FIFO) | `ArrayDeque` |
 > | Next-priority element first | `PriorityQueue` |
 > | Thread-safe map | `ConcurrentHashMap` |
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - Arrays have a fixed size and can store primitives or objects; collections are flexible and give ready-made methods like `add()`, `remove()`, and `contains()`
+> - Main interfaces: `List` (ordered, duplicates allowed), `Set` (unique elements), `Queue` (processing order), `Map` (key-value pairs); `Map` does not extend `Collection`
+> - Collections store objects, not primitives — autoboxing converts `int` to `Integer` when you add it and unboxes on read
+> - Default choices: `ArrayList` for ordered lists (O(1) `get(i)`, slow inserts in the middle) and `HashMap` for key-value lookups (O(1) average, no order guarantee)
+> - Need predictable order? `LinkedHashSet` and `LinkedHashMap` keep insertion order; `TreeSet` and `TreeMap` keep elements sorted at O(log n) cost
+> - `HashSet` and `HashMap` find a bucket by `hashCode()` and compare with `equals()` — equal objects must have equal hash codes, otherwise you get duplicates or failed lookups
+> - Pitfalls: removing inside an enhanced `for` throws `ConcurrentModificationException` (use `Iterator.remove()` or `removeIf()`), and `list.remove(1)` on a `List<Integer>` removes by index, not by value
+> - Most often asked: `ArrayList` vs `LinkedList`, `HashMap` vs `TreeMap`, how `HashMap` works internally (buckets, load factor), the `equals()`/`hashCode()` contract
 
 ---
 

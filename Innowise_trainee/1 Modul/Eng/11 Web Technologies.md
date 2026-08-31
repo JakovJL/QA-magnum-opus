@@ -24,6 +24,7 @@
 	- [[#Cache]]
 	- [[#Cookie]]
 	- [[#Session]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -421,6 +422,20 @@ A **session** is server-side storage for a user's state during interaction with 
 
 > [!tip] Session vs Cookie
 > A session usually lives on the server, while a cookie lives in the browser. In many systems the cookie only stores the session ID.
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - OSI (7 layers) is the conceptual model for teaching; TCP/IP (4 layers) describes how the internet actually works
+> - HTTP is a request-response protocol on port 80; HTTPS is HTTP plus TLS encryption on port 443 and requires a certificate
+> - GET is safe and idempotent and passes parameters in the URL; POST sends data in the body and is not idempotent; status groups: 2xx success, 4xx client error, 5xx server error
+> - DNS translates domain names into IP addresses; URL and URN are types of URI — URL gives location and access method, URN a permanent name
+> - HTML defines structure, CSS presentation, JavaScript behavior; automation works with the live DOM, which JS can change after page load
+> - Cache stores resources to speed up loads and is not sent to the server; a cookie keeps small state and is sent with every request; the session lives on the server and the cookie usually holds only its ID
+> - Pitfalls: stale cache can show an old page after a deploy (hard reload Ctrl+Shift+R); an empty page section can be a failed Ajax request (5xx in the Network tab)
+> - Most often asked: HTTP vs HTTPS, GET vs POST, cache vs cookie, OSI vs TCP/IP, why automation uses the DOM
 
 ---
 

@@ -8,6 +8,7 @@
 - [[#Running in a Test]]
 - [[#Error Scenarios]]
 - [[#Common Mistakes]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -98,6 +99,20 @@ A good test suite includes more than just a successful response:
 | Only checking the method result | Also call `verify()` for the request |
 | Using WireMock instead of integration tests | Keep separate tests with the real system |
 | Leaving the server running | Stop it in `@AfterEach` or `@AfterAll` |
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - WireMock is a library that starts a test HTTP server and returns predefined responses — such a server is called a stub
+> - Goal: test how a client or service handles an external API when the real system is paid, unstable, unavailable, or too slow
+> - A stub defines a request condition and the response to return — constrain the method, URL, and important parameters, otherwise the stub can mask incorrect requests
+> - After the application action, call `verify()` for the request and also check important headers, query parameters, and the body
+> - Cover error scenarios: `401`/`403` access denied, `404` missing resource, `429` retry, `500` server error, and response delays to check timeout handling
+> - Start the server with a dynamic port to avoid conflicts in parallel runs and stop it in `@AfterEach` or `@AfterAll`
+> - WireMock does not verify the real contract of the external provider — it cannot replace integration or contract tests
+> - Most often asked: what a stub is, what `verify()` checks, why WireMock is not a replacement for integration tests, which error scenarios to include
 
 ---
 

@@ -13,6 +13,7 @@
 	- [[#Error Guessing]]
 	- [[#Checklist-Based Testing]]
 - [[#White-Box Techniques]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -309,6 +310,20 @@ if (age >= 18 && hasID) {
 - Statement coverage: 1 test hits `allowEntry()`, 1 test hits `denyEntry()` → 2 tests minimum.
 - Branch coverage: same 2 tests — both branches covered.
 - Condition coverage: need to test `age >= 18` as true/false AND `hasID` as true/false independently → may need 3–4 tests.
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - Test design creates test cases from requirements with structured techniques — you cannot test everything, so techniques choose what to test
+> - Three families: black-box (from requirements), white-box (from code structure), experience-based (from tester intuition)
+> - Equivalence Partitioning divides inputs into groups where all values behave the same (one representative per partition); Boundary Value Analysis tests the edges — on, just below, just above; EP + BVA is the standard combo
+> - Decision Table covers combinations of conditions (2^N rules for N conditions); with 5+ conditions collapse rules that produce the same action
+> - State Transition Testing maps states and events and covers every transition — catches sequence-dependent bugs like account lockout after 3 failed logins
+> - Pairwise covers all unique pairs of parameter values — most defects come from 1–2 factor interactions, so 9 tests can replace 27
+> - Error Guessing and Checklist-Based Testing depend on experience — not repeatable or measurable, so use them only as a supplement to structured techniques
+> - Most often asked: EP vs BVA, Decision Table rules, State Transition testing, Pairwise, statement vs branch coverage
 
 ---
 

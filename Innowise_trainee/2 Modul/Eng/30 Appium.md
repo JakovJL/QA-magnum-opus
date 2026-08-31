@@ -8,6 +8,7 @@
 - [[#Locators]]
 - [[#Gestures and Waits]]
 - [[#Common Mistakes]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -91,6 +92,20 @@ Do not use `Thread.sleep()`: it makes tests slow and does not solve unreliable s
 | Using XPath for all elements | Request stable `accessibility id` attributes first |
 | Not resetting app data | Prepare state before each test |
 | Ignoring permissions and system dialogs | Handle them explicitly in the scenario |
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - Appium is a mobile automation tool for Android and iOS with an API similar to Selenium WebDriver — it supports native, hybrid, and mobile web applications
+> - Flow: Java Test → Appium Server → platform driver → device or emulator → application; Android uses UiAutomator2, iOS uses XCUITest
+> - Capabilities are session settings: which platform, device, and application to use — read them from configuration instead of hardcoding
+> - Locator preference: `accessibility id` first (stable, works with assistive technologies), then `id`, then UiSelector or predicate, XPath only as a last resort
+> - Do not rely on text and coordinates: text changes with localization and coordinates vary across screen sizes — tests fail without a real defect
+> - Mobile interfaces load slower than web ones — use explicit waits for element state, never `Thread.sleep()`
+> - For scrolling and swipes use W3C Actions, and after a gesture verify the visible result: element appeared, screen changed, or value updated
+> - Most often asked: capabilities, locator choice (why XPath is last), why `Thread.sleep()` is dangerous, emulator vs real devices
 
 ---
 

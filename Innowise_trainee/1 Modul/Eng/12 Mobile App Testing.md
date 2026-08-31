@@ -17,6 +17,7 @@
 	- [[#Cloud Device Farms]]
 	- [[#Emulator / Simulator Testing]]
 - [[#Tools]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -237,6 +238,20 @@ Used early in development for fast feedback loops.
 | **Charles Proxy** | Network proxy | iOS + Android | Intercept and inspect mobile network traffic |
 | **Android Studio (AVD)** | Emulator | Android | Official Android emulator |
 | **Xcode (Simulator)** | Simulator | iOS | macOS only |
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - Mobile app testing verifies an app across devices, OS versions, screen sizes, and network conditions — including interruptions, limited resources, and unstable network
+> - Three app types: native (Swift/Kotlin, best performance and full hardware access), hybrid (one codebase in a native container — React Native, Flutter), mobile web (browser, no install)
+> - A simulator mimics only software behavior (iOS Simulator); an emulator replicates hardware + software (Android Emulator, AVD) — more accurate but slower
+> - Choose a representative device subset: market share data, current plus two previous OS versions, different screen sizes, high-end and low-end hardware
+> - Strategies: real devices (most accurate, expensive), cloud device farms like BrowserStack or Firebase Test Lab (wide coverage without owning hardware), emulator/simulator (fast, free, early-stage)
+> - Pitfall: Android fragmentation — a bug can appear on one device/OS combination and not reproduce in your lab; use a cloud device farm to match it
+> - Pitfall: emulators do not replicate real hardware — an app can pass on the emulator but crash on a real device, so final verification needs real devices
+> - Most often asked: simulator vs emulator, native vs hybrid vs mobile web, when to test on real devices, Android fragmentation
 
 ---
 

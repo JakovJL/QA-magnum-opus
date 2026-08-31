@@ -8,6 +8,7 @@
 - [[#Embedded Data]]
 - [[#What to Check as a Tester]]
 - [[#Common Mistakes]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 - [[#Practical Questions]]
 
@@ -90,6 +91,19 @@ Embedding is convenient for small data that is used together. Referencing is bet
 | Not accounting for nested objects and arrays | Add separate checks for their structure |
 | Assuming no schema means no rules | Verify contract and data validation |
 | Using one test set for all scenarios | Isolate and clean test data |
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - MongoDB is a document-oriented database: data is stored in documents similar to JSON (BSON format)
+> - Hierarchy: Database → Collection → Document; every document has a unique `_id`
+> - There is no schema, but there are rules: document structure is defined by a contract or validation
+> - Related data: embedding — for small data that is read and changed together; referencing — for large, reused, independently changing data
+> - An index speeds up search and sorting but slows down writes and takes space
+> - In tests, check meaningful fields and types instead of comparing the whole document — dynamic fields make tests brittle
+> - Most often asked: Document vs Collection, embedding vs referencing, indexes, why no schema does not mean no rules
 
 ---
 

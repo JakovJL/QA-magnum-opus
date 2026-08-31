@@ -10,6 +10,7 @@
 - [[#Custom Exceptions]]
 - [[#Try-With-Resources]]
 - [[#Exception Handling in AQA]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -337,6 +338,20 @@ This is bad because the test may continue in a broken state and fail later with 
 
 > [!caution] Empty catch Is Dangerous
 > An empty `catch` block hides the real problem. In tests, this creates false positives or unclear failures. If you catch an exception, log it, wrap it, or fail the test with a clear message.
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - An exception signals a problem during program execution: a missing file, a failed network call, or invalid input
+> - Hierarchy: `Throwable` is the top class; `Error` is a serious JVM problem that is usually not handled, `Exception` is what application code may handle
+> - Checked exceptions are verified by the compiler and must be handled or declared (for example `IOException`); unchecked ones extend `RuntimeException` and usually mean a bug in code or bad input
+> - `finally` almost always runs, whether an exception happened or not, and is used for cleanup; a `return` in `finally` overrides the result from `try` or `catch`
+> - `throw` creates and throws one exception object inside a method; `throws` in the method signature declares that the method may pass an exception to the caller
+> - Try-with-resources closes any resource that implements `AutoCloseable` automatically
+> - In tests, an empty `catch` block hides the real problem and can create false positives — log it, wrap it, or fail the test with a clear message
+> - Most often asked: checked vs unchecked exceptions, `throw` vs `throws`, `finally` behavior, typical Selenium exceptions (`NoSuchElementException`, `TimeoutException`)
 
 ---
 

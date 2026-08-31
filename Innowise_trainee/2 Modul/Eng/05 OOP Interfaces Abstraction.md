@@ -9,6 +9,7 @@
 - [[#Functional Interfaces]]
 - [[#Abstract Classes vs Interfaces]]
 - [[#Practical Patterns for AQA]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -304,6 +305,20 @@ public class LoginPageImpl implements LoginPage {
 > Separate interface from implementation — swap Selenium, Playwright, or a mock without changing tests.
 
 
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - An interface is a contract: it defines what a class must do, not how — methods are implicitly `public abstract`
+> - A class can implement many interfaces (Java's multiple inheritance) but must implement every abstract method or be declared `abstract`
+> - Interface fields are always `public static final` constants; there are no constructors and no instance fields
+> - `default` methods (Java 8+) add a body without breaking existing implementations; `static` interface methods are helpers and are NOT inherited
+> - A functional interface has exactly one abstract method — the base for lambdas (`Predicate`, `Consumer`, `Function`, `Supplier`)
+> - Abstract class for shared state and partial behavior; interface for a capability and multiple inheritance
+> - In AQA: `WebDriver driver = new ChromeDriver()` and Page Object interfaces let you swap the implementation without changing tests
+> - Most often asked: abstract class vs interface, multiple interfaces, default and static methods, functional interfaces
 
 ---
 

@@ -8,6 +8,7 @@
 - [[#Enum in switch]]
 - [[#Enum Utility Methods]]
 - [[#Enums in Practice]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -247,6 +248,20 @@ public enum Priority implements Describable {
 > - Test statuses (`PASSED`, `FAILED`, `SKIPPED`)
 > - User roles (`ADMIN`, `USER`, `GUEST`)
 > - Any value that comes from a config and has a known fixed set of options
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - An enum is a special class that represents a fixed set of constants — use it when all options are known at compile time
+> - Each constant is a `public static final` instance; every enum implicitly extends `java.lang.Enum`, so it cannot extend a class but can implement interfaces
+> - The enum constructor is always private — no `new` is possible, so the set of instances is fixed forever
+> - Constants can carry data and behavior: private fields plus getters, set through the constructor (e.g. driver name and timeout per browser)
+> - Free utility methods: `name()`, `ordinal()`, `values()`, `valueOf(String)` — `valueOf` is case-sensitive and throws `IllegalArgumentException` on a wrong string
+> - Enhanced `switch` over an enum can be exhaustive: cover all constants and no `default` is needed; a new constant makes the compiler warn about unhandled switches
+> - In AQA enums fit browser types, environments, test statuses, and user roles — any config value with a known fixed set
+> - Most often asked: enum vs String constants, why the constructor is private, `valueOf()` pitfalls, enums in switch
 
 ---
 

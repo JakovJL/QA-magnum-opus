@@ -11,6 +11,7 @@
 - [[#Requirements Elicitation Techniques]]
 - [[#Requirements Documentation]]
 - [[#Requirements Testing]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -223,6 +224,20 @@ Reviewing existing documentation.
 Each requirement must have at least one corresponding test case.
 
 **Rule:** Testability → requirements must be clear, measurable, and traceable.
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - A requirement is a documented description of a function the software must perform or a condition it must meet
+> - Functional requirements describe what the software does; non-functional requirements describe conditions it must meet — performance, security, reliability
+> - Levels: business requirements (high-level goal), user requirements (user need), product requirements (specific feature)
+> - Quality requirements are SMART — Specific, Measurable, Achievable, Relevant, Time-bound — and also correct, unambiguous, complete, consistent, testable, traceable, atomic
+> - Elicitation techniques: interviews, surveys, workshops, observation, document analysis — each with its own trade-offs
+> - Typical requirement defects: incompleteness, ambiguity, inconsistency, infeasibility, untestability
+> - Pitfall: vague words like "fast" or "user-friendly" cannot be verified — requirements must be measurable ("load within 2 seconds"), and each requirement needs at least one test case
+> - Most often asked: functional vs non-functional, SMART criteria, requirement defects, why requirements review saves cost
 
 ---
 

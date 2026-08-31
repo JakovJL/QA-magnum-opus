@@ -39,6 +39,7 @@
 - [[#Grid and Other Remote Platforms]]
 - [[#Framework Integration]]
 - [[#Common Mistakes]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -650,6 +651,20 @@ This uses Factory ideas from [[24 Design Patterns for AQA]] and architecture pri
 | Treating Grid errors as test failures | Infrastructure noise hides product quality | Classify application and infrastructure failures separately |
 | Exposing port 4444 publicly | Other people may control the infrastructure | Use private networking, firewall, and authentication |
 | Starting with Distributed mode | Operations become complex too early | Begin with Standalone or Hub and Node |
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - Selenium Grid routes WebDriver commands to browser sessions on remote machines, enabling parallel, cross-browser, and cross-platform execution in CI
+> - `RemoteWebDriver` connects a test to Grid using a Grid URL and browser `Options`; the test runs on the client machine, the browser runs on a Node
+> - Session path: Router → New Session Queue → Distributor matches capabilities to a free slot → Node starts the browser → Session Map links the session ID to that Node
+> - Grid 4 has six components: Router, New Session Queue, Distributor, Session Map, Node, Event Bus
+> - Deployment modes: Standalone (one process, easiest), Hub and Node (central Hub plus browser Nodes), Distributed (every component separate, for large infrastructure)
+> - Grid does not create parallelism itself — JUnit or TestNG runs tests concurrently, Grid only provides remote browser capacity
+> - Pitfalls: always call `quit()` in teardown or an abandoned session keeps a slot busy; a request with capabilities no Node offers waits in the queue until timeout
+> - Most often asked: Grid vs test framework parallelism, the six Grid components, deployment modes, why a session waits in the queue
 
 ---
 

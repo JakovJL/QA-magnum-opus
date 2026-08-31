@@ -12,6 +12,7 @@
 	- [[#Percentage Distribution]]
 - [[#What Often Gets Overlooked]]
 - [[#Common Mistakes]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -257,6 +258,20 @@ When estimating, teams frequently forget to account for:
 - **Confusing effort with duration** — 40 hours of work ≠ 1 week if you also have meetings, other tasks, and blockers
 - **Ignoring the environment** — "works on my machine" is not a test plan
 - **Not tracking actuals** — if you never compare estimates to reality, you never improve
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - Test estimation forecasts the time, effort and resources for testing; effort (amount of work) is not the same as duration or deadline
+> - Three-Point Estimation (PERT): `E = (O + 4M + P) / 6` with `SD = (P - O) / 6` gives a weighted estimate and its uncertainty range — a range, not a single number
+> - WBS breaks a big task into small pieces of a few hours each and sums them — the breakdown itself doubles as a testing checklist
+> - Planning Poker: the team votes simultaneously with Fibonacci cards to avoid anchoring; the result is relative story points, not hours
+> - Expert Judgment and Analogies are fast but subjective; Wideband Delphi uses anonymous rounds until estimates converge
+> - Teams overlook hidden work: environment setup, bug reporting and retesting, regression growth, communication, blocked time — add a buffer of 1.2–1.5
+> - Common mistakes: estimating only the happy path, confusing effort with duration, anchoring to the first number, never comparing estimates with actuals
+> - Most often asked: PERT formula, WBS, Planning Poker, effort vs duration, story points vs hours
 
 ---
 

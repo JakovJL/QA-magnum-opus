@@ -8,6 +8,7 @@
 - [[#Docker Basics]]
 - [[#Docker in AQA]]
 - [[#Common Problems]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -127,6 +128,20 @@ Good practices:
 - wait for service readiness, not only for container start
 - clean test data
 - keep secrets outside Docker files
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - A test environment is where tests run: application build, database, browser, test data, mocks, configuration — the goal is repeatable results
+> - Virtualization runs a full virtual machine with its own operating system; containerization runs an isolated process that shares the host OS kernel
+> - Containers start faster and are smaller than virtual machines, but VMs give stronger isolation
+> - A snapshot is a saved VM state at a moment — it restores a clean test state, but it is not a long-term backup
+> - Docker terms: image is a template, container is a running instance of an image, Dockerfile holds build steps, Docker Compose runs several containers together
+> - In AQA, Docker is used to run databases, mock services, Selenium Grid, and stable CI environments
+> - Main pitfalls: wait for service readiness, not only for container start; clean test data and keep secrets outside Docker files
+> - Most often asked: virtual machine vs container, image vs container, Docker Compose, why tests work locally but fail in CI
 
 ---
 

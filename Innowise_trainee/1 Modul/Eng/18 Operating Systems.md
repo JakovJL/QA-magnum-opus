@@ -15,6 +15,7 @@
 	- [[#macOS Interface vs Windows]]
 	- [[#macOS Terminal]]
 - [[#Operating System Security Measures]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -221,6 +222,20 @@ Operating systems include built-in security controls that protect data and reduc
 
 > [!tip] Security vs bug
 > Sometimes the application is not broken. The OS security layer is intentionally blocking the action.
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - An operating system is the main software layer between hardware and applications — apps do not work with hardware directly, they ask the OS
+> - Architecture: the kernel controls CPU, memory, and devices; user space is where normal applications run, isolated from critical system parts
+> - Key differences for QA: path separators (`\` on Windows, `/` on Linux and macOS), case sensitivity (Linux is sensitive, Windows usually not), and install methods
+> - The Windows Registry is a central database of system and app settings — broken installers may leave keys that affect retesting
+> - Uninstall testing checks that old config, registry keys, and data do not unexpectedly remain
+> - macOS basics: Finder, Activity Monitor, and Terminal with commands like `pwd`, `ls`, `cat`, `grep` for logs and paths
+> - OS security layers (UAC, Gatekeeper, firewall, permissions) can block install or launch flows — sometimes the app is not broken, the OS is intentionally blocking the action
+> - Most often asked: kernel vs user space, Windows vs Linux vs macOS differences, case sensitivity bugs, the Windows Registry
 
 ---
 

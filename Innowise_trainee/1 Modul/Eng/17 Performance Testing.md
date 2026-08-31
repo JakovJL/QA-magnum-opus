@@ -13,6 +13,7 @@
 - [[#How to Do Performance Testing]]
 - [[#Performance Test Tools]]
 - [[#Performance Tests Using Postman]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -173,6 +174,20 @@ Postman is primarily an API client (→ see [[09 API Testing Basics]]), but it i
 
 > [!info] Reuse your API collection
 > If you already built an API collection for functional testing, you can reuse it for a quick performance run — no new scripts needed. This makes Postman a convenient first step.
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - Performance testing is non-functional testing: it asks "how well does it work under load" — speed, capacity, and stability, not correctness
+> - Load testing uses expected normal load; stress testing pushes beyond the limit to find the breaking point and check recovery
+> - Spike testing applies a sudden sharp surge; endurance (soak) testing runs normal load for hours or days to find memory leaks and degradation
+> - Scalability testing checks that adding resources (servers, CPU) actually increases capacity
+> - Key metrics: response time, latency, throughput (RPS), error rate, concurrent users, CPU and memory usage
+> - Report percentiles (p90/p95/p99), not only the average — an average of 200 ms can hide a p95 of 4 seconds
+> - Results are valid only for the environment they ran in: define targets first and use a production-like environment with realistic data
+> - Most often asked: Load vs Stress testing, types of performance testing, percentiles vs average, why targets and environment matter
 
 ---
 

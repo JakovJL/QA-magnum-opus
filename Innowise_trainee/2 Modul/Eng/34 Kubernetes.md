@@ -8,6 +8,7 @@
 - [[#Scaling and Recovery]]
 - [[#What to Check as a Tester]]
 - [[#Common Mistakes]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 - [[#Practical Questions]]
 
@@ -82,6 +83,20 @@ Incorrect probes can cause a working Pod to be removed from load balancing or re
 | Connecting to a Pod by IP | Use the `Service` name |
 | Storing passwords in `ConfigMap` | Use `Secret` and restrict access |
 | Not checking readiness and liveness | Test startup, recovery, and application updates |
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - Kubernetes is a container orchestration system: it deploys containers, keeps the desired number of replicas, manages network access, and restarts failed instances
+> - Docker creates and runs one container, while Kubernetes manages many containers across a cluster of servers
+> - Main objects: Pod (the smallest deployable unit), Deployment (desired number of Pods and update strategy), Service (stable network address), Namespace (e.g. dev, test, prod), `ConfigMap`, `Secret`
+> - Address another service by its `Service` name, not by a Pod IP — a Pod can be recreated and get a different IP
+> - Pods are temporary: do not treat a Pod as a permanent server and do not store state only inside it
+> - Passwords and tokens must be stored in `Secret`, not in a Docker image, source code, or a plain `ConfigMap`
+> - A readiness probe decides if a Pod is ready to accept traffic, a liveness probe decides if the application is stuck and needs a restart — incorrect probes remove working Pods from load balancing or restart them repeatedly
+> - Most often asked: Pod vs Deployment vs Service, readiness vs liveness probes, ConfigMap vs Secret, why not connect to a Pod by IP
 
 ---
 

@@ -7,6 +7,7 @@
 - [[#Code Review and Team Standards]]
 - [[#Test Reliability]]
 - [[#Maintainability Practices]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -107,6 +108,20 @@ Maintainable AQA projects:
 - delete dead tests and unused helpers
 
 Simple design is usually better than a complex framework that the team does not understand.
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - AQA code is production code for testing — it should be readable, reviewable, and easy to debug
+> - Clean test code shows intent: test names describe the scenario and one test checks one main behavior
+> - Code review checks readability, reliable waits, no hardcoded secrets, useful assertions, and no unnecessary duplication
+> - A reliable test fails only when there is a real problem; common flaky causes are fixed sleeps, shared data, weak locators, and order or environment dependency
+> - Core rule: a flaky test is a project problem, not a normal state — fix it, quarantine it, or remove it
+> - Maintainability: keep framework code separated from test scenarios, keep configuration outside test logic, delete dead tests and unused helpers
+> - Simple design is usually better than a complex framework that the team does not understand
+> - Most often asked: why test code must be clean, what makes a test flaky, why fixed sleeps are bad, how to reduce maintenance cost
 
 ---
 

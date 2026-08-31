@@ -7,6 +7,7 @@
 - [[#Configuration and Test Data]]
 - [[#Page Object Model]]
 - [[#Good Architecture Rules]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -119,6 +120,20 @@ src/test/java
   data/
   utils/
 ```
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - An automation framework is a structured project for writing, running, and maintaining automated tests
+> - It usually includes a test runner, page or API clients, assertions, configuration, test data, logging, and reporting
+> - Common layers: tests describe scenarios, pages hide locators and UI actions, services call APIs, config and utils support them
+> - A test should show intent like `loginPage.loginAs(user)`, not repeat locators and low-level clicks
+> - Configuration (base URL, browser, timeout, environment) lives outside test logic, and secrets come from environment variables or CI secrets
+> - Page Object Model keeps locators and page actions in one class per page: less duplication, easier maintenance, more readable tests
+> - Pitfall: bad page objects grow too large, and duplicated locators, hidden waits, and hardcoded data make a framework hard to maintain
+> - Most often asked: what a framework is, why layers are needed, what problem POM solves, where environment settings live
 
 ---
 

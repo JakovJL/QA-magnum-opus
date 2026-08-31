@@ -36,6 +36,7 @@
 - [[#JSON Schema Validation]]
 - [[#Структура фреймворка]]
 - [[#Типичные ошибки]]
+- [[#Суть темы]]
 - [[#Вопросы для собеседования]]
 	- [[#Вопросы начального уровня]]
 	- [[#Вопросы среднего уровня]]
@@ -726,6 +727,20 @@ void shouldReturnExistingUser() {
 | Логировать всё в CI | Logs могут содержать секреты и personal data | Логируй при падении и маскируй sensitive fields |
 | Считать time assertion нагрузочным тестом | Один request не измеряет capacity системы | Используй performance testing tool для load |
 | Игнорировать side effects | HTTP response может быть правильным, а данные — нет | При необходимости проверяй database, event или следующее API state |
+
+---
+
+## Суть темы
+
+> [!summary] Главное за 30 секунд
+> - REST Assured — Java DSL для тестирования HTTP API; тесты запускает JUnit 5, REST Assured — не test runner
+> - Структура given–when–then: `given()` — подготовка запроса, `when()` — отправка, `then()` — проверки; аналог Arrange–Act–Assert
+> - Path parameter — «какой ресурс взять» (`/users/42`), query parameter — «как его показать» (`?role=admin&sort=price`)
+> - Главная ловушка — проверять только `statusCode(200)`: неверный body тоже приходит с 200; проверяй тело (GPath + Hamcrest matchers), headers и business fields
+> - Serialization/Deserialization через Jackson или Gson: Java-объекты вместо ручных JSON-строк
+> - `RequestSpecification` и `ResponseSpecification` убирают дублирование setup; scenario-специфичные значения оставляй видимыми в тесте
+> - Секреты читать из environment variables, не хранить в коде; `log().all()` может вывести токены в логи и отчёты
+> - Спрашивают чаще всего: given/when/then, path vs query, зачем `RequestSpecification`, почему проверка `time()` — не performance test
 
 ---
 

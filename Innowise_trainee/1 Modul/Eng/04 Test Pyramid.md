@@ -12,6 +12,7 @@
 	- [[#Ice Cream Cone]]
 	- [[#Hourglass]]
 	- [[#Cupcake]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -216,6 +217,20 @@ The same checks are duplicated at every level of the pyramid. Each layer tests t
 > | Ice Cream Cone | Inverted pyramid | Slow, fragile, hard to debug | Testing added late, no unit tests |
 > | Hourglass | Squeezed middle | Integration bugs slip through | Nobody owns integration tests |
 > | Cupcake | Same checks everywhere | Wasted effort, slow CI | No testing strategy |
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - The Test Pyramid (Mike Cohn) describes the ideal test distribution: many unit tests at the base, fewer integration tests in the middle, few E2E tests at the top
+> - Unit tests check individual functions in isolation — milliseconds, cheap to write and maintain, written by developers, instant feedback
+> - Integration tests check that components work together — modules, services, databases, APIs; they catch broken contracts and data flow issues
+> - E2E tests check complete user workflows through the real UI — slow, expensive, fragile, but the highest confidence
+> - Golden rule: if you can test something at a lower level — do it at a lower level; keep E2E only for critical user paths
+> - Anti-patterns: Ice Cream Cone (mostly E2E and manual, slow and fragile), Hourglass (no integration layer, bugs slip through), Cupcake (same checks duplicated at every level)
+> - The pyramid is a guideline, not a law — microservices may fit a Testing Diamond, modern web apps a Testing Trophy
+> - Most often asked: why more unit than E2E tests, pyramid anti-patterns, why E2E tests are fragile, whether 90% unit coverage replaces E2E
 
 ---
 

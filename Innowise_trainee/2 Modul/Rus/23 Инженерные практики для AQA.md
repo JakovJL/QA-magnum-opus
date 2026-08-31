@@ -7,6 +7,7 @@
 - [[#Code review и стандарты команды]]
 - [[#Надёжность тестов]]
 - [[#Практики поддержки]]
+- [[#Суть темы]]
 - [[#Вопросы для собеседования]]
 	- [[#Вопросы начального уровня]]
 	- [[#Вопросы среднего уровня]]
@@ -107,6 +108,20 @@ Team standards могут включать naming rules, package structure, bran
 - удаляют dead tests и unused helpers
 
 Простой design обычно лучше сложного framework, который команда не понимает.
+
+---
+
+## Суть темы
+
+> [!summary] Главное за 30 секунд
+> - Test code — это production code: он должен быть читаемым, легко изменяемым и проходить code review
+> - Хороший test code показывает intent, плохой прячет его в технических деталях
+> - Один test проверяет одно главное behavior, test names описывают scenario, assertions имеют понятные messages
+> - Code review проверяет readability, надёжные waits, отсутствие hardcoded secrets, работу с test data и полезные assertions
+> - Тест делают flaky fixed sleeps, shared test data, order dependency, environment dependency и слабые locators
+> - Flaky test — это проблема проекта: исправь его, помести в quarantine или удали
+> - Поддерживаемые проекты отделяют framework code от test scenarios, держат configuration вне test logic и удаляют dead tests
+> - Спрашивают чаще всего: что делает test flaky, почему плохи fixed sleeps, зачем clean test code, как снизить стоимость поддержки
 
 ---
 

@@ -10,6 +10,7 @@
 - [[#String Basics]]
 - [[#var Keyword (Java 10+)]]
 - [[#Wrapper Classes and Autoboxing]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -339,6 +340,20 @@ This is a very common bug when working with collections, database results, or JS
 
 > [!tip] When to Use Which
 > Use **primitives** for local calculations, loop counters, and anywhere you don't need `null`. Use **wrappers** when you need `null` as a valid value (e.g., "no data"), in collections (`List<Integer>`), and in generic code.
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - Java has 8 primitive types that store values directly in memory; reference types (`String`, arrays, classes) store a memory address to an object
+> - Assigning one reference to another copies the address — both variables share the same object, so changing one changes the other
+> - Local variables must be initialized before use; `var` lets the compiler infer the type of a local variable
+> - Widening casts (`int → long`) are automatic and safe; narrowing casts (`double → int`) are manual and can silently lose data
+> - Integer division truncates: `10 / 3` gives `3`, not `3.33` — use `10 / 3.0` for the decimal result
+> - `==` compares memory addresses — compare String and wrapper content with `.equals()`
+> - Wrappers (`Integer`, `Double`, …) enable collections via autoboxing; unboxing `null` throws `NullPointerException`, and the `Integer` cache (-128..127) makes `==` unreliable — always use `.equals()`
+> - Most often asked: primitives vs reference types, type casting, `==` vs `.equals()`, the Integer cache and integer division
 
 ---
 

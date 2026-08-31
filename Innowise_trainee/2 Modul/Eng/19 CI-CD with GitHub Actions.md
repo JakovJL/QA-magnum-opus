@@ -8,6 +8,7 @@
 - [[#AQA Pipeline Example]]
 - [[#Role of Testing in CI/CD]]
 - [[#Common Problems]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -141,6 +142,20 @@ Testing is one of the main reasons CI/CD exists.
 
 > [!caution] CI must be trusted
 > A flaky pipeline loses value quickly. Fix unstable tests or quarantine them with a clear reason.
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - CI means code is merged often and checked automatically; CD means a successful build is prepared for release or deployed automatically
+> - A pipeline is an ordered set of automated steps: checkout, set up Java, download dependencies, compile, run tests, publish reports
+> - GitHub Actions stores workflow files in `.github/workflows`; key terms: workflow, job, step, runner, artifact
+> - An AQA pipeline runs unit, API, and UI smoke tests, static checks, and Allure report generation
+> - Run fast checks on every pull request; run slower regression tests by schedule or manual trigger
+> - Tests act as a quality gate: failing tests can stop the build, block merge or deploy, or trigger a rollback
+> - Pitfalls: a test may fail only in CI because of different browser, OS, timing, or data; a flaky pipeline loses trust quickly — fix or quarantine unstable tests
+> - Most often asked: CI vs CD, workflow terms, where tests run in the pipeline, why a test passes locally but fails in CI
 
 ---
 

@@ -9,6 +9,7 @@
 - [[#Wildcards]]
 - [[#Type Erasure]]
 - [[#Generics in Practice]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -349,6 +350,20 @@ Optional<String> maybeName = Optional.of("Alice"); // Maybe contains a String
 
 > [!tip] When You See `<>` in Code
 > Every time you see angle brackets in Java, that's generics. `List<String>`, `Map<K, V>`, `Optional<User>`, `Comparable<T>` — they all use the same mechanism you learned here.
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - Generics move type checking from runtime to compile time — the compiler guarantees type safety and you avoid `ClassCastException`
+> - A type parameter like `<T>` is a placeholder for a real type; generics work only with reference types (`List<Integer>`, not `List<int>`)
+> - A bounded type `<T extends X>` restricts T to X or its subclasses; in generics `extends` covers both classes and interfaces
+> - Wildcards: `? extends T` for reading from a collection, `? super T` for writing — the PECS principle (Producer Extends, Consumer Super)
+> - Generics are invariant: `List<String>` is not a subtype of `List<Object>`
+> - Type erasure: type parameters exist only at compile time; at runtime `List<String>` and `List<Integer>` are the same class
+> - Consequences of erasure: no `new T[10]`, no `instanceof List<String>`, no overloading by generic type alone
+> - Most often asked: PECS, type erasure and its consequences, why `List<String>` is not a subtype of `List<Object>`, bounded types
 
 ---
 

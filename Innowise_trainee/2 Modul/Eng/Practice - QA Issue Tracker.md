@@ -22,6 +22,7 @@
 - [[#Mavenize the Project]]
 - [[#Unit Tests with JUnit 5]]
 - [[#Selenium UI Tests]]
+- [[#Key Takeaways]]
 
 **Related notes:** [[AQA Java eng]]
 
@@ -543,3 +544,17 @@ Each step turns the previous "throwaway" code into something more solid: loose v
 **Hints:** Selenium Manager (Selenium 4.6+) downloads the browser driver automatically — no manual setup. `saucedemo.com` credentials are listed on its login page. The bonus closes the loop: your tracker's domain model now records the very bugs your UI tests find.
 
 **You now have:** a complete, Maven-built QA Issue Tracker with unit tests and Selenium UI tests — every Module 2 topic exercised in one project.
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - One continuous project, not 18 separate tasks: a console QA Issue Tracker where every exercise reuses the code from the previous ones
+> - The arc: variables → `Bug` class → `Issue` hierarchy → interfaces → enums → reports → generics → collections → exceptions → streams → annotations → file storage → Maven → JUnit → Selenium
+> - Loose variables become a `Bug` class with private fields, validating setters, and `equals()`/`hashCode()` by id only
+> - A shared abstract `Issue` base plus `Reportable`/`Assignable` interfaces, and `Severity`/`Status` enums instead of raw int/String
+> - Storage grows into a generic `Repository<T>` backed by a `Map<Integer, T>` with custom exceptions, `Optional`, and Stream queries
+> - A runtime `@CsvColumn` annotation and reflection build CSV rows; `IssueFileStorage` saves and reloads issues with try-with-resources
+> - The final layer: a hand-written `pom.xml`, JUnit 5 tests (`assertThrows`, `@ParameterizedTest`), and Selenium login tests with explicit waits
+> - Main goal: turn every Module 2 topic into working code in one project — acceptance criteria are the checklist, and the build must stay green after every exercise

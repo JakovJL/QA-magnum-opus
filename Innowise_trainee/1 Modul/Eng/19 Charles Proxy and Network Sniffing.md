@@ -15,6 +15,7 @@
 	- [[#Throttling]]
 	- [[#Repeat and Compose]]
 - [[#Charles for Mobile Testing]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -164,6 +165,20 @@ Charles is very useful in mobile QA because mobile apps often communicate with A
 - check whether the app correctly handles `401`, `403`, or `500`
 
 **Important limitation:** some apps block proxy inspection because of certificate pinning.
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - A network sniffer captures traffic; a proxy is an intermediate server that traffic passes through — Charles Proxy works as a local man-in-the-middle proxy
+> - QA uses it to inspect API requests and responses, debug mobile apps, verify headers, cookies, and tokens, and find the real status code behind a vague UI error
+> - Mobile setup: phone and computer on the same Wi-Fi, phone proxy set to the computer IP and the Charles port (often `8888`)
+> - HTTPS is encrypted: install and trust the Charles root certificate, then enable SSL Proxying for the needed domains
+> - Certificate pinning: some apps reject Charles even with the root certificate installed — a key limitation for mobile testing
+> - Breakpoints pause traffic for inspection or editing; Map Local and Map Remote simulate backend behavior without changing the real server
+> - Throttling simulates slow networks such as 3G; Repeat and Compose let you replay or craft requests without repeating UI steps
+> - Most often asked: sniffer vs proxy, why a certificate is needed for HTTPS, mobile device setup, breakpoints and throttling
 
 ---
 

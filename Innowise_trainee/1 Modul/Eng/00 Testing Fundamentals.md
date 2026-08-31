@@ -9,6 +9,7 @@
 	- [[#Identifying Defects and Errors in Software]]
 	- [[#Validating Functionality and Performance]]
 - [[#Key Principles of Effective Testing]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -142,6 +143,20 @@ The goal of testing for compliance with requirements and specifications is to co
 > - **Resource Constraints**
 > - **Time Pressure**
 > - **Evolving Requirements**
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - QA focuses on process and prevents defects; QC focuses on the product and finds defects; testing is a subset of QC (QA ⊇ QC ⊇ Testing)
+> - Software testing evaluates a system to find differences between expected and actual results — finding bugs is the main tool for reducing the risk of failure in production
+> - Verification is a static process (are we building the product right?); Validation is a dynamic process (are we building the right product?)
+> - The chain: a human Error introduces a Defect in code or documentation, which causes a Failure when the code is executed
+> - Testing should start early — defects found early are cheaper and easier to fix
+> - Testing shows the presence of defects, not their absence — passing all tests does not mean the product is bug-free
+> - Pesticide Paradox: repeating the same tests stops finding new bugs, so test cases must be updated; absence of errors fallacy: a bug-free product can still fail real user needs
+> - Most often asked: QA vs QC vs Testing, Verification vs Validation, Error vs Defect vs Failure, the seven testing principles
 
 ---
 

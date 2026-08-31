@@ -36,6 +36,7 @@
 - [[#JSON Schema Validation]]
 - [[#Framework Structure]]
 - [[#Common Mistakes]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -726,6 +727,20 @@ This follows the separation principles from [[20 Automation Framework Architectu
 | Logging everything in CI | Logs may contain secrets and personal data | Log on failure and mask sensitive fields |
 | Treating a time assertion as a load test | One request does not measure system capacity | Use a performance testing tool for load |
 | Ignoring side effects | The HTTP response may look correct while data is wrong | Check the database, event, or next API state when needed |
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - REST Assured is a Java DSL for testing HTTP APIs: it sends requests and validates responses, while JUnit or TestNG runs the tests
+> - Tests follow the `given`–`when`–`then` structure: prepare the request, send it, then assert status, headers, body, and response time (close to Arrange–Act–Assert)
+> - A path parameter points to a specific resource (`/users/42`); a query parameter comes after `?` and filters or changes the view (`?role=admin`)
+> - A status code alone proves little — a wrong body can still return 200, so check contract fields, headers, and business side effects
+> - `RequestSpecification` and `ResponseSpecification` store repeated setup, but keep values that explain the scenario visible in the test
+> - Hamcrest matchers (`equalTo`, `hasItem`) check body values; JSON Schema validation checks structure and types, but cannot prove business values are correct
+> - Never hardcode tokens or passwords — read them from environment variables or a secret manager, and mask them because `log().all()` can leak secrets
+> - Most often asked: given–when–then, path vs query parameter, why check more than the status code, specifications and framework layers
 
 ---
 

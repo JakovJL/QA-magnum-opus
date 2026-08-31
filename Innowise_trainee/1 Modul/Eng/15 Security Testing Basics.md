@@ -13,6 +13,7 @@
 	- [[#Security Misconfiguration]]
 - [[#Access Token And Refresh Token]]
 - [[#Keycloak]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -245,6 +246,20 @@ In an `Access token / Refresh token` scheme, the user first passes **authenticat
 
 > [!info] Token testing tip
 > An access token is usually a **JWT**. You can paste it into a JWT decoder (or DevTools) to read its claims — roles, expiry (`exp`), user id. A QA verifies the app actually enforces these claims server-side and does not just trust the UI.
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - Security testing finds vulnerabilities (weaknesses) before an attacker does; the core principles are the CIA triad — Confidentiality, Integrity, Availability
+> - Authentication proves who you are; authorization decides what you may do — even with a valid token, the server must still check roles and permissions
+> - SQL Injection: untrusted input becomes part of a query — test with special characters and `' OR '1'='1`; XSS: user input is rendered as code — payloads must display as plain text, never execute
+> - CSRF tricks a logged-in user into sending an unwanted request — state-changing requests must require a CSRF token
+> - Broken access control and IDOR: change the id in the URL as a regular user — the server must return 403/404, because hiding a button in the UI is not security
+> - An `access token` is short-lived and sent with each request; a `refresh token` lives longer and must stop working after logout; `401 Unauthorized` = not authenticated, `403 Forbidden` = authenticated but not allowed
+> - Keycloak is an open-source IAM system with SSO, centralized roles and OAuth 2.0 / OIDC / SAML; a JWT is readable but signed — the server must verify the signature
+> - Most often asked: SQL Injection vs XSS, authentication vs authorization, 401 vs 403, broken access control and IDOR
 
 ---
 

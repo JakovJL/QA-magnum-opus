@@ -9,6 +9,7 @@
 - [[#What to Check as a Tester]]
 - [[#Typical Mistakes]]
 - [[#Practical Questions]]
+- [[#Key Takeaways]]
 
 **Related notes:** [[AQA Java eng]]
 
@@ -125,3 +126,17 @@ Start two consumers on one queue. Publish several messages and assert that the l
 **10. How do you clean up queues and messages between tests?**
 
 Use the Management HTTP API or the RabbitMQ Java client to purge queues in `@BeforeEach` / `@AfterEach`.
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - RabbitMQ is a message broker: the producer publishes a message and the consumer processes it later — this reduces coupling between services and handles uneven load
+> - Flow: Producer → Exchange → Queue → Consumer; a binding is a rule that links an exchange to a queue
+> - The exchange type decides routing: `direct` by exact routing key, `topic` by pattern like `order.*`, `fanout` to every bound queue, `headers` by message headers
+> - The consumer acknowledges the message after successful processing; if processing fails before acknowledgement, the broker may redeliver it
+> - Handlers must be idempotent: reprocessing the same message must not charge money twice, create a second order, or send an extra email
+> - A Dead Letter Queue (DLQ) stores messages that cannot be processed — test that bad messages end up there
+> - Pitfalls: results are asynchronous — use conditional waits, and do not assume message order is always guaranteed
+> - Most often asked: exchange types and routing key, acknowledgement and redelivery, idempotency, DLQ scenarios

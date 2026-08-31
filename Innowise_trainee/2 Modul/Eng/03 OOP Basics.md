@@ -10,6 +10,7 @@
 - [[#Getters and Setters]]
 - [[#The toString Method]]
 - [[#equals() and hashCode()]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -418,6 +419,20 @@ public int hashCode() {
 
 > [!tip] IntelliJ generates both
 > `Alt + Insert` → **equals() and hashCode()** → select fields. Always generate them together.
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - A class is a blueprint; an object is an instance of a class created with `new`
+> - A constructor has the class name and no return type; once you write any constructor, the default no-arg one is not added automatically
+> - `this` is the current object: separate a field from a parameter, chain constructors with `this(...)` (first line only), return the current object
+> - `static` members belong to the class and are shared by all objects; a static method cannot use `this` or access instance fields directly
+> - Initialization runs strictly top to bottom: static fields and blocks at class load, then instance fields, instance blocks, constructor — parent before child
+> - Encapsulation: `private` fields plus getters/setters — a setter can validate and block invalid data like a negative age
+> - Default `equals()` compares references like `==`; override both `equals()` and `hashCode()` together — equal objects must have the same hash code, or `HashMap`/`HashSet` break
+> - Most often asked: static vs instance members, `==` vs `equals()`, the equals/hashCode contract, class initialization order
 
 ---
 

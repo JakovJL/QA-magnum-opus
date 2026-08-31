@@ -11,6 +11,7 @@
 	- [[#Severity vs Priority Matrix]]
 - [[#Defect Life Cycle]]
 - [[#Common Mistakes]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -190,6 +191,20 @@ The defect life cycle describes all the states a bug passes through from discove
 - Not attaching evidence — screenshots, logs, recordings
 - Reporting the same bug twice (duplicate)
 - Speculating about the cause: "probably the database query is wrong"
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - A defect is the difference between actual and expected behavior; the chain is: human Error → Defect in the product → Failure seen by the user
+> - A bug report must let a developer reproduce, understand, and fix the bug: environment, numbered steps, expected result, actual result, and attachments
+> - A good title answers what broke, where, and under what condition — formula: `[Object] [Action] [Result] [Condition]`, no vague words like "doesn't work"
+> - Severity is technical impact, set by QA; Priority is business urgency, set by the project manager or product owner
+> - Severity and priority are independent: a typo in the CEO's name is low severity but high priority
+> - Life cycle: New → Assigned → Open → Fixed → Retest → Closed; a failed fix means Reopened, a non-bug means Rejected, a postponed valid bug is Deferred
+> - After a fix: Retest verifies this specific bug is resolved, Regression Testing verifies nothing else broke — both must happen
+> - Most often asked: Severity vs Priority, high severity but low priority examples, defect life cycle states, Retest vs Regression Testing
 
 ---
 

@@ -7,6 +7,7 @@
 - [[#Branching and Merging]]
 - [[#Remote Repositories]]
 - [[#Git in AQA]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -120,6 +121,20 @@ Good practices:
 - do not commit secrets, tokens, or passwords
 - do not commit generated reports unless the team decided to store them
 - review diffs before pushing
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - Version control tracks changes in files, keeps project history, and lets a team work safely in branches; `Git` is the most common system
+> - Git basics: repository, working tree, staging area, commit (a saved snapshot with a message), branch
+> - Core flow: `git status`, `git add`, `git commit`, then push; `git diff` shows unstaged changes in tracked files
+> - A branch lets you work on a change without disturbing the main code line; keep branches short-lived and pull from main often
+> - A remote repository is a shared copy on GitHub, GitLab, Bitbucket, or Azure DevOps; a pull request is the review step before merging
+> - In AQA, Git stores automation code, connects changes to tasks, and triggers CI pipelines after a push or pull request
+> - Pitfalls: never commit secrets, tokens, or passwords; long-lived branches become painful to merge
+> - Most often asked: what a commit is, why teams use branches, what a pull request is, why secrets must not be committed
 
 ---
 

@@ -9,6 +9,7 @@
 - [[#Byte Streams and Character Streams]]
 - [[#Try-With-Resources and File Errors]]
 - [[#File I/O in AQA]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -305,6 +306,20 @@ if (!Files.exists(downloaded)) {
 
 > [!tip] Good Rule for AQA
 > If a test works with files, think about three things: where the file comes from, where it will be saved, and who will clean it after the test.
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - File I/O is reading from and writing to files — configs, logs, test data, reports, downloaded files
+> - Modern Java uses `Path` and `Files` from `java.nio.file`; the older `File` class still appears in legacy code
+> - Reading: `Files.readString()` for small text files, `readAllLines()` for a list of lines, `BufferedReader` for large files, `readAllBytes()` for binary data
+> - Writing: `Files.writeString()` replaces the content by default — add `StandardOpenOption.APPEND` to add to the end, and create parent directories first
+> - Byte streams (`InputStream`, `OutputStream`) are for binary data, character streams (`Reader`, `Writer`) are for text; wrong encoding makes text look broken
+> - Use try-with-resources — it closes readers and streams automatically and is safer than a manual close
+> - Test pitfalls: relative paths depend on the working directory (tests break on CI or another machine), and `readAllLines()` loads everything into memory on huge files
+> - Most often asked: `Path` vs `File`, byte vs character streams, how to append to a file, try-with-resources
 
 ---
 

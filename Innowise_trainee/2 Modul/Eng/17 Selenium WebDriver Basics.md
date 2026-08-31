@@ -33,6 +33,7 @@
 	- [[#`NoSuchSessionException`]]
 - [[#Page Object Model]]
 - [[#Selenium Basics in AQA]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -544,6 +545,20 @@ class LoginTest {
 
 > [!tip] Good Rule for Beginners
 > First learn how to open page, find element, click, type text, and check result. Framework patterns come after that foundation.
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - Selenium WebDriver is an API for controlling a browser programmatically — test code uses the `WebDriver` interface while a browser-specific driver runs the real browser
+> - Elements are found with locators — prefer a stable `id`, then `name`, then `cssSelector`, and `xpath` only when needed; `findElement()` throws `NoSuchElementException`, `findElements()` returns an empty list
+> - Pages are dynamic — use explicit waits with `WebDriverWait` and `ExpectedConditions` instead of `Thread.sleep()`
+> - Alerts, frames, and new windows are not normal elements — switch to them first with `switchTo()`
+> - Typical errors: `StaleElementReferenceException` after a DOM change, `ElementClickInterceptedException` when another element covers the target
+> - Always end with `quit()` — it closes all windows and ends the session, while `close()` closes only the current tab
+> - Page Object Model puts each page's locators and actions in one class, so a locator change is fixed in one place
+> - Most often asked: `findElement()` vs `findElements()`, explicit vs implicit wait, `close()` vs `quit()`, `StaleElementReferenceException`
 
 ---
 

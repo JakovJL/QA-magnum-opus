@@ -10,6 +10,7 @@
 - [[#Key Methods Cheat Sheet]]
 - [[#String Formatting]]
 - [[#Basic Regular Expressions]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -433,6 +434,20 @@ String number = price.replaceAll("[^\\d.]", "");  // "42.99"
 
 > [!info] When to Go Deeper
 > For complex regex (capturing groups, lookahead, named groups), use `Pattern` and `Matcher` classes. For simple validation and replacement, String methods are enough.
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - `String` is a `final` immutable class — every "modification" returns a new object, so always assign the result (`name = name.toUpperCase()`)
+> - String literals live in the String Pool: `"hello"` reuses the pooled object, while `new String("hello")` creates a new object on the heap
+> - Compare strings with `.equals()`, never `==` — `==` compares references and the result depends on how the string was created
+> - String is immutable for pool safety, thread safety, security, and cached `hashCode`
+> - For concatenation in a loop use `StringBuilder` (mutable, fast); `StringBuffer` is thread-safe but slower
+> - Pitfall: `split()` takes a regex — `"a.b".split(".")` returns an empty array, so escape it: `split("\\.")`
+> - `String.format()` builds strings from `%s`, `%d`, `%f` placeholders; text blocks (Java 15+) are handy for multi-line JSON and SQL in tests
+> - Most often asked: String Pool and `==` vs `.equals()`, why String is immutable, StringBuilder vs StringBuffer, `split()` regex gotcha
 
 ---
 

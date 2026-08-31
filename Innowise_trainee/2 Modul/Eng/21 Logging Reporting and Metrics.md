@@ -12,6 +12,7 @@
 	- [[#Quality Outcome Metrics]]
 	- [[#Maintenance Metrics]]
 - [[#Good Practices]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -169,6 +170,20 @@ These metrics show the cost of keeping the suite healthy.
 
 > [!tip] Good report rule
 > A good report should answer: what failed, where it failed, why it probably failed, and what evidence exists.
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - Logging records what happened during a test run — its goal is to debug failures after the run, especially in CI
+> - Never log secrets: passwords, tokens, cookies, and personal data must stay out of logs
+> - A test report shows results in a readable form: passed, failed, skipped, failure reason, screenshots, logs, execution time
+> - Allure is a popular Java AQA reporting tool with steps, attachments, screenshots, history, and severity
+> - Metrics are numbers that show test work, product quality, and the real value of automation — look at several groups, not one number
+> - Metric groups: stability (`pass rate`, `flaky test count`), speed (`execution time`, `feedback time in CI`), coverage, quality outcome (`defect leakage`), maintenance
+> - Pitfall: a high pass rate alone does not mean good automation — weak coverage, many flaky tests, or slow feedback can hide behind it
+> - Most often asked: why tests need logs, what Allure shows, why pass rate is not enough, which metrics show automation effectiveness
 
 ---
 

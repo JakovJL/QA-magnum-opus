@@ -10,6 +10,7 @@
 - [[#Dependencies Plugins and Lifecycle]]
 - [[#Maven vs Gradle]]
 - [[#Build Tools in AQA]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -361,6 +362,20 @@ Build tools are central in automation projects.
 
 > [!caution] Version Conflicts
 > If two libraries require different versions of the same dependency, the build may still compile but fail in runtime. Dependency management is one of the reasons build tools are so important.
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - A build tool automates dependency download, compilation, test execution, packaging, and plugins in a repeatable way
+> - Maven and Gradle act as both build tools and dependency managers — declare dependencies in `pom.xml` or `build.gradle` instead of storing manual `.jar` files
+> - Maven is declarative and convention-based: a standard lifecycle means `mvn test` runs all earlier phases (like compile) before the tests
+> - Maven dependency `scope` controls where a library is available — `test` means test code only, not in the final build; plugins like Surefire run the tests
+> - Gradle is script-based and flexible: the build is a graph of tasks, scripts use Groovy or Kotlin DSL, and the wrapper (`gradlew`) fixes the Gradle version for the whole team
+> - In Gradle, `testImplementation` is the equivalent of Maven's `<scope>test</scope>`
+> - Pitfalls: version conflicts can compile but fail in runtime, and unused dependencies make the project harder to maintain
+> - Most often asked: Maven vs Gradle, dependency scope, what happens on `mvn test`, the Gradle wrapper
 
 ---
 

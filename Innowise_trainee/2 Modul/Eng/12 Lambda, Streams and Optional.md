@@ -10,6 +10,7 @@
 - [[#Intermediate and Terminal Operations]]
 - [[#Optional]]
 - [[#Lambda Streams and Optional in AQA]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -392,6 +393,20 @@ String actualToken = token.orElseThrow(() -> new IllegalStateException("API toke
 
 > [!info] Good Rule for AQA
 > If the operation is "filter -> transform -> collect", stream is usually a good fit. If logic is complex and stateful, a normal loop may be clearer.
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - A lambda expression is an anonymous function — a short way to pass behavior as data, for example `(a, b) -> a + b`
+> - A lambda works only with a functional interface — an interface with exactly one abstract method; built-in examples are `Predicate`, `Function`, `Consumer`, `Supplier`
+> - A method reference like `System.out::println` is a shorter form of a lambda that only calls an existing method
+> - A stream is not a data structure — it is a pipeline of three parts: source, intermediate operations, terminal operation
+> - Streams do not change the original collection and are single-use: after a terminal operation like `toList()` the stream is closed
+> - `filter()` keeps matching elements, `map()` transforms each element, and intermediate operations run lazily — only when the terminal operation starts
+> - `Optional` is a container that may hold a value or be empty — a safer alternative to raw `null`, best for return values; calling `get()` without checking throws `NoSuchElementException`
+> - Most often asked: `filter()` vs `map()`, intermediate vs terminal operations, stream reuse, `orElse()` vs `orElseGet()`
 
 ---
 

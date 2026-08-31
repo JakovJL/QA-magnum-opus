@@ -15,6 +15,7 @@
 	- [[#Coverage-Based Selection]]
 - [[#Regression vs Retesting]]
 - [[#Best Practices]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -162,6 +163,20 @@ Both are run together after a bug fix: retest the fixed bug first, then run regr
 - **Link test cases to modules.** Makes impact analysis faster and suite selection more accurate.
 - **Track regression bugs separately.** A regression (functionality broken by a change) is higher severity than a newly found bug — it represents lost functionality.
 - **Set time budgets per cycle.** Know how much time you have before a release and select the test scope accordingly.
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - Regression testing verifies that a code change has not broken functionality that worked before — modules are interconnected, so a fix in one area can silently break another
+> - Run it after every code change, before every release, and after environment changes
+> - Types: Full (whole suite), Partial (affected areas), Progressive (new feature plus interacting areas), Corrective (re-run unchanged tests for a small fix)
+> - Select the suite by risk (business impact), by priority (always run high-priority cases), or by coverage (tests touching the changed code)
+> - Retesting checks one specific fixed bug with the original failing test case; regression checks broadly that nothing else broke — both run after a fix
+> - A regression bug is usually higher severity than a new bug: it means lost functionality that previously worked
+> - Best practices: automate the core suite, remove obsolete tests, run in a stable environment, and document what was not covered when time is short
+> - Most often asked: Regression vs Retesting, types of regression testing, how to select a regression suite, flaky tests in CI
 
 ---
 

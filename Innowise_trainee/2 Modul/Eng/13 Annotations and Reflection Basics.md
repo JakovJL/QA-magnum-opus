@@ -9,6 +9,7 @@
 - [[#Reflection Basics]]
 - [[#Fields Methods and Constructors via Reflection]]
 - [[#Annotations and Reflection in AQA]]
+- [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
 	- [[#Intermediate Questions]]
@@ -399,6 +400,20 @@ This can be useful in framework internals, but for beginner-level AQA code you s
 
 > [!info] Good Rule for AQA
 > Annotations are common and friendly. Reflection is powerful but should stay mostly inside framework internals, not in every test.
+
+---
+
+## Key Takeaways
+
+> [!summary] Key points in 30 seconds
+> - An annotation is metadata written with `@` — it does not change behavior by itself; the compiler, JVM, or a framework must process it
+> - Built-in annotations: `@Override` helps the compiler catch mistakes, plus `@Deprecated`, `@SuppressWarnings`, `@FunctionalInterface`
+> - Custom annotations can carry values and are controlled by meta-annotations: `@Target` says where the annotation may be placed, `@Retention` says how long it is kept
+> - For reflection to see an annotation, it must have `@Retention(RetentionPolicy.RUNTIME)` — otherwise reflection cannot find it
+> - Reflection inspects classes at runtime — fields, methods, constructors, annotations — and can call `invoke()`, create objects with `newInstance()`, and reach private members with `setAccessible(true)`
+> - Test runner pattern: loop over `getDeclaredMethods()`, keep methods where `isAnnotationPresent(...)` is true, and `invoke()` them — the same idea JUnit uses for `@Test`
+> - Reflection is slower and bypasses compile-time checks — keep it in framework code, not ordinary business logic
+> - Most often asked: annotation vs reflection, `@Retention(RetentionPolicy.RUNTIME)`, how JUnit discovers tests, reflection on private members
 
 ---
 

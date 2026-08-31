@@ -39,6 +39,7 @@
 - [[#Grid и другие Remote Platforms]]
 - [[#Интеграция во Framework]]
 - [[#Типичные ошибки]]
+- [[#Суть темы]]
 - [[#Вопросы для собеседования]]
 	- [[#Вопросы начального уровня]]
 	- [[#Вопросы среднего уровня]]
@@ -650,6 +651,20 @@ Tests должны зависеть от `WebDriver`, а не от `ChromeDriver
 | Считать Grid errors падениями test | Infrastructure noise скрывает product quality | Отдельно классифицируй application и infrastructure failures |
 | Открывать port 4444 в public network | Посторонние могут управлять infrastructure | Используй private network, firewall и authentication |
 | Начинать с Distributed mode | Эксплуатация становится сложной слишком рано | Начни со Standalone или Hub and Node |
+
+---
+
+## Суть темы
+
+> [!summary] Главное за 30 секунд
+> - Selenium Grid — инфраструктура: направляет WebDriver commands к браузерам на remote-машинах для parallel, cross-browser и cross-platform запуска и CI
+> - Grid не создаёт параллельность сам — параллельные тесты включает JUnit/TestNG, Grid лишь даёт remote capacity
+> - Local — `ChromeDriver`, браузер на той же машине; remote — `RemoteWebDriver` + Grid URL + браузерные Options, браузер работает на Node
+> - Путь сессии: Router → New Session Queue → Distributor подбирает slot по capabilities → Node запускает браузер; Session Map помнит связь сессии и Node
+> - Deployment modes: Standalone (обучение, small CI) → Hub and Node (team Grid) → Distributed (крупная инфраструктура)
+> - Всегда `quit()` в teardown — незакрытая сессия занимает slot; один driver на test или thread, без static driver
+> - Чем строже capabilities, тем дольше ждать slot; у Node своя file system — для upload нужен `LocalFileDetector`
+> - Спрашивают чаще всего: зачем Grid, что такое `RemoteWebDriver`, компоненты Grid 4, slot vs stereotype, кто создаёт параллельность
 
 ---
 
