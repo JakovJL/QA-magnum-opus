@@ -584,6 +584,21 @@ It is Selenium's interface for a page element.
 **6. What exception is common when element is not found?**
 `NoSuchElementException`.
 
+**7. Which browsers does WebDriver support?**
+Chrome, Firefox, Edge, Safari, and other browsers — each through its own driver, such as `ChromeDriver`, `GeckoDriver`, `EdgeDriver`, or `SafariDriver`.
+
+**8. What locators do you know?**
+`id`, `name`, `className`, `tagName`, `linkText`, `partialLinkText`, `cssSelector`, and `xpath`.
+
+**9. How do you type text into an input field?**
+Use `sendKeys()` on the element: `driver.findElement(By.id("username")).sendKeys("admin")`.
+
+**10. How do you get the text of an element?**
+Call `getText()` on the element — it returns the visible text.
+
+**11. How do you check that an element is displayed?**
+Call `isDisplayed()` — it returns `true` if the element is visible. `isEnabled()` and `isSelected()` work the same way for the enabled and selected state.
+
 ### Intermediate Questions
 
 **1. What is the difference between `findElement()` and `findElements()`?**
@@ -597,6 +612,21 @@ Because web elements may load or become clickable asynchronously.
 
 **4. What is a common locator priority?**
 Usually `id`, then `name`, then CSS, then XPath if needed.
+
+**5. What Selenium exceptions do you know?**
+`NoSuchElementException` — the element was not found; `TimeoutException` — an explicit wait expired; `StaleElementReferenceException` — the element reference became outdated after a DOM change; `ElementClickInterceptedException` — another element covers the target; `NoSuchSessionException` — the browser session is already closed.
+
+**6. How do you work with frames?**
+Switch into the frame first with `driver.switchTo().frame(...)` (by name, index, or element), interact with its elements, then switch back with `driver.switchTo().defaultContent()`.
+
+**7. How do you handle an alert?**
+Switch to it with `driver.switchTo().alert()`, read the message with `getText()`, then accept with `accept()` or dismiss with `dismiss()`. Prompt dialogs also support `sendKeys()`.
+
+**8. How do you take a screenshot?**
+Cast the driver to `TakesScreenshot` and call `getScreenshotAs(OutputType.FILE)` or `OutputType.BYTES`. An element can also take its own screenshot with `element.getScreenshotAs(...)`.
+
+**9. How do you work with multiple windows?**
+Read the current window handle with `driver.getWindowHandle()`, all handles with `driver.getWindowHandles()`, then switch with `driver.switchTo().window(handle)`.
 
 ### Advanced Questions
 

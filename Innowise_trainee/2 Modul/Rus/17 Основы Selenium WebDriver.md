@@ -328,6 +328,21 @@ public void testLogin() {
 **6. Какое исключение часто возникает, когда элемент не найден?**
 `NoSuchElementException`.
 
+**7. Какие браузеры поддерживает WebDriver?**
+Chrome, Firefox, Edge, Safari и другие — каждый через свой драйвер: `ChromeDriver`, `GeckoDriver`, `EdgeDriver`, `SafariDriver`.
+
+**8. Какие локаторы ты знаешь?**
+`id`, `name`, `className`, `tagName`, `linkText`, `partialLinkText`, `cssSelector` и `xpath`.
+
+**9. Как ввести текст в поле?**
+Использовать `sendKeys()` у элемента: `driver.findElement(By.id("username")).sendKeys("admin")`.
+
+**10. Как получить текст элемента?**
+Вызвать `getText()` у элемента — он вернёт видимый текст.
+
+**11. Как проверить, что элемент отображается?**
+Вызвать `isDisplayed()` — вернёт `true`, если элемент виден. `isEnabled()` и `isSelected()` так же проверяют активность и выделение.
+
 ---
 
 ### Вопросы среднего уровня
@@ -343,6 +358,21 @@ public void testLogin() {
 
 **4. Какой обычно приоритет локаторов?**
 Обычно `id`, затем `name`, затем CSS, затем XPath при необходимости.
+
+**5. Какие исключения в Selenium ты знаешь?**
+`NoSuchElementException` — элемент не найден; `TimeoutException` — explicit wait истёк; `StaleElementReferenceException` — ссылка на элемент устарела после изменения DOM; `ElementClickInterceptedException` — другой элемент перекрывает цель; `NoSuchSessionException` — сессия браузера уже закрыта.
+
+**6. Как работать с фреймами?**
+Сначала переключиться во фрейм через `driver.switchTo().frame(...)` (по имени, индексу или элементу), работать с его элементами, затем вернуться через `driver.switchTo().defaultContent()`.
+
+**7. Как обработать всплывающее окно (alert)?**
+Переключиться на него через `driver.switchTo().alert()`, прочитать сообщение через `getText()`, затем принять через `accept()` или отклонить через `dismiss()`. В prompt-диалогах ещё доступен `sendKeys()`.
+
+**8. Как сделать скриншот страницы?**
+Привести driver к `TakesScreenshot` и вызвать `getScreenshotAs(OutputType.FILE)` или `OutputType.BYTES`. Элемент тоже может сделать свой скриншот через `element.getScreenshotAs(...)`.
+
+**9. Как работать с несколькими окнами?**
+Получить текущий handle через `driver.getWindowHandle()`, все handles через `driver.getWindowHandles()`, затем переключиться через `driver.switchTo().window(handle)`.
 
 ---
 

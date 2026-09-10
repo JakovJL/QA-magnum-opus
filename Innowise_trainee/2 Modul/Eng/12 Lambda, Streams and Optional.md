@@ -7,6 +7,7 @@
 - [[#Functional Interfaces]]
 - [[#Method References]]
 - [[#Streams Basics]]
+	- [[#Parallel Streams]]
 - [[#Intermediate and Terminal Operations]]
 - [[#Optional]]
 - [[#Lambda Streams and Optional in AQA]]
@@ -233,6 +234,12 @@ names.stream()                    // source
 > [!warning] Stream Is Single-Use
 > After a terminal operation like `toList()` or `count()`, the stream is closed. You cannot reuse the same stream variable again.
 
+### Parallel Streams
+
+A **parallel stream** splits the data into chunks, processes them in several threads via `ForkJoinPool.commonPool()`, and merges the results. It can speed up **CPU-bound** work on large data sets; it rarely helps for small collections or I/O-bound tasks, because splitting and merging add overhead.
+
+Use it only when operations are **stateless**, independent, and thread-safe. Shared mutable state, `forEach()` with side effects, and ordered operations make results unpredictable or slower. When in doubt, measure before switching from a sequential stream.
+
 ---
 
 ## Intermediate and Terminal Operations
@@ -245,6 +252,7 @@ Common examples:
 
 - `filter(predicate)` — keeps only elements that match the condition
 - `map(function)` — transforms each element into another value
+- `flatMap(function)` — transforms each element into a stream and flattens the result into one stream
 - `sorted()` — sorts elements (natural order, or by a `Comparator`)
 - `distinct()` — removes duplicate elements
 - `limit(n)` — keeps only the first `n` elements
@@ -457,6 +465,12 @@ Use a stream for clear data pipelines like filtering and mapping. Use a loop whe
 **7. Why is calling `Optional.get()` directly a bad idea?**
 It throws `NoSuchElementException` if the value is absent. Prefer `ifPresent()`, `orElse()`, or `orElseThrow()`.
 
+**8. How does `flatMap()` work?**
+It transforms each element into a stream and then flattens all those streams into one. It is used to unwrap nested structures — for example, turning `List<List<Integer>>` into a single stream of integers.
+
+**9. What are the best practices for using `Optional`?**
+Use `Optional` for return values instead of `null`, and not for fields or method parameters. Never call `get()` without checking — use `orElse()`, `orElseGet()`, `orElseThrow()`, `ifPresent()`, or `map()`. Keep chains short and do not use `Optional` where a simple null check is clearer.
+
 ---
 
 ### Advanced Questions
@@ -499,6 +513,12 @@ list.stream()
     })
     .toList();
 ```
+
+**7. What is a parallel stream? When should you use it?**
+`parallelStream()` splits the data into chunks, processes them in multiple threads via `ForkJoinPool.commonPool()`, then merges the result. It speeds up only CPU-bound operations on large data sets; it does not help with I/O-bound or simple operations because the splitting overhead outweighs the benefit. Operations must be stateless and independent.
+
+**8. Why can parallel streams be dangerous?**
+They can cause thread-safety issues, extra overhead, and unpredictable performance if the operation is not stateless and safe for parallel execution. Shared mutable state and stateful `forEach()` produce wrong results or race conditions.
 
 ---
 

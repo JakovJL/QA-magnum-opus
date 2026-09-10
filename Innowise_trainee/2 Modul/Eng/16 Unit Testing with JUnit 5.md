@@ -10,6 +10,7 @@
 - [[#Parameterized Tests]]
 - [[#Best Practices and Common Mistakes]]
 - [[#JUnit 5 in AQA]]
+	- [[#Skipping Tests]]
 - [[#Key Takeaways]]
 - [[#Interview Questions]]
 	- [[#Beginner Questions]]
@@ -86,6 +87,8 @@ The names are useful to know:
 
 In daily work, you mostly write tests with **Jupiter** annotations and assertions.
 
+JUnit 4 was a single jar with annotations like `@Before` and `@After`. JUnit 5 is modular, requires Java 8+, and adds lambdas, `@DisplayName`, `@Nested`, and first-class parameterized tests. `JUnit Vintage` lets JUnit 5 run old JUnit 4 tests during migration.
+
 ---
 
 ## Basic Structure of a Test
@@ -161,6 +164,7 @@ assertIterableEquals(List.of("a", "b"), names); // iterables match in order
 | Assertion | Passes when |
 |---|---|
 | `assertEquals(exp, act)` | values are equal |
+| `assertSame(exp, act)` | both references point to the same object |
 | `assertNotEquals(exp, act)` | values are different |
 | `assertTrue(cond)` / `assertFalse(cond)` | condition is true / false |
 | `assertNull(x)` / `assertNotNull(x)` | value is / is not `null` |
@@ -406,6 +410,16 @@ class WhenUserIsLoggedOut {
 - `@Tag` labels a test so CI can run only `smoke` or only `regression`.
 - `@Nested` groups related scenarios into readable inner classes.
 
+### Skipping Tests
+
+Annotate a test — or a whole class — with `@Disabled` to skip it. JUnit reports it as skipped, not failed. This is useful for a temporarily broken or not-yet-implemented test; a short comment about the reason is good practice.
+
+```java
+@Disabled("Waiting for the new API")
+@Test
+void pendingCheck() { }
+```
+
 ### Selenium Example
 
 ```java
@@ -476,6 +490,18 @@ It gives a readable custom name to a test or test class.
 **5. Can JUnit 5 be used in AQA frameworks?**
 Yes. It is often used as the main test framework in Java automation projects.
 
+**6. What is a unit test?**
+A unit test checks one small piece of code — usually one method or one class — in isolation from the rest of the system. It should be fast, isolated, deterministic, and easy to read.
+
+**7. What JUnit 5 annotations do you know?**
+`@Test` marks a test method; `@BeforeEach`/`@AfterEach` run before and after every test; `@BeforeAll`/`@AfterAll` run once per class; `@Disabled` skips a test or a class; `@DisplayName` sets a readable name; `@ParameterizedTest` runs a test with multiple inputs; `@Tag` labels tests for selective runs; `@Nested` groups related tests.
+
+**8. How do you disable a test?**
+Annotate the test method or the whole class with `@Disabled`. JUnit reports it as skipped instead of failed, and it is good practice to explain in the annotation why the test is disabled.
+
+**9. What assertions do you know?**
+`assertEquals`, `assertNotEquals`, `assertTrue`, `assertFalse`, `assertNull`, `assertNotNull`, `assertSame`, `assertArrayEquals`, `assertIterableEquals`, `assertThrows`, `assertDoesNotThrow`, `assertAll`, and `assertTimeout` — see the Assertions Reference table.
+
 ### Intermediate Questions
 
 **1. What is the difference between `@BeforeEach` and `@BeforeAll`?**
@@ -492,6 +518,12 @@ It is one test method executed multiple times with different input data.
 
 **5. When should you prefer parameterized tests?**
 When one behavior should be checked against several different inputs or edge cases.
+
+**6. What is the difference between `assertEquals` and `assertSame`?**
+`assertEquals` compares values with `equals()`, so two different objects with the same content pass. `assertSame` compares references with `==`, so it passes only when both variables point to the same object.
+
+**7. What is the difference between JUnit 4 and JUnit 5?**
+JUnit 4 is a single jar with annotations like `@Before` and `@After`. JUnit 5 is modular (Platform, Jupiter, Vintage), requires Java 8+, and adds lambdas, `@DisplayName`, `@Nested`, and first-class parameterized tests. `JUnit Vintage` lets JUnit 5 run old JUnit 4 tests during migration.
 
 ### Advanced Questions
 

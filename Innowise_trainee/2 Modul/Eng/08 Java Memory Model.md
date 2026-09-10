@@ -4,9 +4,13 @@
 
 - [[#Why Memory Matters]]
 - [[#Stack and Heap]]
+	- [[#String Pool]]
 - [[#What Lives Where]]
 - [[#Method Call Stack]]
 - [[#Garbage Collection]]
+- [[#Visibility and Concurrency]]
+	- [[#happens-before]]
+	- [[#volatile]]
 - [[#null and NullPointerException]]
 - [[#Memory Leaks in Java]]
 - [[#Key Takeaways]]
@@ -63,6 +67,12 @@ What lives on the heap:
 - **Static fields** (stored in the class metadata area)
 
 Objects on the heap live until the **Garbage Collector** removes them.
+
+### String Pool
+
+The **String Pool** is a special area inside the heap that stores string literals. When you write `String s = "hello"`, the JVM reuses the same pooled object for every identical literal. A string created with `new String("hello")` is a separate heap object with the same value.
+
+`intern()` returns the canonical pool reference: `new String("hello").intern() == "hello"` is `true`. This is why `==` works for literals but not for `new String(...)`.
 
 ### Visual Model
 
@@ -124,7 +134,7 @@ public class Config {
 }
 ```
 
-Static fields are stored in a special area associated with the class itself (metaspace in modern JVM). They live for the entire duration of the program.
+Static fields are stored in a special area associated with the class itself (metaspace in modern JVM). They live for the entire duration of the program. Before Java 8 this area was called PermGen (Permanent Generation): it had a fixed size and could throw `OutOfMemoryError`, while metaspace uses native memory and grows automatically.
 
 > [!tip] Quick Reference
 > | Declaration | Primitive value | Reference | Object |
@@ -220,6 +230,26 @@ Most objects die young (temporary variables, loop iterations). The young generat
 
 > [!caution] finalize() is Deprecated
 > The `finalize()` method (called before GC collects an object) is deprecated since Java 9 and removed in Java 18. Don't use it. Use try-with-resources for cleanup instead.
+
+---
+
+## Visibility and Concurrency
+
+The Java Memory Model also defines when one thread's changes become **visible** to another thread. Without synchronization, threads may see stale values because of CPU caches and compiler reordering.
+
+### happens-before
+
+**happens-before** is a visibility guarantee: if action A happens-before action B, then everything A wrote is visible to B. The main rules:
+
+- Program order — statements in one thread follow their source order
+- Unlock on a monitor happens-before the next lock on the same monitor
+- A write to a `volatile` variable happens-before a read of it
+- `Thread.start()` happens-before the first action of the started thread
+- The last action of a thread happens-before its `join()`
+
+### volatile
+
+`volatile` guarantees **visibility** and **ordering** for a single variable: a write becomes immediately visible to other threads, and reads/writes are not reordered around it. It does **not** make compound actions atomic — `count++` on a `volatile` field is still not thread-safe; use `AtomicInteger` or synchronization for that.
 
 ---
 
@@ -349,8 +379,8 @@ Thrown when the stack runs out of space, usually due to infinite or very deep re
 **9. What are the generations in Java GC?**
 Young Generation (new objects, collected frequently) and Old Generation (long-lived objects, collected rarely). Most objects die young, so frequent young-gen collection is efficient.
 
-**10. What is metaspace?**
-Metaspace (Java 8+) stores class metadata — class definitions, method data, and **static fields**. It is not part of the Java heap; it uses native memory and grows automatically. This is where static fields like `static int timeout` live.
+**10. What is metaspace? How is it different from the old PermGen?**
+Metaspace (Java 8+) stores class metadata — class definitions, method data, and **static fields**. It is not part of the Java heap; it uses native memory and grows automatically. Before Java 8, the same data lived in PermGen — a fixed-size area that could fail with `OutOfMemoryError`. This is where static fields like `static int timeout` live.
 
 ---
 
@@ -370,6 +400,9 @@ The exception is silently ignored and the object is finalized anyway. This is on
 
 **5. What is the difference between `==` and `.equals()` for objects and wrappers?**
 `==` compares references (do two variables point to the same object). `.equals()` compares content. For wrappers, `==` may surprise you because of caching — always use `.equals()`.
+
+**6. What is `String.intern()` and how does it work?**
+`intern()` returns the canonical reference from the String Pool. If the string is not in the pool yet, it is added; if it is, the existing object is returned. So `new String("a").intern() == "a"` is `true`, while `new String("a") == "a"` is `false`.
 
 ---
 
@@ -393,6 +426,12 @@ change(a, b);
 System.out.println(a); // "hello" — unchanged
 System.out.println(b); // "hello world" — changed
 ```
+
+**3. What is `happens-before`?**
+A visibility guarantee in the Java Memory Model: if action A happens-before action B, all changes made by A are visible to B. The main rules: program order within a thread, unlock before the next lock on the same monitor, a `volatile` write before its read, `start()` before the thread's first action, and a thread's last action before `join()` returns.
+
+**4. How does `volatile` work?**
+`volatile` guarantees visibility and ordering for one variable: a write is immediately seen by other threads, and the compiler/CPU does not reorder reads and writes around it. It does not make compound operations atomic — `count++` on a volatile field is still unsafe; use `AtomicInteger` or `synchronized`.
 
 ---
 
