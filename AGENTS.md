@@ -228,6 +228,7 @@ knowledge base/
 │       └── Session YYYY-MM-DD — Topic.md   (one per recorded lesson)
 └── Разное/
     ├── # 🧠 Шпаргалка по Markdown для Obsidian.md
+    ├── CV.md
     ├── Места, где я хочу побывать.md
     └── img/
         ├── 06_ep_bva.png
