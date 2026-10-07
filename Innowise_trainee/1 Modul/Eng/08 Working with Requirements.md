@@ -10,6 +10,7 @@
 - [[#Attributes of Quality Requirements]]
 - [[#Requirements Elicitation Techniques]]
 - [[#Requirements Documentation]]
+- [[#Acceptance Criteria]]
 - [[#Requirements Testing]]
 - [[#Key Takeaways]]
 - [[#Interview Questions]]
@@ -189,6 +190,32 @@ Reviewing existing documentation.
 - Number requirements
 - Specify priority
 - Add version history
+
+---
+
+## Acceptance Criteria
+
+**Acceptance criteria** are the conditions that a feature must satisfy so the user, customer, or other authorized entity can accept it (ISTQB). In simple words: a list of checks that shows the feature is done and works as expected.
+
+### How to Define Good Acceptance Criteria
+
+1. **Start from the user story.** Read the story and talk to the PO or the business to understand the goal of the feature. Criteria describe *what* the system must do, not *how* to build it.
+2. **Make every criterion testable.** Each point must be possible to check with a clear expected result — it should be possible to turn it into a test case. For example, "the system must be user-friendly" is a bad criterion, because we cannot test it. "The user receives a confirmation email in less than 1 minute" is good.
+3. **Cover more than the happy path.** Add negative cases, error messages, boundary values, and relevant non-functional requirements (like performance or security) when they matter for this feature.
+4. **Keep them clear and simple.** No technical slang. A good check: if two people read the same criterion and understand it in different ways, rewrite it.
+5. **Agree on them before development starts.** The whole team (PO, developer, QA) reviews the criteria together — this is sometimes called "three amigos". Later, the criteria become the base for test cases and part of the Definition of Done.
+
+### Formats
+
+- **Simple checklist** — short rules, one sentence each.
+- **Given / When / Then** (Gherkin format) — better for features with complex logic, especially when the team uses BDD.
+
+### Example (Password Reset)
+
+- The user can request a reset link for their registered email.
+- The link works for 24 hours and only one time.
+- After the user sets a new password, they can log in with it.
+- If the link is expired, the system shows a clear error message.
 
 ---
 
