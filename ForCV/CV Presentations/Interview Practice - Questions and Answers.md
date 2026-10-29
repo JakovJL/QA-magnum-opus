@@ -281,7 +281,35 @@ Use WireMock for controlled responses, check timeouts and retries separately, an
    For the AI assistant, we also separate functional checks from answer-quality evaluation. Together with a support expert, we define questions, expected facts, and allowed sources for a Golden Set. We use it to assess the answers and their sources.
 
 7. How would you explain the need for automation? What value does QA bring to a project?
+
+   **Answer**
+
+   I use automation to get faster and more repeatable feedback about the product. Once an automated test is in place, I can run it regularly without repeating the same steps manually. This is especially useful for regression testing, because I can check important functionality after every change.
+
+   I start with critical business flows and scenarios that we need to check often. For example, I can automate API checks for business rules and permissions, as well as UI tests for the most important user journeys. I run these checks in CI, so the team can find possible regressions before a change reaches users.
+
+   Automation also reduces repetitive work for manual testers. This gives them more time to explore new features and investigate complex cases. I don’t try to automate everything: I consider the value of a test, how often we will run it, and the effort needed to create and maintain it.
+
+   QA brings value beyond finding bugs. I review requirements, ask questions, and discuss unclear cases with the team before development starts. This helps us prevent some defects early. I also share test results and remaining risks, so the team can make an informed release decision and reduce the chance that users will find serious problems after release.
+
 8. How would you choose tools for a test framework?
+
+   **Answer**
+
+   I would start with the project’s needs. I would look at what we need to test, the technology stack, the team’s experience, and how the tests will run in CI. I would also consider how easy the tools are to maintain and whether they have good documentation and support.
+
+   In my current project, the tools were already chosen when I joined, so I didn’t select them myself. But I work with them and can explain why they fit our needs.
+
+   We use **Java** because it is the language of our automation framework. We use **JUnit 5** to organize and run the tests. It supports setup and cleanup, parameterized tests, and tags for selecting test groups. TestNG can solve similar problems, and I used it on the warehouse project. I wouldn’t say JUnit is always better; it was a suitable choice for our current Java stack.
+
+   For API testing, we use **REST Assured** to send requests and check responses. For UI testing, we use **Selenium** to check important user journeys in a real browser. Selenium supports different browsers and fits our Java framework.
+
+   Playwright is another option for UI testing. For example, it can automatically wait for elements to become ready before actions. If I considered switching from Selenium, I would compare that benefit with the effort of moving our existing tests and helping the team maintain the new tool.
+
+   We also use **WireMock** to simulate responses and failures from external services, and **Allure** to review test results and investigate failures.
+
+   Finally, I would discuss the choice with the team. A tool needs to solve the project’s problems, but the team also needs to understand and maintain it.
+
 9. What was the overall team and QA team composition? How did you communicate?
 10. How would you onboard onto a project?
 11. Did you work alone or in a team on previous projects? Was the team international?
