@@ -1,5 +1,29 @@
 # Interview Practice: Questions and Answers
 
+## Table of Contents
+
+- [[#1. Choosing API and UI tests]]
+- [[#2. Investigating an access-control bug]]
+- [[#3. Deciding what to test]]
+- [[#4. Working with developers on bugs]]
+- [[#5. Measuring and reporting test results]]
+- [[#6. Learning from a missed concurrency bug]]
+- [[#7. Keeping test cases and documentation up to date]]
+- [[#8. Investigating intermittent CI failures]]
+- [[#9. Handling flaky or unstable tests]]
+- [[#10. Finding a duplicate-shipment bug]]
+- [[#11. Prioritizing tests when time is limited]]
+- [[#12. Clarifying unclear requirements]]
+- [[#13. Discussing bug priority with leadership]]
+- [[#14. Improving a testing process]]
+- [[#15. Testing an unreliable third-party service]]
+- [[#16. Separating functional checks from answer quality]]
+- [[#17. Choosing core scenarios and quality criteria]]
+- [[#18. Testing access to sensitive information]]
+- [[#Basic Interview Questions]]
+
+---
+
 ## 1. Choosing API and UI tests
 
 ### Interview question
@@ -213,6 +237,59 @@ I use WireMock to test normal responses and failures. I also test the real servi
 ### Key idea
 
 Use WireMock for controlled responses, check timeouts and retries separately, and cover normal and failure cases in CI.
+
+
+## 16. Separating functional checks from answer quality
+
+### Interview question
+
+How did you keep functional checks separate from checking answer quality and sources?
+
+### Strong answer
+
+We used two layers of checks. The functional layer checked API contracts, access permissions, document versions, and integration errors. We used WireMock to simulate provider responses and failures.
+
+For answer quality, we defined a Golden Set of 60 questions with a support expert. Each question had expected facts and allowed sources. The goal was to check whether the answer was correct and supported by its sources.
+
+This separation helped us understand whether a problem was in the API, retrieval, or answer generation.
+
+### Key idea
+
+Functional checks and answer-quality checks cover different risks. A successful API response does not prove that the answer is correct or supported by its sources.
+
+## 17. Choosing core scenarios and quality criteria
+
+### Interview question
+
+How did you decide which core scenarios to automate for the AI assistant, and what quality criteria did you use to judge the answers?
+
+### Strong answer
+
+I started with the most important business flows: document updates, access control, retrieval, and answer generation. I also considered edge cases, such as permission changes and provider timeouts.
+
+Together with a support expert, we defined questions, expected facts, and allowed sources for a Golden Set. An answer should include the expected facts, avoid unsupported claims, and use sources that actually support it.
+
+For traceability, we recorded the model version, prompt version, document versions, and retrieval parameters.
+
+### Key idea
+
+Choose scenarios by business importance and risk. Check both answer content and whether sources support it, and record versions to help investigate changes.
+
+## 18. Testing access to sensitive information
+
+### Interview question
+
+How did you test that the AI assistant did not expose sensitive information to unauthorized users?
+
+### Strong answer
+
+I created test cases for users with different roles and from different organizations. I checked that retrieval returned only the documents each user was allowed to see.
+
+I also tested permission changes, attempts to change the organization in a request, and direct access to a document by ID. The main check was that restricted content did not reach the model or appear in the answer. At the same time, authorized users still needed access to the documents they were allowed to see.
+
+### Key idea
+
+Check permissions before content reaches the model and when a user opens a source. Verify that both restricted and permitted access work correctly.
 
 ---
 
